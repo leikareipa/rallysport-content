@@ -72,19 +72,19 @@ class DatabaseAccess
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(string $username, string $plaintextPassword) : bool
+    function create_new_user(ResourceID $resourceID,
+                             string $username,
+                             string $plaintextPassword) : bool
     {
         /// TODO: Validate the username and password.
 
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
 
-        $userResourceId = (new ResourceID("user"))->string();
-
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_users" .
                                  " (user_resource_id, username, php_password_hash, account_creation_timestamp, account_exists)" .
                                  " VALUES (?, ?, ?, ?, ?)",
-                                 [$userResourceId, $username, $passwordHash, time(), 1]);
+                                 [$resourceID->string(), $username, $passwordHash, time(), 1]);
 
         return (($databaseReturnValue == 0)? true : false);
     }

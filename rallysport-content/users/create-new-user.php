@@ -18,6 +18,7 @@
  */
 
 require_once "../common-scripts/return.php";
+require_once "../common-scripts/resource-id.php";
 require_once "../common-scripts/database.php";
 
 // Validate input parameters in the request body.
@@ -37,16 +38,17 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
     /// etc.
 }
 
-// Add the new user to the database.
+// Add the new user into the database.
 {
     $database = new RSC\DatabaseAccess();
+    $resourceID = new RSC\ResourceID("user");
 
     if (!$database->connect())
     {
         exit(RSC\ReturnObject::script_failed("Could not connect to the database."));
     }
 
-    if (!$database->create_new_user($requestBody["username"], $requestBody["password"]))
+    if (!$database->create_new_user($resourceID, $requestBody["username"], $requestBody["password"]))
     {
         exit(RSC\ReturnObject::script_failed("Could not create a new user."));
     }
