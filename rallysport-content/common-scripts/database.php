@@ -76,9 +76,15 @@ class DatabaseAccess
     {
         /// TODO: Validate the username and password.
 
-        /// TODO: Create the password hash.
+        $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
 
-        /// TODO: Enter the new user's data into the USERS table.
+        $userResourceId = (new ResourceID("user"))->string();
+
+        $databaseReturnValue = $this->issue_db_command(
+                                 "INSERT INTO rsc_users" .
+                                 " (user_resource_id, username, php_password_hash, account_creation_timestamp, account_exists)" .
+                                 " VALUES (?, ?, ?, ?, ?)",
+                                 [$userResourceId, $username, $passwordHash, time(), 1]);
 
         return (($databaseReturnValue == 0)? true : false);
     }
