@@ -28,7 +28,7 @@ class ResourceID
 
     // The set of characters that the ID element of a resource ID is allowed to
     // use.
-    const CHARSET = "23789acefghkmnoprst";
+    const CHARSET = "23789acefghkmnprstzw";
 
     const RESOURCE_TYPE_SEPARATOR = "+";
     const ID_FRAGMENT_SEPARATOR = "-";
