@@ -37,6 +37,41 @@ class ResourceID
     
     function __construct(string $resourceType)
     {
+        // Verify fundamental assumptions.
+        {
+            if (!strlen(self::CHARSET))
+            {
+                throw new \Exception("Empty resource ID character set.");
+            }
+
+            if ((strlen(self::RESOURCE_TYPE_SEPARATOR) != 1) ||
+                (strlen(self::ID_FRAGMENT_SEPARATOR) != 1))
+            {
+                throw new \Exception("Malformed resource ID separator.");
+            }
+
+            if ((stristr(self::CHARSET, self::RESOURCE_TYPE_SEPARATOR) !== FALSE) ||
+                (stristr(self::CHARSET, self::ID_FRAGMENT_SEPARATOR) !== FALSE))
+            {
+                throw new \Exception("A resource ID separator must be a symbol that is not included in the resource ID character set.");
+            }
+            
+            if (self::ID_FRAGMENT_SEPARATOR == self::RESOURCE_TYPE_SEPARATOR)
+            {
+                throw new \Exception("The resource type separator cannot be the same as the ID fragment separator.");
+            }
+
+            if (self::ID_FRAGMENT_LENGTH <= 0)
+            {
+                throw new \Exception("ID fragments cannot be empty.");
+            }
+
+            if (self::NUM_ID_FRAGMENTS <= 0)
+            {
+                throw new \Exception("There must be at least one ID fragment.");
+            }
+        }
+
         $this->resourceIDString = $this->generate_random_resource_id($resourceType);
 
         return;
