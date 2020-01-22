@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -18,11 +18,16 @@
 
 class ReturnObject
 {
-    static function script_succeeded(string $returnJSONString = "")
+    static function script_succeeded(array $returnObject = [], string $returnObjectKey = "payload")
     {
+        if ($returnObjectKey == "succeeded")
+        {
+            script_failed("The return object key is using a reserved value.");
+        }
+
         // For now, don't cache responses.
         header("Cache-Control: no-store");
-        echo json_encode(["succeeded"=>true, "returnData"=>$returnJSONString], JSON_UNESCAPED_UNICODE);
+        echo json_encode(["succeeded"=>true, $returnObjectKey=>$returnObject], JSON_UNESCAPED_UNICODE);
     }
 
     static function script_failed(string $errorMessage = "Undefined error")
