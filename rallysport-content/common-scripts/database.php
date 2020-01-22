@@ -64,6 +64,37 @@ class DatabaseAccess
 
         return (bool)($this->database && !mysqli_connect_error());
     }
+    
+    // Adds into the TRACKS table a new track with the given parameters. Returns
+    // TRUE on success; FALSE otherwise.
+    function add_new_track(ResourceID $resourceID,
+                           string $internalName,
+                           string $displayName,
+                           int $width,
+                           int $height) : bool
+    {
+        /// TODO: Validate the input parameters.
+
+        $databaseReturnValue = $this->issue_db_command(
+                                 "INSERT INTO rsc_tracks
+                                   (track_resource_id,
+                                    track_name_internal,
+                                    track_name_display,
+                                    track_width,
+                                    track_height,
+                                    creation_timestamp,
+                                    creator_user_resource_id)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)",
+                                  [$resourceID->string(),
+                                   $internalName,
+                                   $displayName,
+                                   $width,
+                                   $height,
+                                   time(),
+                                   "unknown"]);
+
+        return (($databaseReturnValue == 0)? true : false);
+    }
 
     // Adds into the USERS table a new user with the given username and password.
     // The plaintext password will not be entered into the database; instead, it
@@ -81,10 +112,18 @@ class DatabaseAccess
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
 
         $databaseReturnValue = $this->issue_db_command(
-                                 "INSERT INTO rsc_users" .
-                                 " (user_resource_id, username, php_password_hash, account_creation_timestamp, account_exists)" .
-                                 " VALUES (?, ?, ?, ?, ?)",
-                                 [$resourceID->string(), $username, $passwordHash, time(), 1]);
+                                 "INSERT INTO rsc_users
+                                   (user_resource_id,
+                                    username,
+                                    php_password_hash,
+                                    account_creation_timestamp,
+                                    account_exists)
+                                  VALUES (?, ?, ?, ?, ?)",
+                                  [$resourceID->string(),
+                                   $username,
+                                   $passwordHash,
+                                   time(),
+                                   1]);
 
         return (($databaseReturnValue == 0)? true : false);
     }

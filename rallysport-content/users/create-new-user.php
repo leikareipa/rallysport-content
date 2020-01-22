@@ -8,7 +8,7 @@
  * This script creates and populates a new entry in the database's table of
  * users, with the username and password provided in the request body.
  * 
- * Expected request body: JSON {username, password}
+ * Expected POST request body: JSON {username, password}
  * 
  * Returns: JSON {succeeded: bool [, errorMessage: string]}
  * 
@@ -47,6 +47,8 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
     {
         exit(RSC\ReturnObject::script_failed("Could not connect to the database."));
     }
+
+    /// TODO: Test to make sure the resource ID is unique in the TRACKS table.
 
     if (!$database->create_new_user($resourceID, $requestBody["username"], $requestBody["password"]))
     {
