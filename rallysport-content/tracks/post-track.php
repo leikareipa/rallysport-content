@@ -17,6 +17,8 @@
  *      manifestoData,
  *  }
  * 
+ *  - Strings are expected in UTF-8.
+ * 
  *  - For more information about the request body parameters, see the documentation
  *    in RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
  * 
@@ -41,7 +43,43 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
     if (!isset($requestBody["containerData"])) exit(RSC\ReturnObject::script_failed("Missing the 'containerData' parameter in the request body."));
     if (!isset($requestBody["manifestoData"])) exit(RSC\ReturnObject::script_failed("Missing the 'manifestoData' parameter in the request body."));
 
-    /// TODO: Make sure the parameters are within valid ranges, etc.
+    // Validate track dimensions.
+    {
+        if ($requestBody["width"] != $requestBody["height"])
+        {
+            exit(RSC\ReturnObject::script_failed("Track dimensions must be square."));
+        }
+
+        if (($requestBody["width"] != 64) &&
+            ($requestBody["height"] != 128))
+        {
+            exit(RSC\ReturnObject::script_failed("Unsupported track dimensions ."));
+        }
+    }
+
+    // Validate names.
+    {
+        // Internal track names are allowed to consist of 1-8 ASCII alphabet characters.
+        if (!mb_strlen($requestBody["internalName"], "UTF-8") ||
+            (mb_strlen($requestBody["internalName"], "UTF-8") > 8) ||
+            preg_match("/[^a-zA-Z]/", $requestBody["internalName"]))
+        {
+            exit(RSC\ReturnObject::script_failed("Malformed 'internalName' parameter."));
+        }
+
+        // Display names are allowed to consist of 1-15 ASCII + Finnish umlaut
+        // alphabet characters.
+        if (!mb_strlen($requestBody["displayName"], "UTF-8") ||
+            (mb_strlen($requestBody["displayName"], "UTF-8") > 15) ||
+            preg_match("/[^A-Za-z\x{c5}\x{e5}\x{c4}\x{e4}\x{d6}\x{f6}]/u", $requestBody["displayName"]))
+        {
+            exit(RSC\ReturnObject::script_failed("Malformed 'displayName' parameter."));
+        }
+    }
+
+    /// TODO: Verify that containerData and manifestoData contain 100% valid
+    /// RallySportED data, as these data will be written into files on the
+    /// server.
 
     /// TODO: The parameters should also contain a session ID or the like, since
     /// only registered users who are logged in should be able to post tracks.
@@ -67,7 +105,7 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
                                   $requestBody["width"],
                                   $requestBody["height"]))
     {
-        exit(RSC\ReturnObject::script_failed("Could not add the new track."));
+        exit(RSC\ReturnObject::script_failed("Server-side failure. Could not add the new track."));
     }
 }
 
