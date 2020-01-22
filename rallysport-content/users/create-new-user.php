@@ -1,4 +1,4 @@
-<?php
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -8,7 +8,7 @@
  * This script creates and populates a new entry in the database's table of
  * users, with the username and password provided in the request body.
  * 
- * Expected POST request body: JSON {username, password}
+ * Expected parameters: [username, password]
  * 
  * Returns: JSON {succeeded: bool [, errorMessage: string]}
  * 
@@ -21,39 +21,34 @@ require_once "../common-scripts/return.php";
 require_once "../common-scripts/resource-id.php";
 require_once "../common-scripts/database.php";
 
-// Validate input parameters in the request body.
-$requestBody = json_decode(file_get_contents("php://input"), true);
+function create_new_user($parameters)
 {
-    if (!isset($requestBody["username"]))
+    // Validate input parameters.
     {
-        exit(RSC\ReturnObject::script_failed("A username must be provided when creating a new user."));
+        if (!isset($parameters["username"])) exit(ReturnObject::script_failed("Missing the 'username' parameter."));
+        if (!isset($parameters["password"])) exit(ReturnObject::script_failed("Missing the 'password' parameter."));
+
+        /// TODO: Make sure the password and username are of the appropriate length,
+        /// etc.
     }
 
-    if (!isset($requestBody["password"]))
+    // Add the new user into the database.
     {
-        exit(RSC\ReturnObject::script_failed("A password must be provided when creating a new user."));
+        $database = new DatabaseAccess();
+        $resourceID = new ResourceID("user");
+
+        if (!$database->connect())
+        {
+            exit(ReturnObject::script_failed("Could not connect to the database."));
+        }
+
+        /// TODO: Test to make sure the resource ID is unique in the TRACKS table.
+
+        if (!$database->create_new_user($resourceID, $parameters["username"], $parameters["password"]))
+        {
+            exit(ReturnObject::script_failed("Could not create a new user."));
+        }
     }
 
-    /// TODO: Make sure the password and username are of the appropriate length,
-    /// etc.
+    exit(ReturnObject::script_succeeded());
 }
-
-// Add the new user into the database.
-{
-    $database = new RSC\DatabaseAccess();
-    $resourceID = new RSC\ResourceID("user");
-
-    if (!$database->connect())
-    {
-        exit(RSC\ReturnObject::script_failed("Could not connect to the database."));
-    }
-
-    /// TODO: Test to make sure the resource ID is unique in the TRACKS table.
-
-    if (!$database->create_new_user($resourceID, $requestBody["username"], $requestBody["password"]))
-    {
-        exit(RSC\ReturnObject::script_failed("Could not create a new user."));
-    }
-}
-
-exit(RSC\ReturnObject::script_succeeded());

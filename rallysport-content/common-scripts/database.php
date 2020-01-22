@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -28,20 +28,6 @@ class DatabaseAccess
     // initialized by the class constructor.
     private $database;
 
-    // Closes the current connection to the database. Returns true on success;
-    // false otherwise.
-    function disconnect() : bool
-    {
-        if ($database)
-        {
-            return mysqli_close($database);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     // Establishes a connection to the database. Returns true on success; false
     // otherwise.
     function connect() : bool
@@ -64,6 +50,20 @@ class DatabaseAccess
 
         return (bool)($this->database && !mysqli_connect_error());
     }
+
+    // Closes the current connection to the database. Returns true on success;
+    // false otherwise.
+    function disconnect() : bool
+    {
+        if ($database)
+        {
+            return mysqli_close($database);
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
@@ -73,6 +73,11 @@ class DatabaseAccess
                            int $width,
                            int $height) : bool
     {
+        if ($userResourceID->resource_type() != "track")
+        {
+            throw new \Exception("Invalid resource type.");
+        }
+
         /// TODO: Validate the input parameters.
 
         $databaseReturnValue = $this->issue_db_command(
@@ -107,6 +112,11 @@ class DatabaseAccess
                              string $username,
                              string $plaintextPassword) : bool
     {
+        if ($userResourceID->resource_type() != "user")
+        {
+            throw new \Exception("Invalid resource type.");
+        }
+
         /// TODO: Validate the username and password.
 
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
@@ -128,15 +138,106 @@ class DatabaseAccess
         return (($databaseReturnValue == 0)? true : false);
     }
 
+    // Returns public information about the given track. If a null resource ID
+    // is given, the information of all tracks in the database will be returned.
+    function get_user_information(ResourceID $userResourceID = NULL) : array
+    {
+        if ($userResourceID && ($userResourceID->resource_type() != "user"))
+        {
+            throw new \Exception("Invalid resource type.");
+        }
+
+        // If no resource ID is provided, we'll return info for all tracks
+        // in the database.
+        $rowSelector = ($userResourceID? "WHERE user_resource_id = ?" : "");
+
+        $userInfo = $this->issue_db_query(
+                        "SELECT
+                          user_resource_id,
+                          account_exists
+                         FROM rsc_users
+                         {$rowSelector}",
+                         ($userResourceID? [$userResourceID->string()] : NULL));
+
+        if (!is_array($userInfo) || !count($userInfo))
+        {
+            return [];
+        }
+
+        // Simplify some parameter names, etc.
+        $returnObject = [];
+        foreach ($userInfo as $user)
+        {
+            $returnObject[$user["user_resource_id"]] =
+            [
+                "accountExists"=>$user["account_exists"]
+            ];
+        }
+
+        return $returnObject;
+    }
+
+    // Returns public information about the given track. If a null resource ID
+    // is given, the information of all tracks in the database will be returned.
+    function get_track_information(ResourceID $trackResourceID = NULL) : array
+    {
+        if ($trackResourceID && ($trackResourceID->resource_type() != "track"))
+        {
+            throw new \Exception("Invalid resource type.");
+        }
+
+        // If no resource ID is provided, we'll return info for all tracks
+        // in the database.
+        $rowSelector = ($trackResourceID? "WHERE track_resource_id = ?" : "");
+
+        $trackInfo = $this->issue_db_query(
+                        "SELECT
+                          track_resource_id,
+                          creator_user_resource_id,
+                          creation_timestamp,
+                          track_name_internal,
+                          track_name_display,
+                          track_width,
+                          track_height
+                         FROM rsc_tracks
+                         {$rowSelector}",
+                         ($trackResourceID? [$trackResourceID->string()] : NULL));
+
+        if (!is_array($trackInfo) || !count($trackInfo))
+        {
+            return [];
+        }
+
+        // Simplify some parameter names, etc.
+        $returnObject = [];
+        foreach ($trackInfo as $track)
+        {
+            $returnObject[$track["track_resource_id"]] =
+            [
+                "internalName"=>$track["track_name_internal"],
+                "displayName"=>$track["track_name_display"],
+                "width"=>$track["track_width"],
+                "height"=>$track["track_height"],
+                "creatorUserID"=>$track["creator_user_resource_id"],
+                "creationTimestamp"=>$track["creation_timestamp"],
+            ];
+        }
+
+        return $returnObject;
+    }
+
     // Wrapper function for sending queries to the database such that data is
     // expected in response. E.g. database_query("SELECT * FROM table WHERE x = ?",
     // [10]) returns such columns' values where x = 10. An empty array may be
     // returned either if there was no data to return or if an error occurred.
-    private function issue_db_query(string $queryString, array $parameters): array
+    private function issue_db_query(string $queryString, array $parameters = NULL): array
     {
         $stmt = mysqli_prepare($this->database, $queryString);
 
-        mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
+        if ($parameters)
+        {
+            mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
+        }
 
         $execute = mysqli_stmt_execute($stmt);
 

@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -30,12 +30,14 @@ class ResourceID
     // use.
     const CHARSET = "23789acefghkmnprstzw";
 
+    // These two constants should not be changed without a very good reason.
     const RESOURCE_TYPE_SEPARATOR = "+";
     const ID_FRAGMENT_SEPARATOR = "-";
+
     const ID_FRAGMENT_LENGTH = 3;
     const NUM_ID_FRAGMENTS = 3;
     
-    function __construct(string $resourceType)
+    function __construct(string $resourceType, string $resourceID = NULL)
     {
         // Verify fundamental assumptions.
         {
@@ -72,7 +74,14 @@ class ResourceID
             }
         }
 
-        $this->resourceIDString = $this->generate_random_resource_id($resourceType);
+        if (!isset($resourceID))
+        {
+            $this->resourceIDString = $this->generate_random_resource_id($resourceType);
+        }
+        else
+        {
+            $this->resourceIDString = ($resourceType . self::RESOURCE_TYPE_SEPARATOR . $resourceID);
+        }
 
         return;
     }
@@ -80,6 +89,11 @@ class ResourceID
     function string() : string
     {
         return $this->resourceIDString;
+    }
+
+    function resource_type() : string
+    {
+        return explode(self::RESOURCE_TYPE_SEPARATOR, $this->resourceIDString)[0];
     }
 
     // Returns a random resource ID string, along the lines of "resourceType+xxx-xxx-xxx".
@@ -112,5 +126,10 @@ class ResourceID
         }
 
         return $randomResourceID;
+    }
+
+    static public function resource_type_separator() : string
+    {
+        return self::RESOURCE_TYPE_SEPARATOR;
     }
 }

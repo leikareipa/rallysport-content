@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
