@@ -35,6 +35,7 @@ require_once "../common-scripts/return.php";
 require_once "../common-scripts/resource-id.php";
 require_once "../common-scripts/database.php";
 require_once "validate-track-container-data.php";
+require_once "validate-track-manifesto-data.php";
 
 // Validate input parameters in the request body.
 $requestBody = json_decode(file_get_contents("php://input"), true);
@@ -80,7 +81,7 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
         }
     }
 
-    // Validate the container's data.
+    // Validate the track's data.
     {
         // Container data should never be larger than ~250 KB (the value below
         // accounts for the temporary Base64 encoding inflating the data size
@@ -100,15 +101,15 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
 
         // Note: At this point, we assume that the track's width and height are
         // equal, e.g. that it's square.
-        if (!is_valid_container_data($requestBody["containerData"], $requestBody["width"]))
+        if (!RSC\is_valid_container_data($requestBody["containerData"], $requestBody["width"]))
         {
             exit(RSC\ReturnObject::script_failed("Invalid container data."));
         }
-    }
 
-    // Validate the manifesto data.
-    {
-        /// TODO.
+        if (!RSC\is_valid_manifesto_data($requestBody["manifestoData"]))
+        {
+            exit(RSC\ReturnObject::script_failed("Invalid container data."));
+        }
     }
 
     /// TODO: The parameters should also contain a session ID or the like, since

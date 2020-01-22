@@ -1,4 +1,4 @@
-<?php
+<?php namespace RSC;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -8,6 +8,9 @@
  * This script provides functionality for validating a RallySportED container
  * file's data. You might use it e.g. to check whether a container file sent
  * from a client is malformed.
+ * 
+ * For more information about the container file, see the documentation in
+ * RallySportED's repos, https://github.com/leikareipa/rallysported/.
  * 
  */
 
