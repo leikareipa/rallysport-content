@@ -18,13 +18,17 @@
 
 class ReturnObject
 {
-    static function script_succeeded(string $returnJSONString = "{}")
+    static function script_succeeded(string $returnJSONString = "")
     {
+        // For now, don't cache responses.
+        header("Cache-Control: no-store");
         echo json_encode(["succeeded"=>true, "returnData"=>$returnJSONString], JSON_UNESCAPED_UNICODE);
     }
 
     static function script_failed(string $errorMessage = "Undefined error")
     {
+        // For now, don't cache responses.
+        header("Cache-Control: no-store");
         echo json_encode(["succeeded"=>false, "errorMessage"=>$errorMessage], JSON_UNESCAPED_UNICODE);
     }
 }
