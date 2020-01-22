@@ -19,6 +19,8 @@
  * 
  *  - Strings are expected in UTF-8.
  * 
+ *  - The 'containerData' parameter is expected to be a Base64 string.
+ * 
  *  - For more information about the request body parameters, see the documentation
  *    in RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
  * 
@@ -32,6 +34,7 @@
 require_once "../common-scripts/return.php";
 require_once "../common-scripts/resource-id.php";
 require_once "../common-scripts/database.php";
+require_once "validate-track-container-data.php";
 
 // Validate input parameters in the request body.
 $requestBody = json_decode(file_get_contents("php://input"), true);
@@ -77,9 +80,36 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
         }
     }
 
-    /// TODO: Verify that containerData and manifestoData contain 100% valid
-    /// RallySportED data, as these data will be written into files on the
-    /// server.
+    // Validate the container's data.
+    {
+        // Container data should never be larger than ~250 KB (the value below
+        // accounts for the temporary Base64 encoding inflating the data size
+        // a bit).
+        if (strlen($requestBody["containerData"]) > 358400)
+        {
+            exit(RSC\ReturnObject::script_failed("Invalid container data."));
+        }
+
+        // The container data was sent in as Base64, but we'll want to process
+        // and store it in binary.
+        $requestBody["containerData"] = base64_decode($requestBody["containerData"], true);
+        if (!$requestBody["containerData"])
+        {
+            exit(RSC\ReturnObject::script_failed("Invalid container data."));
+        }
+
+        // Note: At this point, we assume that the track's width and height are
+        // equal, e.g. that it's square.
+        if (!is_valid_container_data($requestBody["containerData"], $requestBody["width"]))
+        {
+            exit(RSC\ReturnObject::script_failed("Invalid container data."));
+        }
+    }
+
+    // Validate the manifesto data.
+    {
+        /// TODO.
+    }
 
     /// TODO: The parameters should also contain a session ID or the like, since
     /// only registered users who are logged in should be able to post tracks.
@@ -106,6 +136,34 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
                                   $requestBody["height"]))
     {
         exit(RSC\ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+    }
+
+    // Create files on disk to hold the track's data.
+    {
+        if (!mkdir("./data/{$resourceID->string()}"))
+        {
+            exit(RSC\ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+        }
+
+        // Move into the folder that contains tracks' data files.
+        try
+        {
+            chdir("./data/{$resourceID->string()}");
+        }
+        catch(Exception $exception)
+        {
+            exit(RSC\ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+        }
+
+        if (!file_put_contents((mb_strtoupper($requestBody["internalName"], "UTF-8") . ".DTA"), $requestBody["containerData"]) ||
+            !file_put_contents((mb_strtoupper($requestBody["internalName"], "UTF-8") . '.$FT'), $requestBody["manifestoData"]))
+        {
+            /// TODO: Remove the track's files and folder.
+
+            /// TODO: Remove the track from the databse.
+
+            exit(RSC\ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+        }
     }
 }
 
