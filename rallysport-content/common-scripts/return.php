@@ -6,13 +6,13 @@
  * Software: Rally-Sport Content
  * 
  * This script provides functions to call in tandem with exit() to provide the
- * client with a standard return response.
+ * caller with a standard return response in the PHP output stream.
  * 
  * Usage:
  * 
  *  - To indicate failure, call exit(ReturnObject::script_failed("Error message")).
  * 
- *  - To indicate success, call exit(ReturnObject::script_succeeded()).
+ *  - To indicate success, call exit(ReturnObject::script_succeeded($optionalOutputData)).
  * 
  */
 
@@ -22,18 +22,21 @@ class ReturnObject
     {
         if ($returnObjectKey == "succeeded")
         {
-            script_failed("The return object key is using a reserved value.");
+            return script_failed("The return object key is using a reserved value.");
         }
 
-        // For now, don't cache responses.
-        header("Cache-Control: no-store");
         echo json_encode(["succeeded"=>true, $returnObjectKey=>$returnObject], JSON_UNESCAPED_UNICODE);
+
+        return 0;
     }
 
     static function script_failed(string $errorMessage = "Undefined error")
     {
-        // For now, don't cache responses.
+        // Error messages should not be cached.
         header("Cache-Control: no-store");
+        
         echo json_encode(["succeeded"=>false, "errorMessage"=>$errorMessage], JSON_UNESCAPED_UNICODE);
+
+        return 1;
     }
 }
