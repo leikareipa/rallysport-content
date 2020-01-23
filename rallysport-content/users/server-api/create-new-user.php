@@ -8,12 +8,23 @@
  * This script attempts to create and populate a new entry in the database's
  * table of users.
  * 
- * Returns: JSON {succeeded: bool [, errorMessage: string]}
+ * Returns: JSON {succeeded: bool [, account: object[, errorMessage: string]]}
  * 
- *  - On failure (that is, when succeeded == false), 'errorMessage' will provide
- *    a brief description of the error.
+ *  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
+ *    provide a brief description of the error. The 'account' object will
+ *    not be returned.
  * 
- *  - On success, only the 'succeeded' parameter (set to true) is returned.
+ *  - On success (when 'succeeded' == TRUE), the 'account' object will provide
+ *    information about the new account. Currently, the following info is
+ *    included:
+ * 
+ *      {
+ *          // The new user's resource id, without the resource type; e.g.
+ *          // "xxx-xxx-xxx". The full resource id, including the resource
+ *          // type, would be "user:xxx-xxx-xxx", but this won't be needed
+ *          // in client-to-server interaction.
+ *          id: string
+ *      }
  * 
  */
 
@@ -24,37 +35,38 @@ require_once __DIR__."/../../common-scripts/database.php";
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // password is specified by the function call parameters.
 //
-// Note:
-//
-//  - The function should not return. Instead, it should exit() with either
-//    ReturnObject::script_succeeded() or ReturnObject::script_failed().
+// Note: The function should not return. Instead, it should exit() with either
+// ReturnObject::script_succeeded() or ReturnObject::script_failed().
 //
 function create_new_user(array $parameters)
 {
-    // Validate input parameters.
-    {
-        if (!isset($parameters["password"])) exit(ReturnObject::script_failed("Missing the 'password' parameter."));
+    if (!isset($parameters["password"])) exit(ReturnObject::script_failed("Missing the 'password' parameter."));
 
-        /// TODO: Make sure the password is of the appropriate length, etc.
-    }
+    /// TODO: Make sure the password is of the appropriate length, etc.
+
+    $userID = NULL;
 
     // Add the new user into the database.
     {
         $database = new DatabaseAccess();
-        $resourceID = new UserResourceID();
-
         if (!$database->connect())
         {
             exit(ReturnObject::script_failed("Could not connect to the database."));
         }
 
-        /// TODO: Test to make sure the resource ID is unique in the TRACKS table.
-
-        if (!$database->create_new_user($resourceID, $parameters["password"]))
+        $userID = new UserResourceID();
+        if (!$database->create_new_user($userID, $parameters["password"]))
         {
             exit(ReturnObject::script_failed("Could not create a new user."));
         }
     }
 
-    exit(ReturnObject::script_succeeded());
+    if ($userID)
+    {
+        exit(ReturnObject::script_succeeded(["id"=>$userID->resource_key()], "account"));
+    }
+    else
+    {
+        exit(ReturnObject::script_failed("Could not create a new user."));
+    }
 }
