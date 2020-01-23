@@ -9,10 +9,10 @@
  * 
  */
 
-include_once "add-new-track.php";
-include_once "printout-track-information.php";
-include_once "../common-scripts/return.php";
-require_once "../common-scripts/resource-id.php";
+require_once dirname(__FILE__)."/server-api/add-new-track.php";
+require_once dirname(__FILE__)."/server-api/printout-track-information.php";
+require_once dirname(__FILE__)."/../common-scripts/return.php";
+require_once dirname(__FILE__)."/../common-scripts/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

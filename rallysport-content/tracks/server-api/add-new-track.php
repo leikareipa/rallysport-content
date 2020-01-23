@@ -16,11 +16,11 @@
  * 
  */
 
-require_once "../common-scripts/return.php";
-require_once "../common-scripts/resource-id.php";
-require_once "../common-scripts/database.php";
-require_once "validate-track-container-data.php";
-require_once "validate-track-manifesto-data.php";
+require_once dirname(__FILE__)."/../../common-scripts/return.php";
+require_once dirname(__FILE__)."/../../common-scripts/resource-id.php";
+require_once dirname(__FILE__)."/../../common-scripts/database.php";
+require_once dirname(__FILE__)."/validate-track-container-data.php";
+require_once dirname(__FILE__)."/validate-track-manifesto-data.php";
 
 // Attempts to add to the Rally-Sport Content database a new track, whose data
 // are specified by the function call parameters.
