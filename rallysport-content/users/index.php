@@ -9,10 +9,10 @@
  * 
  */
 
-require_once dirname(__FILE__)."/server-api/create-new-user.php";
-require_once dirname(__FILE__)."/server-api/printout-user-information.php";
-require_once dirname(__FILE__)."/../common-scripts/return.php";
-require_once dirname(__FILE__)."/../common-scripts/resource-id.php";
+require_once __DIR__."/server-api/create-new-user.php";
+require_once __DIR__."/server-api/printout-user-information.php";
+require_once __DIR__."/../common-scripts/return.php";
+require_once __DIR__."/../common-scripts/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

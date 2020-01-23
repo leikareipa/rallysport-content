@@ -20,9 +20,9 @@
  * 
  */
 
-require_once dirname(__FILE__)."/../../common-scripts/return.php";
-require_once dirname(__FILE__)."/../../common-scripts/database.php";
-require_once dirname(__FILE__)."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/database.php";
+require_once __DIR__."/../../common-scripts/resource-id.php";
 
 // Prints into the PHP output stream a stringified JSON object containing
 // public information about the given user, or of all users in the database if

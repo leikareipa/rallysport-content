@@ -17,9 +17,9 @@
  * 
  */
 
-require_once dirname(__FILE__)."/../../common-scripts/return.php";
-require_once dirname(__FILE__)."/../../common-scripts/resource-id.php";
-require_once dirname(__FILE__)."/../../common-scripts/database.php";
+require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/database.php";
 
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // username and password are specified by the function call parameters.
