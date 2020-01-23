@@ -134,14 +134,17 @@ class DatabaseAccess
     {
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $rowSelector = ($resourceID? "WHERE user_resource_id = ?" : "");
+        $resourceIDRowSelector = ($resourceID? "AND user_resource_id = ?" : "");
 
         $userInfo = $this->issue_db_query(
                         "SELECT
-                          user_resource_id,
-                          account_exists
-                         FROM rsc_users
-                         {$rowSelector}",
+                          user_resource_id
+                         FROM
+                          rsc_users
+                         WHERE
+                          account_suspended = 0
+                          AND account_exists = 1
+                          {$resourceIDRowSelector}",
                          ($resourceID? [$resourceID->string()] : NULL));
 
         if (!is_array($userInfo) || !count($userInfo))
@@ -155,7 +158,6 @@ class DatabaseAccess
         {
             $returnObject[$user["user_resource_id"]] =
             [
-                "accountExists"=>$user["account_exists"]
             ];
         }
 

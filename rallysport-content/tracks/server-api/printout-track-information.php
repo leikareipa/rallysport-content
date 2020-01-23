@@ -42,7 +42,7 @@ function printout_track_information(TrackResourceID $resourceID = NULL)
     $trackInfo = $database->get_track_information($resourceID);
     if (!is_array($trackInfo) || !count($trackInfo))
     {
-        exit(ReturnObject::script_failed("No matching tracks not found."));
+        exit(ReturnObject::script_failed("No matching tracks found."));
     }
 
     exit(ReturnObject::script_succeeded($trackInfo, "tracks"));

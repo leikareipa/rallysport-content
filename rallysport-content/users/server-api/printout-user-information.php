@@ -42,7 +42,7 @@ function printout_user_information(UserResourceID $resourceID = NULL)
     $userInfo = $database->get_user_information($resourceID);
     if (!is_array($userInfo) || !count($userInfo))
     {
-        exit(ReturnObject::script_failed("No matching users not found."));
+        exit(ReturnObject::script_failed("No matching users found."));
     }
 
     exit(ReturnObject::script_succeeded($userInfo, "users"));
