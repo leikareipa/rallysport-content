@@ -15,7 +15,7 @@
  * 
  *  3. Perform your actions on the database via $db.
  * 
- *  4. Call $db->disconnect() to close the database connection.
+ *  4. Optionally, call $db->disconnect() to close the database connection.
  * 
  */
 
@@ -96,33 +96,37 @@ class DatabaseAccess
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Adds into the USERS table a new user with the given username and password.
-    // The plaintext password will not be entered into the database; instead, it
-    // will be ignored once a salted hash has been derived from it, and the hash
-    // will be stored instead, along with the salt.
+    // Adds into the USERS table a new user with the given password. The plaintext
+    // password will not be entered into the database; instead, it will be ignored
+    // once a salted hash has been derived from it, and the hash will be stored
+    // instead, along with the salt.
+    //
+    // By defalt, each account will be created in a suspended state, where it cannot
+    // yet be used to create new content etc. The person who registered the account
+    // will go through a separate process of email verification or the like to have
+    // the initial suspension lifted.
     //
     // Returns TRUE on success; FALSE otherwise.
     //
     function create_new_user(UserResourceID $resourceID,
-                             string $username,
                              string $plaintextPassword) : bool
     {
-        /// TODO: Validate the username and password.
+        /// TODO: Validate the password.
 
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
 
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_users
                                    (user_resource_id,
-                                    username,
                                     php_password_hash,
                                     account_creation_timestamp,
-                                    account_exists)
+                                    account_exists,
+                                    account_suspended)
                                   VALUES (?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
-                                   $username,
                                    $passwordHash,
                                    time(),
+                                   1,
                                    1]);
 
         return (($databaseReturnValue == 0)? true : false);
