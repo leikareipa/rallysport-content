@@ -143,7 +143,7 @@ function add_new_track(array $parameters)
 
         // Create files on disk to hold the track's data.
         {
-            if (!mkdir("./data/{$resourceID->string()}"))
+            if (!mkdir("./server-data/{$resourceID->string()}"))
             {
                 exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
             }
@@ -151,7 +151,7 @@ function add_new_track(array $parameters)
             // Move into the folder that contains tracks' data files.
             try
             {
-                chdir("./data/{$resourceID->string()}");
+                chdir("./server-data/{$resourceID->string()}");
             }
             catch(Exception $exception)
             {
