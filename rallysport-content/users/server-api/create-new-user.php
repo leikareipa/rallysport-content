@@ -41,8 +41,9 @@ require_once __DIR__."/../../common-scripts/database.php";
 function create_new_user(array $parameters)
 {
     if (!isset($parameters["password"])) exit(ReturnObject::script_failed("Missing the 'password' parameter."));
+    if (!isset($parameters["email"])) exit(ReturnObject::script_failed("Missing the 'email' parameter."));
 
-    /// TODO: Make sure the password is of the appropriate length, etc.
+    /// TODO: Make sure the password and email are of the appropriate length, etc.
 
     $userID = NULL;
 
@@ -55,7 +56,7 @@ function create_new_user(array $parameters)
         }
 
         $userID = new UserResourceID();
-        if (!$database->create_new_user($userID, $parameters["password"]))
+        if (!$database->create_new_user($userID, $parameters["password"], $parameters["email"]))
         {
             exit(ReturnObject::script_failed("Could not create a new user."));
         }

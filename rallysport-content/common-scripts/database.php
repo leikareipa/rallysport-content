@@ -77,13 +77,13 @@ class DatabaseAccess
 
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_tracks
-                                   (track_resource_id,
+                                   (resource_id,
                                     track_name_internal,
                                     track_name_display,
                                     track_width,
                                     track_height,
                                     creation_timestamp,
-                                    creator_user_resource_id)
+                                    creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
@@ -109,22 +109,26 @@ class DatabaseAccess
     // Returns TRUE on success; FALSE otherwise.
     //
     function create_new_user(UserResourceID $resourceID,
-                             string $plaintextPassword) : bool
+                             string $plaintextPassword,
+                             string $plaintextEmail) : bool
     {
         /// TODO: Validate the password.
 
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
+        $emailHash = password_hash($plaintextEmail, PASSWORD_DEFAULT);
 
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_users
-                                   (user_resource_id,
+                                   (resource_id,
                                     php_password_hash,
+                                    php_password_hash_email,
                                     account_creation_timestamp,
                                     account_exists,
                                     account_suspended)
-                                  VALUES (?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $passwordHash,
+                                   $emailHash,
                                    time(),
                                    1,
                                    1]);
@@ -138,11 +142,11 @@ class DatabaseAccess
     {
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $resourceIDRowSelector = ($resourceID? "AND user_resource_id = ?" : "");
+        $resourceIDRowSelector = ($resourceID? "AND resource_id = ?" : "");
 
         $userInfo = $this->issue_db_query(
                         "SELECT
-                          user_resource_id
+                          resource_id
                          FROM
                           rsc_users
                          WHERE
@@ -160,7 +164,7 @@ class DatabaseAccess
         $returnObject = [];
         foreach ($userInfo as $user)
         {
-            $returnObject[$user["user_resource_id"]] =
+            $returnObject[$user["resource_id"]] =
             [
             ];
         }
@@ -174,12 +178,12 @@ class DatabaseAccess
     {
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $rowSelector = ($resourceID? "WHERE track_resource_id = ?" : "");
+        $rowSelector = ($resourceID? "WHERE resource_id = ?" : "");
 
         $trackInfo = $this->issue_db_query(
                         "SELECT
-                          track_resource_id,
-                          creator_user_resource_id,
+                          resource_id,
+                          creator_resource_id,
                           creation_timestamp,
                           track_name_internal,
                           track_name_display,
@@ -198,13 +202,13 @@ class DatabaseAccess
         $returnObject = [];
         foreach ($trackInfo as $track)
         {
-            $returnObject[$track["track_resource_id"]] =
+            $returnObject[$track["resource_id"]] =
             [
                 "internalName"=>$track["track_name_internal"],
                 "displayName"=>$track["track_name_display"],
                 "width"=>$track["track_width"],
                 "height"=>$track["track_height"],
-                "creatorUserID"=>$track["creator_user_resource_id"],
+                "creatorID"=>$track["creator_resource_id"],
                 "creationTimestamp"=>$track["creation_timestamp"],
             ];
         }
