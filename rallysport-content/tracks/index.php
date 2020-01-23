@@ -18,7 +18,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 {
     case "GET":
     {
-        $resourceID = (isset($_GET["id"])? (new RallySportContent\ResourceID("track", $_GET["id"])) : NULL);
+        $resourceID = (isset($_GET["id"])? (new RallySportContent\TrackResourceID($_GET["id"])) : NULL);
 
         // Output as JSON.
         if (isset($_GET["json"]) && $_GET["json"])

@@ -31,7 +31,7 @@ require_once __DIR__."/../../common-scripts/resource-id.php";
 // Note: This function should not return. Instead, it should exit() with either
 // ReturnObject::script_succeeded() or ReturnObject::script_failed().
 //
-function printout_track_information(ResourceID $trackResourceID = NULL)
+function printout_track_information(TrackResourceID $resourceID = NULL)
 {
     $database = new DatabaseAccess();
     if (!$database->connect())
@@ -39,7 +39,7 @@ function printout_track_information(ResourceID $trackResourceID = NULL)
         exit(ReturnObject::script_failed("Could not connect to the database."));
     }
 
-    $trackInfo = $database->get_track_information($trackResourceID);
+    $trackInfo = $database->get_track_information($resourceID);
     if (!is_array($trackInfo) || !count($trackInfo))
     {
         exit(ReturnObject::script_failed("No matching tracks not found."));

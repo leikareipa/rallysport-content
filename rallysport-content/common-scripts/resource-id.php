@@ -18,6 +18,10 @@
  *     "resourceType" string identifies the type of resource, e.g. "track",
  *     "user", etc.
  * 
+ *  1b. Instead of constructing a ResourceID object directly, you can use one
+ *      of its child classes. For instance, for a user resource ID, you would
+ *      use the UserResourceID class ($id = new UserResourceID()).
+ * 
  *  2. If needed, get the resource ID as a string: $idString = $id->string().
  * 
  */
@@ -131,5 +135,25 @@ class ResourceID
     static public function resource_type_separator() : string
     {
         return self::RESOURCE_TYPE_SEPARATOR;
+    }
+}
+
+class UserResourceID extends ResourceID
+{
+    const RESOURCE_TYPE = "user";
+
+    function __construct(string $resourceID = NULL)
+    {
+        parent::__construct(self::RESOURCE_TYPE, $resourceID);
+    }
+}
+
+class TrackResourceID extends ResourceID
+{
+    const RESOURCE_TYPE = "track";
+
+    function __construct(string $resourceID = NULL)
+    {
+        parent::__construct(self::RESOURCE_TYPE, $resourceID);
     }
 }

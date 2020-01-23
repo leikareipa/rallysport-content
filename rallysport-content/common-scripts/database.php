@@ -67,17 +67,12 @@ class DatabaseAccess
     
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
-    function add_new_track(ResourceID $resourceID,
+    function add_new_track(TrackResourceID $resourceID,
                            string $internalName,
                            string $displayName,
                            int $width,
                            int $height) : bool
     {
-        if ($userResourceID->resource_type() != "track")
-        {
-            throw new \Exception("Invalid resource type.");
-        }
-
         /// TODO: Validate the input parameters.
 
         $databaseReturnValue = $this->issue_db_command(
@@ -108,15 +103,10 @@ class DatabaseAccess
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(ResourceID $resourceID,
+    function create_new_user(UserResourceID $resourceID,
                              string $username,
                              string $plaintextPassword) : bool
     {
-        if ($userResourceID->resource_type() != "user")
-        {
-            throw new \Exception("Invalid resource type.");
-        }
-
         /// TODO: Validate the username and password.
 
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
@@ -140,16 +130,11 @@ class DatabaseAccess
 
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
-    function get_user_information(ResourceID $userResourceID = NULL) : array
+    function get_user_information(UserResourceID $resourceID = NULL) : array
     {
-        if ($userResourceID && ($userResourceID->resource_type() != "user"))
-        {
-            throw new \Exception("Invalid resource type.");
-        }
-
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $rowSelector = ($userResourceID? "WHERE user_resource_id = ?" : "");
+        $rowSelector = ($resourceID? "WHERE user_resource_id = ?" : "");
 
         $userInfo = $this->issue_db_query(
                         "SELECT
@@ -157,7 +142,7 @@ class DatabaseAccess
                           account_exists
                          FROM rsc_users
                          {$rowSelector}",
-                         ($userResourceID? [$userResourceID->string()] : NULL));
+                         ($resourceID? [$resourceID->string()] : NULL));
 
         if (!is_array($userInfo) || !count($userInfo))
         {
@@ -179,16 +164,11 @@ class DatabaseAccess
 
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
-    function get_track_information(ResourceID $trackResourceID = NULL) : array
+    function get_track_information(TrackResourceID $resourceID = NULL) : array
     {
-        if ($trackResourceID && ($trackResourceID->resource_type() != "track"))
-        {
-            throw new \Exception("Invalid resource type.");
-        }
-
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $rowSelector = ($trackResourceID? "WHERE track_resource_id = ?" : "");
+        $rowSelector = ($resourceID? "WHERE track_resource_id = ?" : "");
 
         $trackInfo = $this->issue_db_query(
                         "SELECT
@@ -201,7 +181,7 @@ class DatabaseAccess
                           track_height
                          FROM rsc_tracks
                          {$rowSelector}",
-                         ($trackResourceID? [$trackResourceID->string()] : NULL));
+                         ($resourceID? [$resourceID->string()] : NULL));
 
         if (!is_array($trackInfo) || !count($trackInfo))
         {

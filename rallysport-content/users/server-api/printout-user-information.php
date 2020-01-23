@@ -31,7 +31,7 @@ require_once __DIR__."/../../common-scripts/resource-id.php";
 // Note: This function should not return. Instead, it should exit() with either
 // ReturnObject::script_succeeded() or ReturnObject::script_failed().
 //
-function printout_user_information(ResourceID $userResourceID = NULL)
+function printout_user_information(UserResourceID $resourceID = NULL)
 {
     $database = new DatabaseAccess();
     if (!$database->connect())
@@ -39,7 +39,7 @@ function printout_user_information(ResourceID $userResourceID = NULL)
         exit(ReturnObject::script_failed("Could not connect to the database."));
     }
 
-    $userInfo = $database->get_user_information($userResourceID);
+    $userInfo = $database->get_user_information($resourceID);
     if (!is_array($userInfo) || !count($userInfo))
     {
         exit(ReturnObject::script_failed("No matching users not found."));

@@ -121,7 +121,7 @@ function add_new_track(array $parameters)
     // Add the new track into the database.
     {
         $database = new DatabaseAccess();
-        $resourceID = new ResourceID("track");
+        $resourceID = new TrackResourceID();
 
         if (!$database->connect())
         {

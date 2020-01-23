@@ -48,7 +48,7 @@ function create_new_user(array $parameters)
     // Add the new user into the database.
     {
         $database = new DatabaseAccess();
-        $resourceID = new ResourceID("user");
+        $resourceID = new UserResourceID();
 
         if (!$database->connect())
         {
