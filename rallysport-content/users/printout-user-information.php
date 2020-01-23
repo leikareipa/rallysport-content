@@ -24,6 +24,13 @@ require_once "../common-scripts/return.php";
 require_once "../common-scripts/database.php";
 require_once "../common-scripts/resource-id.php";
 
+// Prints into the PHP output stream a stringified JSON object containing
+// public information about the given user, or of all users in the database if
+// the user resource ID is NULL.
+//
+// Note: This function should not return. Instead, it should exit() with either
+// ReturnObject::script_succeeded() or ReturnObject::script_failed().
+//
 function printout_user_information(ResourceID $userResourceID = NULL)
 {
     $database = new DatabaseAccess();

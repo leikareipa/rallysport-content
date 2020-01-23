@@ -24,6 +24,13 @@ require_once "../common-scripts/return.php";
 require_once "../common-scripts/database.php";
 require_once "../common-scripts/resource-id.php";
 
+// Prints into the PHP output stream a stringified JSON object containing public
+// information about the given track, or of all tracks in the database if the
+// track resource ID is NULL.
+//
+// Note: This function should not return. Instead, it should exit() with either
+// ReturnObject::script_succeeded() or ReturnObject::script_failed().
+//
 function printout_track_information(ResourceID $trackResourceID = NULL)
 {
     $database = new DatabaseAccess();

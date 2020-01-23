@@ -5,29 +5,14 @@
  * 
  * Software: Rally-Sport Content
  * 
- * This script adds a new public track into RSC's database.
- * 
- * Expected parameters
- *  [
- *      internalName,
- *      displayName,
- *      width,
- *      height,
- *      containerData,
- *      manifestoData,
- *  ]
- * 
- *  - Strings are expected in UTF-8.
- * 
- *  - The 'containerData' parameter is expected to be a Base64 string.
- * 
- *  - For more information about the request body parameters, see the documentation
- *    in RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
+ * This script attempts to add a new track into RSC's database.
  * 
  * Returns: JSON {succeeded: bool [, errorMessage: string]}
  * 
  *  - On failure (that is, when succeeded == false), 'errorMessage' will provide
  *    a brief description of the error.
+ * 
+ *  - On success, only the 'succeeded' parameter (set to true) is returned.
  * 
  */
 
@@ -37,7 +22,23 @@ require_once "../common-scripts/database.php";
 require_once "validate-track-container-data.php";
 require_once "validate-track-manifesto-data.php";
 
-function add_new_track($parameters)
+// Attempts to add to the Rally-Sport Content database a new track, whose data
+// are specified by the function call parameters.
+//
+// Note:
+//
+//  - The 'containerData' parameter is expected to be a Base64-encoded string
+//    representation of the track's RallySportED container file.
+//
+//  - Other strings in the parameters are expected in UTF-8.
+// 
+//  - For more information about the parameters and what they mean, see docs in
+//    RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
+//
+//  - The function should not return. Instead, it should exit() with either
+//    ReturnObject::script_succeeded() or ReturnObject::script_failed().
+//
+function add_new_track(array $parameters)
 {
     // Validate input parameters.
     {
