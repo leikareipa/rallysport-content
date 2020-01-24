@@ -20,7 +20,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         $resourceID = (isset($_GET["id"])? (new RallySportContent\UserResourceID($_GET["id"])) : NULL);
 
-        if ($_GET["json"] ?? false)
+        if ($_GET["metadata"] ?? false)
         {
             RallySportContent\serve_user_metadata_as_json($resourceID);
         }
