@@ -39,4 +39,18 @@ class ReturnObject
 
         return 1;
     }
+
+    // Initiates a client download of the given file data with the given file
+    // name.
+    static function file(string $fileName, string $fileData)
+    {
+        header("Content-Type: application/octet-stream");
+        header("Content-Transfer-Encoding: binary"); 
+        header("Content-Disposition: attachment; filename=\"" . basename($fileName) . "\"");
+        header("Content-Length: " . strlen($fileData));
+
+        echo($fileData);
+
+        return 0;
+    }
 }
