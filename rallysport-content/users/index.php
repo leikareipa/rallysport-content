@@ -10,7 +10,7 @@
  */
 
 require_once __DIR__."/server-api/create-new-user.php";
-require_once __DIR__."/server-api/printout-user-information.php";
+require_once __DIR__."/server-api/serve-user-data.php";
 require_once __DIR__."/../common-scripts/return.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
 
@@ -22,7 +22,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         if ($_GET["json"] ?? false)
         {
-            RallySportContent\printout_user_information($resourceID);
+            RallySportContent\serve_user_metadata_as_json($resourceID);
         }
         // Output as a view.
         else
