@@ -25,6 +25,7 @@ class ReturnObject
             return script_failed("The return object key is using a reserved value.");
         }
 
+        header("Content-Type: application/json");
         echo json_encode(["succeeded"=>true, $returnObjectKey=>$returnObject], JSON_UNESCAPED_UNICODE);
 
         return 0;
@@ -32,9 +33,8 @@ class ReturnObject
 
     static function script_failed(string $errorMessage = "Undefined error")
     {
-        // Error messages should not be cached.
+        header("Content-Type: application/json");
         header("Cache-Control: no-store");
-        
         echo json_encode(["succeeded"=>false, "errorMessage"=>$errorMessage], JSON_UNESCAPED_UNICODE);
 
         return 1;
@@ -48,8 +48,7 @@ class ReturnObject
         header("Content-Transfer-Encoding: binary"); 
         header("Content-Disposition: attachment; filename=\"" . basename($fileName) . "\"");
         header("Content-Length: " . strlen($fileData));
-
-        echo($fileData);
+        echo $fileData;
 
         return 0;
     }
