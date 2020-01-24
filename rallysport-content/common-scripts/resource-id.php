@@ -14,7 +14,7 @@
  * uniquely identifies the resource from others of its type (two resources may
  * have the same key so long as their types differ).
  * 
- * For instance, the resource ID "track+7hp-sfm-rk2" identifies a track resource.
+ * For instance, the resource ID "track.7hp-sfm-rk2" identifies a track resource.
  * Its type is "track", and its key is "7hp-sfm-rk2" (which consists of three
  * fragments: "7hp", "sfm", and "rk2").
  * 
@@ -41,7 +41,7 @@ class ResourceID
     const CHARSET = "23789acefghkmnprstzw";
 
     // These two constants should not be changed without a very good reason.
-    const RESOURCE_TYPE_SEPARATOR = "+";
+    const RESOURCE_TYPE_SEPARATOR = ".";
     const RESOURCE_KEY_FRAGMENT_SEPARATOR = "-";
 
     const RESOURCE_KEY_FRAGMENT_LENGTH = 3;

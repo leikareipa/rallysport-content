@@ -20,7 +20,6 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         $resourceID = (isset($_GET["id"])? (new RallySportContent\UserResourceID($_GET["id"])) : NULL);
 
-        // Output as JSON.
         if (isset($_GET["json"]) && $_GET["json"])
         {
             RallySportContent\printout_user_information($resourceID);
@@ -38,12 +37,19 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         RallySportContent\create_new_user(json_decode(file_get_contents("php://input"), true));
 
-    break;
+        break;
     }
 
     case "PUT":
     {
         ///RallySportContent\update_user(json_decode(file_get_contents("php://input"), true));
+
+        break;
+    }
+
+    case "DELETE";
+    {
+        /// TODO.
 
         break;
     }

@@ -20,8 +20,11 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         $resourceID = (isset($_GET["id"])? (new RallySportContent\TrackResourceID($_GET["id"])) : NULL);
 
-        // Output as JSON.
-        if (isset($_GET["json"]) && $_GET["json"])
+        if (isset($_GET["zip"]) && $_GET["zip"])
+        {
+            /// TODO. Download the track's data as a zip file.
+        }
+        else if (isset($_GET["json"]) && $_GET["json"])
         {
             RallySportContent\printout_track_information($resourceID);
         }
@@ -45,6 +48,13 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         ///RallySportContent\update_track(json_decode(file_get_contents("php://input"), true));
 
+        break;
+    }
+
+    case "DELETE";
+    {
+        /// TODO.
+        
         break;
     }
 
