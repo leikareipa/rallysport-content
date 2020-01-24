@@ -132,6 +132,7 @@ function add_new_track(array $parameters)
     {
         $database = new DatabaseAccess();
         $resourceID = new TrackResourceID();
+        $creatorID = new UserResourceID(); /// TODO: Use the actual creator ID.
 
         if (!$database->connect())
         {
@@ -148,6 +149,7 @@ function add_new_track(array $parameters)
         }
 
         if (!$database->add_new_track($resourceID,
+                                      $creatorID,
                                       $parameters["internalName"],
                                       $parameters["displayName"],
                                       $parameters["width"],

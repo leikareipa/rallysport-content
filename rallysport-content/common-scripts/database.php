@@ -71,6 +71,7 @@ class DatabaseAccess
     // representing the byte data of a zip file containing the track's end-user
     // data (container, manifesto, and HITABLE files).
     function add_new_track(TrackResourceID $resourceID,
+                           UserResourceID $creatorID,
                            string $internalName,
                            string $displayName,
                            int $width,
@@ -98,7 +99,9 @@ class DatabaseAccess
             "displayName"  => $displayName,
             "width"        => $width,
             "height"       => $height,
-        ], JSON_PRETTY_PRINT);
+            "contentID"    => $resourceID->string(),
+            "creatorID"    => $creatorID->string(),
+        ]);
 
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_tracks
@@ -291,6 +294,33 @@ class DatabaseAccess
 
         return ["filename" => "{$trackZipFile[0]['track_name_internal']}.ZIP",
                 "data"     => $trackZipFile[0]["track_data_zip"]];
+    }
+
+    function get_track_data_as_json(TrackResourceID $resourceID = NULL)
+    {
+        // For the moment, we can't return multiple tracks' data.
+        if (!$resourceID)
+        {
+            return false;
+        }
+
+        $trackJSON = $this->issue_db_query(
+                        "SELECT
+                          track_data_json
+                         FROM rsc_tracks
+                         WHERE resource_id = ?",
+                        [$resourceID->string()]);
+
+        // We should receive an array with exactly one element: the given
+        // track's data.
+        if (!is_array($trackJSON) ||
+            (count($trackJSON) != 1) ||
+            !isset($trackJSON[0]["track_data_json"]))
+        {
+            return false;
+        }
+
+        return $trackJSON[0]["track_data_json"];
     }
 
     // Wrapper function for sending queries to the database such that data is

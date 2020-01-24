@@ -24,6 +24,10 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             RallySportContent\serve_track_data_as_zip_file($resourceID);
         }
+        else if ($_GET["json"] ?? false)
+        {
+            RallySportContent\serve_track_data_as_json($resourceID);
+        }
         else if ($_GET["metadata"] ?? false)
         {
             RallySportContent\serve_track_metadata_as_json($resourceID);

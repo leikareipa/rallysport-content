@@ -51,6 +51,67 @@ function serve_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
     exit(ReturnObject::file($trackZipFile["filename"], $trackZipFile["data"]));
 }
 
+// Prints into the PHP output stream a stringified JSON object containing the
+// track's data.
+//
+// Note: This function should always return using exit() with either
+// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+//
+// Returns: JSON {succeeded: bool [, track: object[, errorMessage: string]]}
+//
+//  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
+//    provide a brief description of the error. No track data will be returned
+//    in this case.
+//
+//  - On success (when 'succeeded' == true), the 'track' object will contain
+//    the track's data. The data will be in the following form:
+//
+//      {
+//          // Base64-encoded string representing the bytes of Rally-Sport's HITABLE.TXT file.
+//          hitable: string,
+//
+//          // Base64-encoded string representing the track's container file.
+//          container: string,
+//
+//          // Plaintext string representing the track's manifesto file.
+//          manifesto: string,
+//
+//          // (See docs in https://github.com/leikareipa/rallysported-js.)
+//          internalName: string,
+//          displayName: string,
+//          width: int,
+//          height: int,
+//
+//          // TrackResourceID identifying this track in RSC's database.
+//          contentID: string,
+//
+//          // UserResourceID identifying the track's creator in RSC's database.
+//          creatorID: string,
+//      }
+//
+function serve_track_data_as_json(TrackResourceID $resourceID = NULL)
+{
+    // A NULL resource ID indicates that we should serve the data for all known
+    // tracks. However, for now, we only support serving individual tracks' data.
+    if (!$resourceID)
+    {
+        exit(ReturnObject::script_failed("A track ID must be provided."));
+    }
+
+    $database = new DatabaseAccess();
+    if (!$database->connect())
+    {
+        exit(ReturnObject::script_failed("Internal server error. Could not connect to the database."));
+    }
+
+    if (!($trackDataJSON = $database->get_track_data_as_json($resourceID)))
+    {
+        exit(ReturnObject::script_failed("Internal server error. Failed to fetch track data."));
+    }
+
+    exit(ReturnObject::script_succeeded(json_decode($trackDataJSON, true), "track"));
+}
+
 // Prints into the PHP output stream a stringified JSON object containing public
 // information about the given track, or of all tracks in the database if the
 // track resource ID is NULL.
@@ -76,7 +137,7 @@ function serve_track_metadata_as_json(TrackResourceID $resourceID = NULL)
         exit(ReturnObject::script_failed("Could not connect to the database."));
     }
 
-    $trackInfo = $database->get_track_information($resourceID);
+    $trackInfo = $database->get_track_public_metadata($resourceID);
     if (!is_array($trackInfo) || !count($trackInfo))
     {
         exit(ReturnObject::script_failed("No matching tracks found."));
