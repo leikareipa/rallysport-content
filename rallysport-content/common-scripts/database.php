@@ -150,15 +150,13 @@ class DatabaseAccess
         $resourceIDRowSelector = ($resourceID? "AND resource_id = ?" : "");
 
         $userInfo = $this->issue_db_query(
-                        "SELECT
-                          resource_id
-                         FROM
-                          rsc_users
+                        "SELECT resource_id
+                         FROM rsc_users
                          WHERE
                           account_suspended = 0
                           AND account_exists = 1
                           {$resourceIDRowSelector}",
-                         ($resourceID? [$resourceID->string()] : NULL));
+                        ($resourceID? [$resourceID->string()] : NULL));
 
         if (!is_array($userInfo) || !count($userInfo))
         {

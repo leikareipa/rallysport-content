@@ -35,8 +35,8 @@ require_once __DIR__."/../../common-scripts/database.php";
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // password is specified by the function call parameters.
 //
-// Note: The function should not return. Instead, it should exit() with either
-// ReturnObject::script_succeeded() or ReturnObject::script_failed().
+// Note: This function should always return using exit() with either
+// ReturnObject::script_failed() or ReturnObject::script_succeeded().
 //
 function create_new_user(array $parameters)
 {

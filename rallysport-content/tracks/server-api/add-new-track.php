@@ -36,8 +36,8 @@ require_once __DIR__."/validate-track-manifesto-data.php";
 //  - For more information about the parameters and what they mean, see docs in
 //    RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
 //
-//  - The function should not return. Instead, it should exit() with either
-//    ReturnObject::script_succeeded() or ReturnObject::script_failed().
+//  - The function should always return using exit() with either
+//    ReturnObject::script_failed() or ReturnObject::script_succeeded().
 //
 function add_new_track(array $parameters)
 {
@@ -144,10 +144,9 @@ function add_new_track(array $parameters)
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
         // We'll store the track's data files in the database in a compressed format.
-        $trackDataCompressed = create_zip_from_file_data([
-            "{$parameters['internalName']}.DTA"=>$parameters["containerData"],
-            "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"],
-        ]);
+        $trackDataCompressed = create_zip_from_file_data(["{$parameters['internalName']}.DTA"=>$parameters["containerData"],
+                                                          "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"]],
+                                                         $parameters['internalName']);
 
         if (!$trackDataCompressed)
         {
