@@ -177,7 +177,7 @@ class DatabaseAccess
 
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
-    function get_track_information(TrackResourceID $resourceID = NULL) : array
+    function get_track_public_metadata(TrackResourceID $resourceID = NULL) : array
     {
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
