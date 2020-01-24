@@ -5,8 +5,8 @@
  * 
  * Software: Rally-Sport Content
  * 
- * This script provides functionality to serve the data (or metadata) of a
- * given track (or a set of tracks).
+ * This script provides functionality to serve data (or metadata) of a given
+ * track or a set of tracks to the client.
  * 
  */
 
@@ -17,8 +17,15 @@ require_once __DIR__."/../../common-scripts/resource-id.php";
 // Sends the track's data (container and manifesto files) as a zip file to
 // the client.
 //
-// Note: This function should not return. Instead, it should exit() with either
+// Note: This function should always return using exit() with either
 // ReturnObject::script_failed() or ReturnObject::file().
+//
+// Returns:
+//
+//  - On failure: JSON {succeeded: false, errorMessage: string}
+//
+//  - On success: The file's bytes as a stream
+//
 //
 function serve_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
 {
@@ -42,4 +49,38 @@ function serve_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
     }
 
     exit(ReturnObject::file($trackZipFile["filename"], $trackZipFile["data"]));
+}
+
+// Prints into the PHP output stream a stringified JSON object containing public
+// information about the given track, or of all tracks in the database if the
+// track resource ID is NULL.
+//
+// Note: This function should always return using exit() with either
+// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+//
+// Returns: JSON {succeeded: bool [, tracks: object[, errorMessage: string]]}
+//
+//  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
+//    provide a brief description of the error. No track data will be returned
+//    in this case.
+//
+//  - On success (when 'succeeded' == true), the 'tracks' object will contain
+//    information about the tracks queried. The 'errorMessage' string will
+//    not be included.
+//
+function serve_track_metadata_as_json(TrackResourceID $resourceID = NULL)
+{
+    $database = new DatabaseAccess();
+    if (!$database->connect())
+    {
+        exit(ReturnObject::script_failed("Could not connect to the database."));
+    }
+
+    $trackInfo = $database->get_track_information($resourceID);
+    if (!is_array($trackInfo) || !count($trackInfo))
+    {
+        exit(ReturnObject::script_failed("No matching tracks found."));
+    }
+
+    exit(ReturnObject::script_succeeded($trackInfo, "tracks"));
 }

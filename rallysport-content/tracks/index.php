@@ -10,7 +10,6 @@
  */
 
 require_once __DIR__."/server-api/add-new-track.php";
-require_once __DIR__."/server-api/printout-track-information.php";
 require_once __DIR__."/server-api/serve-track-data.php";
 require_once __DIR__."/../common-scripts/return.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
@@ -27,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
         else if ($_GET["json"] ?? false)
         {
-            RallySportContent\printout_track_information($resourceID);
+            RallySportContent\serve_track_metadata_as_json($resourceID);
         }
         // Output as a view.
         else
