@@ -18,6 +18,7 @@
 
 require_once __DIR__."/../../common-scripts/return.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/create-zip.php";
 require_once __DIR__."/../../common-scripts/database.php";
 require_once __DIR__."/validate-track-container-data.php";
 require_once __DIR__."/validate-track-manifesto-data.php";
@@ -81,6 +82,9 @@ function add_new_track(array $parameters)
             {
                 exit(ReturnObject::script_failed("Malformed 'displayName' parameter."));
             }
+
+            // We'll want the internal name to be all uppercase, for legacy reasons.
+            $parameters["internalName"] = mb_strtoupper($parameters["internalName"]);
         }
 
         // Validate the track's data.
@@ -139,41 +143,25 @@ function add_new_track(array $parameters)
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
-        if (!$database->add_new_track($resourceID,
-                                      $parameters["internalName"],
-                                      $parameters["displayName"],
-                                      $parameters["width"],
-                                      $parameters["height"]))
+        // We'll store the track's data files in the database in a compressed format.
+        $trackDataCompressed = create_zip_from_file_data([
+            "{$parameters['internalName']}.DTA"=>$parameters["containerData"],
+            "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"],
+        ]);
+
+        if (!$trackDataCompressed)
         {
             exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
         }
 
-        // Create files on disk to hold the track's data.
+        if (!$database->add_new_track($resourceID,
+                                      $parameters["internalName"],
+                                      $parameters["displayName"],
+                                      $parameters["width"],
+                                      $parameters["height"],
+                                      $trackDataCompressed))
         {
-            if (!mkdir("./server-data/{$resourceID->string()}"))
-            {
-                exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
-            }
-
-            // Move into the folder that contains tracks' data files.
-            try
-            {
-                chdir("./server-data/{$resourceID->string()}");
-            }
-            catch(Exception $exception)
-            {
-                exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
-            }
-
-            if (!file_put_contents((mb_strtoupper($parameters["internalName"], "UTF-8") . ".DTA"), $parameters["containerData"]) ||
-                !file_put_contents((mb_strtoupper($parameters["internalName"], "UTF-8") . '.$FT'), $parameters["manifestoData"]))
-            {
-                /// TODO: Remove the track's files and folder.
-
-                /// TODO: Remove the track from the databse.
-
-                exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
-            }
+            exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
         }
     }
 

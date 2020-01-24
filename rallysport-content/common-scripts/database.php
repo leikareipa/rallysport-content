@@ -71,7 +71,8 @@ class DatabaseAccess
                            string $internalName,
                            string $displayName,
                            int $width,
-                           int $height) : bool
+                           int $height,
+                           string $trackDataCompressed) : bool
     {
         /// TODO: Validate the input parameters.
 
@@ -82,14 +83,16 @@ class DatabaseAccess
                                     track_name_display,
                                     track_width,
                                     track_height,
+                                    track_data_compressed,
                                     creation_timestamp,
                                     creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
                                    $displayName,
                                    $width,
                                    $height,
+                                   $trackDataCompressed,
                                    time(),
                                    "unknown"]);
 
