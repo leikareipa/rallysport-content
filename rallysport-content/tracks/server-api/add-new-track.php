@@ -18,7 +18,6 @@
 
 require_once __DIR__."/../../common-scripts/return.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/create-zip.php";
 require_once __DIR__."/../../common-scripts/database.php";
 require_once __DIR__."/validate-track-container-data.php";
 require_once __DIR__."/validate-track-manifesto-data.php";
@@ -139,38 +138,13 @@ function add_new_track(array $parameters)
             exit(ReturnObject::script_failed("Could not connect to the database."));
         }
 
-        /// TODO: Test to make sure the resource ID is unique in the TRACKS table.
-
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
-        // Compress the track's data files, for storing them in the database.
-        // Note that we'll also load and include a default HITABLE.TXT file -
-        // this file contains Rally-Sport's default lap times and is required
-        // by the RallySportED loader for playing the track in-game.
+        // We'll also need to include Rally-Sport's default HITABLE.TXT file,
+        // which is required by RallySportED for playing the track in-game.
+        if (!($hitableData = file_get_contents(__DIR__."/../server-data/HITABLE.TXT")))
         {
-            // We assume this script is in tracks/server-api/, and the HITABLE.TXT
-            // file is in tracks/server-data/HITABLE.TXT.
-            $hitableFileName = __DIR__."/../server-data/HITABLE.TXT";
-            if (!file_exists($hitableFileName))
-            {
-                exit(ReturnObject::script_failed("Server-side failure. Could not locate the HITABLE.TXT file."));
-            }
-
-            $hitableContents = file_get_contents($hitableFileName);
-            if (!$hitableContents)
-            {
-                exit(ReturnObject::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
-            }
-
-            $trackDataCompressed = create_zip_from_file_data(["{$parameters['internalName']}.DTA"=>$parameters["containerData"],
-                                                              "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"],
-                                                              "HITABLE.TXT"=>$hitableContents],
-                                                             $parameters['internalName']);
-        }
-
-        if (!$trackDataCompressed)
-        {
-            exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+            exit(ReturnObject::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
         }
 
         if (!$database->add_new_track($resourceID,
@@ -178,7 +152,9 @@ function add_new_track(array $parameters)
                                       $parameters["displayName"],
                                       $parameters["width"],
                                       $parameters["height"],
-                                      $trackDataCompressed))
+                                      $parameters["containerData"],
+                                      $parameters["manifestoData"],
+                                      $hitableData))
         {
             exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
         }

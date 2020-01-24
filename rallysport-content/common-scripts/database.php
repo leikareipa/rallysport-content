@@ -21,6 +21,7 @@
 
 require_once "return.php";
 require_once "resource-id.php";
+require_once "create-zip.php";
 
 class DatabaseAccess
 {
@@ -74,9 +75,30 @@ class DatabaseAccess
                            string $displayName,
                            int $width,
                            int $height,
-                           string $trackDataZIP) : bool
+                           string $containerData,
+                           string $manifestoData,
+                           string $hitableData) : bool
     {
         /// TODO: Validate the input parameters.
+
+        $trackDataZIP = create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
+                                                   "{$internalName}.\$FT" => $manifestoData,
+                                                   "HITABLE.TXT"          => $hitableData],
+                                                   $internalName);
+        if (!$trackDataZIP)
+        {
+            return false;
+        }
+
+        $trackDataJSON = json_encode([
+            "hitable"      => base64_encode($hitableData),
+            "container"    => base64_encode($containerData),
+            "manifesto"    => $manifestoData,
+            "internalName" => $internalName,
+            "displayName"  => $displayName,
+            "width"        => $width,
+            "height"       => $height,
+        ], JSON_PRETTY_PRINT);
 
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_tracks
@@ -86,15 +108,17 @@ class DatabaseAccess
                                     track_width,
                                     track_height,
                                     track_data_zip,
+                                    track_data_json,
                                     creation_timestamp,
                                     creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
                                    $displayName,
                                    $width,
                                    $height,
                                    $trackDataZIP,
+                                   $trackDataJSON,
                                    time(),
                                    "unknown"]);
 
