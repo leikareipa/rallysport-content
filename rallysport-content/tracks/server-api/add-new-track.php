@@ -143,10 +143,30 @@ function add_new_track(array $parameters)
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
-        // We'll store the track's data files in the database in a compressed format.
-        $trackDataCompressed = create_zip_from_file_data(["{$parameters['internalName']}.DTA"=>$parameters["containerData"],
-                                                          "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"]],
-                                                         $parameters['internalName']);
+        // Compress the track's data files, for storing them in the database.
+        // Note that we'll also load and include a default HITABLE.TXT file -
+        // this file contains Rally-Sport's default lap times and is required
+        // by the RallySportED loader for playing the track in-game.
+        {
+            // We assume this script is in tracks/server-api/, and the HITABLE.TXT
+            // file is in tracks/server-data/HITABLE.TXT.
+            $hitableFileName = __DIR__."/../server-data/HITABLE.TXT";
+            if (!file_exists($hitableFileName))
+            {
+                exit(ReturnObject::script_failed("Server-side failure. Could not locate the HITABLE.TXT file."));
+            }
+
+            $hitableContents = file_get_contents($hitableFileName);
+            if (!$hitableContents)
+            {
+                exit(ReturnObject::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
+            }
+
+            $trackDataCompressed = create_zip_from_file_data(["{$parameters['internalName']}.DTA"=>$parameters["containerData"],
+                                                              "{$parameters['internalName']}.\$FT"=>$parameters["manifestoData"],
+                                                              "HITABLE.TXT"=>$hitableContents],
+                                                             $parameters['internalName']);
+        }
 
         if (!$trackDataCompressed)
         {
