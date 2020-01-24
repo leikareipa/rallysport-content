@@ -108,9 +108,16 @@ function add_new_track(array $parameters)
                 exit(ReturnObject::script_failed("Invalid container data."));
             }
 
+            // Manifesto files are fairly simple and relatively short text files -
+            // they should not be very large at all, often less than a kilobyte.
+            if (strlen($parameters["manifestoData"]) > 10240)
+            {
+                exit(ReturnObject::script_failed("Invalid manifesto data."));
+            }
+
             if (!is_valid_manifesto_data($parameters["manifestoData"]))
             {
-                exit(ReturnObject::script_failed("Invalid container data."));
+                exit(ReturnObject::script_failed("Invalid manifesto data."));
             }
         }
 
@@ -133,10 +140,10 @@ function add_new_track(array $parameters)
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
         if (!$database->add_new_track($resourceID,
-                                    $parameters["internalName"],
-                                    $parameters["displayName"],
-                                    $parameters["width"],
-                                    $parameters["height"]))
+                                      $parameters["internalName"],
+                                      $parameters["displayName"],
+                                      $parameters["width"],
+                                      $parameters["height"]))
         {
             exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
         }
