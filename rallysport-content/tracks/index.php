@@ -11,6 +11,7 @@
 
 require_once __DIR__."/server-api/add-new-track.php";
 require_once __DIR__."/server-api/printout-track-information.php";
+require_once __DIR__."/server-api/serve-track-data.php";
 require_once __DIR__."/../common-scripts/return.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
 
@@ -20,11 +21,11 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         $resourceID = (isset($_GET["id"])? (new RallySportContent\TrackResourceID($_GET["id"])) : NULL);
 
-        if (isset($_GET["zip"]) && $_GET["zip"])
+        if ($_GET["zip"] ?? false)
         {
-            /// TODO. Download the track's data as a zip file.
+            RallySportContent\serve_track_data_as_zip_file($resourceID);
         }
-        else if (isset($_GET["json"]) && $_GET["json"])
+        else if ($_GET["json"] ?? false)
         {
             RallySportContent\printout_track_information($resourceID);
         }

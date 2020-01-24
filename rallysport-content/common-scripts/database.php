@@ -66,13 +66,15 @@ class DatabaseAccess
     }
     
     // Adds into the TRACKS table a new track with the given parameters. Returns
-    // TRUE on success; FALSE otherwise.
+    // TRUE on success; FALSE otherwise. The 'trackDataZIP' parameter is a string
+    // representing the byte data of a zip file containing the track's end-user
+    // data (container, manifesto, and HITABLE files).
     function add_new_track(TrackResourceID $resourceID,
                            string $internalName,
                            string $displayName,
                            int $width,
                            int $height,
-                           string $trackDataCompressed) : bool
+                           string $trackDataZIP) : bool
     {
         /// TODO: Validate the input parameters.
 
@@ -83,7 +85,7 @@ class DatabaseAccess
                                     track_name_display,
                                     track_width,
                                     track_height,
-                                    track_data_compressed,
+                                    track_data_zip,
                                     creation_timestamp,
                                     creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -92,7 +94,7 @@ class DatabaseAccess
                                    $displayName,
                                    $width,
                                    $height,
-                                   $trackDataCompressed,
+                                   $trackDataZIP,
                                    time(),
                                    "unknown"]);
 
@@ -217,6 +219,56 @@ class DatabaseAccess
         }
 
         return $returnObject;
+    }
+
+    // Returns the given track's data as a zip file. The zip file will contain
+    // the track's container, manifesto, and HITABLE files; and is thus suitable
+    // for serving the track to end-users.
+    //
+    // On success, the return value will be an array of the following form:
+    //
+    //   [
+    //       "filename": string,
+    //       "data": string
+    //   ]
+    //
+    //   - The 'filename' parameter gives the filename associated with the data
+    //     (with the .zip extension). Generally, this will match the project's
+    //     internal name; e.g. a project called "Suorundi" would have the
+    //     filename "SUORUNDI.ZIP".
+    //
+    //   - The 'data' parameter contains as a string the zip file's raw bytes.
+    //
+    // On failure, FALSE is returned.
+    //
+    function get_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
+    {
+        // For the moment, we can't return multiple tracks' data.
+        if (!$resourceID)
+        {
+            return false;
+        }
+
+        $trackZipFile = $this->issue_db_query(
+                            "SELECT
+                              track_data_zip,
+                              track_name_internal
+                             FROM rsc_tracks
+                             WHERE resource_id = ?",
+                            [$resourceID->string()]);
+
+        // We should receive an array with exactly one element: the given
+        // track's data.
+        if (!is_array($trackZipFile) ||
+            (count($trackZipFile) != 1) ||
+            !isset($trackZipFile[0]["track_data_zip"]) ||
+            !isset($trackZipFile[0]["track_name_internal"]))
+        {
+            return false;
+        }
+
+        return ["filename" => "{$trackZipFile[0]['track_name_internal']}.ZIP",
+                "data"     => $trackZipFile[0]["track_data_zip"]];
     }
 
     // Wrapper function for sending queries to the database such that data is

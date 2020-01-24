@@ -20,7 +20,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         $resourceID = (isset($_GET["id"])? (new RallySportContent\UserResourceID($_GET["id"])) : NULL);
 
-        if (isset($_GET["json"]) && $_GET["json"])
+        if ($_GET["json"] ?? false)
         {
             RallySportContent\printout_user_information($resourceID);
         }
