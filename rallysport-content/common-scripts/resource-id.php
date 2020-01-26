@@ -36,9 +36,8 @@ class ResourceID
 {
     private $resourceIDString;
 
-    // The set of characters that the ID element of a resource ID is allowed to
-    // use.
-    const CHARSET = "23789acefghkmnprstzw";
+    // The set of characters that the resource key is allowed to use.
+    const RESOURCE_KEY_CHARSET = "23789acefghjkmnprstuvw";
 
     // These two constants should not be changed without a very good reason.
     const RESOURCE_TYPE_SEPARATOR = ".";
@@ -51,7 +50,7 @@ class ResourceID
     {
         // Verify fundamental assumptions.
         {
-            if (!strlen(self::CHARSET))
+            if (!strlen(self::RESOURCE_KEY_CHARSET))
             {
                 throw new \Exception("Empty resource ID character set.");
             }
@@ -62,8 +61,8 @@ class ResourceID
                 throw new \Exception("Malformed resource ID separator.");
             }
 
-            if ((stristr(self::CHARSET, self::RESOURCE_TYPE_SEPARATOR) !== FALSE) ||
-                (stristr(self::CHARSET, self::RESOURCE_KEY_FRAGMENT_SEPARATOR) !== FALSE))
+            if ((stristr(self::RESOURCE_KEY_CHARSET, self::RESOURCE_TYPE_SEPARATOR) !== FALSE) ||
+                (stristr(self::RESOURCE_KEY_CHARSET, self::RESOURCE_KEY_FRAGMENT_SEPARATOR) !== FALSE))
             {
                 throw new \Exception("A resource ID separator must be a symbol that is not included in the resource ID character set.");
             }
@@ -118,11 +117,11 @@ class ResourceID
         $randomKeyFragment = function() : string
         {
             $randomFragment = "";
-            $charsetLength = (strlen(self::CHARSET) - 1);
+            $charsetLength = (strlen(self::RESOURCE_KEY_CHARSET) - 1);
 
             for ($i = 0; $i < self::RESOURCE_KEY_FRAGMENT_LENGTH; $i++)
             {
-                $randomFragment .= self::CHARSET[random_int(0, $charsetLength)];
+                $randomFragment .= self::RESOURCE_KEY_CHARSET[random_int(0, $charsetLength)];
             }
 
             return $randomFragment;
