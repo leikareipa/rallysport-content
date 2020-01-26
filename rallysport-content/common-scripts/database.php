@@ -92,15 +92,17 @@ class DatabaseAccess
         }
 
         $trackDataJSON = json_encode([
-            "hitable"      => base64_encode($hitableData),
-            "container"    => base64_encode($containerData),
-            "manifesto"    => $manifestoData,
-            "internalName" => $internalName,
-            "displayName"  => $displayName,
-            "width"        => $width,
-            "height"       => $height,
-            "contentID"    => $resourceID->string(),
-            "creatorID"    => $creatorID->string(),
+            "hitable"   => base64_encode($hitableData),
+            "container" => base64_encode($containerData),
+            "manifesto" => $manifestoData,
+            "meta"      => [
+                "internalName" => $internalName,
+                "displayName"  => $displayName,
+                "width"        => $width,
+                "height"       => $height,
+                "contentID"    => $resourceID->string(),
+                "creatorID"    => $creatorID->string(),
+            ],
         ]);
 
         $databaseReturnValue = $this->issue_db_command(
@@ -123,7 +125,7 @@ class DatabaseAccess
                                    $trackDataZIP,
                                    $trackDataJSON,
                                    time(),
-                                   "unknown"]);
+                                   $creatorID->string()]);
 
         return (($databaseReturnValue == 0)? true : false);
     }

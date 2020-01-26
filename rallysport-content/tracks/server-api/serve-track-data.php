@@ -101,12 +101,12 @@ function serve_track_data_as_json(TrackResourceID $resourceID = NULL)
     $database = new DatabaseAccess();
     if (!$database->connect())
     {
-        exit(ReturnObject::script_failed("Internal server error. Could not connect to the database."));
+        exit(ReturnObject::script_failed("Could not connect to the database."));
     }
 
     if (!($trackDataJSON = $database->get_track_data_as_json($resourceID)))
     {
-        exit(ReturnObject::script_failed("Internal server error. Failed to fetch track data."));
+        exit(ReturnObject::script_failed("Failed to fetch track data."));
     }
 
     exit(ReturnObject::script_succeeded(json_decode($trackDataJSON, true), "track"));
