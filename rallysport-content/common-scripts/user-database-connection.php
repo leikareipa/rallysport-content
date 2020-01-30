@@ -113,8 +113,9 @@ class UserDatabaseConnection extends DatabaseConnection
         $returnObject = [];
         foreach ($userInfo as $user)
         {
-            $returnObject[$user["resource_id"]] =
+            $returnObject[] =
             [
+                "resourceID" => $user["resource_id"],
             ];
         }
 

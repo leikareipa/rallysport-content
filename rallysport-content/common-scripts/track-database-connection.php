@@ -145,14 +145,15 @@ class TrackDatabaseConnection extends DatabaseConnection
         $returnObject = [];
         foreach ($trackInfo as $track)
         {
-            $returnObject[$track["resource_id"]] =
+            $returnObject[] =
             [
-                "internalName"=>$track["track_name_internal"],
-                "displayName"=>$track["track_name_display"],
-                "width"=>$track["track_width"],
-                "height"=>$track["track_height"],
-                "creatorID"=>$track["creator_resource_id"],
-                "creationTimestamp"=>$track["creation_timestamp"],
+                "resourceID"       => $track["resource_id"],
+                "creatorID"        => $track["creator_resource_id"],
+                "internalName"     => $track["track_name_internal"],
+                "displayName"      => $track["track_name_display"],
+                "width"            => $track["track_width"],
+                "height"           => $track["track_height"],
+                "creationTimestamp"=> $track["creation_timestamp"],
             ];
         }
 
