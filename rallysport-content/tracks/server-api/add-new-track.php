@@ -18,7 +18,7 @@
 
 require_once __DIR__."/../../common-scripts/return.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/database.php";
+require_once __DIR__."/../../common-scripts/track-database-connection.php";
 require_once __DIR__."/validate-track-container-data.php";
 require_once __DIR__."/validate-track-manifesto-data.php";
 
@@ -130,14 +130,8 @@ function add_new_track(array $parameters)
 
     // Add the new track into the database.
     {
-        $database = new DatabaseAccess();
         $resourceID = new TrackResourceID();
         $creatorID = new UserResourceID(); /// TODO: Use the actual creator ID.
-
-        if (!$database->connect())
-        {
-            exit(ReturnObject::script_failed("Could not connect to the database."));
-        }
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
@@ -148,15 +142,15 @@ function add_new_track(array $parameters)
             exit(ReturnObject::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
         }
 
-        if (!$database->add_new_track($resourceID,
-                                      $creatorID,
-                                      $parameters["internalName"],
-                                      $parameters["displayName"],
-                                      $parameters["width"],
-                                      $parameters["height"],
-                                      $parameters["containerData"],
-                                      $parameters["manifestoData"],
-                                      $hitableData))
+        if (!(new TrackDatabaseConnection())->add_new_track($resourceID,
+                                                            $creatorID,
+                                                            $parameters["internalName"],
+                                                            $parameters["displayName"],
+                                                            $parameters["width"],
+                                                            $parameters["height"],
+                                                            $parameters["containerData"],
+                                                            $parameters["manifestoData"],
+                                                            $hitableData))
         {
             exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
         }

@@ -11,8 +11,8 @@
  */
 
 require_once __DIR__."/../../common-scripts/return.php";
-require_once __DIR__."/../../common-scripts/database.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/track-database-connection.php";
 
 // Sends the track's data (container and manifesto files) as a zip file to
 // the client.
@@ -27,22 +27,16 @@ require_once __DIR__."/../../common-scripts/resource-id.php";
 //  - On success: The file's bytes as a stream
 //
 //
-function serve_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
+function serve_track_data_as_zip_file(TrackResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
-    if (!$resourceID)
+    if (!$trackResourceID)
     {
         exit(ReturnObject::script_failed("A track ID must be provided."));
     }
 
-    $database = new DatabaseAccess();
-    if (!$database->connect())
-    {
-        exit(ReturnObject::script_failed("Could not connect to the database."));
-    }
-
-    $trackZipFile = $database->get_track_data_as_zip_file($resourceID);
+    $trackZipFile = (new TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
         exit(ReturnObject::script_failed("No matching tracks found."));
@@ -76,35 +70,33 @@ function serve_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
 //          // Plaintext string representing the track's manifesto file.
 //          manifesto: string,
 //
-//          // (See docs in https://github.com/leikareipa/rallysported-js.)
-//          internalName: string,
-//          displayName: string,
-//          width: int,
-//          height: int,
+//          meta: object
+//          {
+//              // (See docs in https://github.com/leikareipa/rallysported-js.)
+//              internalName: string,
+//              displayName: string,
+//              width: int,
+//              height: int,
 //
-//          // TrackResourceID identifying this track in RSC's database.
-//          contentID: string,
+//              // TrackResourceID identifying this track in RSC's database.
+//              contentID: string,
 //
-//          // UserResourceID identifying the track's creator in RSC's database.
-//          creatorID: string,
+//              // UserResourceID identifying the track's creator in RSC's database.
+//              creatorID: string,
+//          }
 //      }
 //
-function serve_track_data_as_json(TrackResourceID $resourceID = NULL)
+function serve_track_data_as_json(TrackResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
-    if (!$resourceID)
+    if (!$trackResourceID)
     {
         exit(ReturnObject::script_failed("A track ID must be provided."));
     }
 
-    $database = new DatabaseAccess();
-    if (!$database->connect())
-    {
-        exit(ReturnObject::script_failed("Could not connect to the database."));
-    }
-
-    if (!($trackDataJSON = $database->get_track_data_as_json($resourceID)))
+    $trackDataJSON = (new TrackDatabaseConnection())->get_track_data_as_json($trackResourceID);
+    if (!$trackDataJSON)
     {
         exit(ReturnObject::script_failed("Failed to fetch track data."));
     }
@@ -129,16 +121,10 @@ function serve_track_data_as_json(TrackResourceID $resourceID = NULL)
 //    information about the tracks queried. The 'errorMessage' string will
 //    not be included.
 //
-function serve_track_metadata_as_json(TrackResourceID $resourceID = NULL)
+function serve_track_metadata_as_json(TrackResourceID $trackResourceID = NULL)
 {
-    $database = new DatabaseAccess();
-    if (!$database->connect())
-    {
-        exit(ReturnObject::script_failed("Could not connect to the database."));
-    }
-
-    $trackInfo = $database->get_track_public_metadata($resourceID);
-    if (!is_array($trackInfo) || !count($trackInfo))
+    $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
+    if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(ReturnObject::script_failed("No matching tracks found."));
     }

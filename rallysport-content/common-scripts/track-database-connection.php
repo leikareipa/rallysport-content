@@ -5,67 +5,37 @@
  * 
  * Software: Rally-Sport Content
  * 
- * Provides functionality for interacting with the Rally-Sport Content database.
+ * Provides functionality for accessing the RSC track database. (Note that
+ * for now, the track database is in fact just a table in the general RSC
+ * database rather than a database of its own.)
  * 
  * Usage:
  * 
- *  1. Create a new DatabaseAccess() object: $db = new DatabaseAccess().
+ *  1. Create a new TrackDatabaseConnection instance: $trackDB = new TrackDatabaseConnection().
  * 
- *  2. Call $db->connect() to establish the database connection.
- * 
- *  3. Perform your actions on the database via $db.
- * 
- *  4. Optionally, call $db->disconnect() to close the database connection.
+ *  2. Use the methods provided by the TrackDatabaseConnection class for manipulating
+ *     the contents of the track database.
  * 
  */
 
-require_once "return.php";
+require_once "database-connection.php";
 require_once "resource-id.php";
-require_once "create-zip.php";
 
-class DatabaseAccess
+class TrackDatabaseConnection extends DatabaseConnection
 {
-    // An object returned from mysqli_connect() for accessing the database. Will be
-    // initialized by the class constructor.
-    private $database;
+    /*
+     * The track database is currently a table ("rsc_tracks") in the general
+     * RSC database, to which this class gains access via the DatabaseConnection
+     * class.
+     * 
+     */
 
-    // Establishes a connection to the database. Returns true on success; false
-    // otherwise.
-    function connect() : bool
+    function __construct()
     {
-        $databaseCredentials = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../rsc-sql.json"), true);
-
-        if (!$databaseCredentials ||
-            !isset($databaseCredentials["host"]) ||
-            !isset($databaseCredentials["user"]) ||
-            !isset($databaseCredentials["password"]) ||
-            !isset($databaseCredentials["database"]))
-        {
-            return false;
-        }
-
-        $this->database = mysqli_connect($databaseCredentials["host"],
-                                         $databaseCredentials["user"],
-                                         $databaseCredentials["password"],
-                                         $databaseCredentials["database"]);
-
-        return (bool)($this->database && !mysqli_connect_error());
+        parent::__construct();
+        return;
     }
 
-    // Closes the current connection to the database. Returns true on success;
-    // false otherwise.
-    function disconnect() : bool
-    {
-        if ($database)
-        {
-            return mysqli_close($database);
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise. The 'trackDataZIP' parameter is a string
     // representing the byte data of a zip file containing the track's end-user
@@ -80,8 +50,15 @@ class DatabaseAccess
                            string $manifestoData,
                            string $hitableData) : bool
     {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
         /// TODO: Validate the input parameters.
 
+        // The full track data as a zip file. The file contains everything needed
+        // to play the track in Rally-Sport using the RallySportED Loader.
         $trackDataZIP = create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
                                                    "{$internalName}.\$FT" => $manifestoData,
                                                    "HITABLE.TXT"          => $hitableData],
@@ -91,6 +68,8 @@ class DatabaseAccess
             return false;
         }
 
+        // The full track data as a JSON object. The JSON contains everything
+        // needed to load the track into RallySportED-js for editing.
         $trackDataJSON = json_encode([
             "hitable"   => base64_encode($hitableData),
             "container" => base64_encode($containerData),
@@ -130,84 +109,16 @@ class DatabaseAccess
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Adds into the USERS table a new user with the given password. The plaintext
-    // password will not be entered into the database; instead, it will be ignored
-    // once a salted hash has been derived from it, and the hash will be stored
-    // instead, along with the salt.
-    //
-    // By defalt, each account will be created in a suspended state, where it cannot
-    // yet be used to create new content etc. The person who registered the account
-    // will go through a separate process of email verification or the like to have
-    // the initial suspension lifted.
-    //
-    // Returns TRUE on success; FALSE otherwise.
-    //
-    function create_new_user(UserResourceID $resourceID,
-                             string $plaintextPassword,
-                             string $plaintextEmail) : bool
-    {
-        /// TODO: Validate the password.
-
-        $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
-        $emailHash = password_hash($plaintextEmail, PASSWORD_DEFAULT);
-
-        $databaseReturnValue = $this->issue_db_command(
-                                 "INSERT INTO rsc_users
-                                   (resource_id,
-                                    php_password_hash,
-                                    php_password_hash_email,
-                                    account_creation_timestamp,
-                                    account_exists,
-                                    account_suspended)
-                                  VALUES (?, ?, ?, ?, ?, ?)",
-                                  [$resourceID->string(),
-                                   $passwordHash,
-                                   $emailHash,
-                                   time(),
-                                   1,
-                                   1]);
-
-        return (($databaseReturnValue == 0)? true : false);
-    }
-
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
-    function get_user_information(UserResourceID $resourceID = NULL) : array
+    // On error, FALSE will be returned.
+    function get_track_metadata(TrackResourceID $resourceID = NULL)
     {
-        // If no resource ID is provided, we'll return info for all tracks
-        // in the database.
-        $resourceIDRowSelector = ($resourceID? "AND resource_id = ?" : "");
-
-        $userInfo = $this->issue_db_query(
-                        "SELECT resource_id
-                         FROM rsc_users
-                         WHERE
-                          account_suspended = 0
-                          AND account_exists = 1
-                          {$resourceIDRowSelector}",
-                        ($resourceID? [$resourceID->string()] : NULL));
-
-        if (!is_array($userInfo) || !count($userInfo))
+        if (!$this->is_connected())
         {
-            return [];
+            return false;
         }
 
-        // Simplify some parameter names, etc.
-        $returnObject = [];
-        foreach ($userInfo as $user)
-        {
-            $returnObject[$user["resource_id"]] =
-            [
-            ];
-        }
-
-        return $returnObject;
-    }
-
-    // Returns public information about the given track. If a null resource ID
-    // is given, the information of all tracks in the database will be returned.
-    function get_track_public_metadata(TrackResourceID $resourceID = NULL) : array
-    {
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
         $rowSelector = ($resourceID? "WHERE resource_id = ?" : "");
@@ -227,7 +138,7 @@ class DatabaseAccess
 
         if (!is_array($trackInfo) || !count($trackInfo))
         {
-            return [];
+            return false;
         }
 
         // Simplify some parameter names, etc.
@@ -250,7 +161,7 @@ class DatabaseAccess
 
     // Returns the given track's data as a zip file. The zip file will contain
     // the track's container, manifesto, and HITABLE files; and is thus suitable
-    // for serving the track to end-users.
+    // for serving the track to end-users of the RallySportED Loader.
     //
     // On success, the return value will be an array of the following form:
     //
@@ -270,6 +181,11 @@ class DatabaseAccess
     //
     function get_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
     {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
         // For the moment, we can't return multiple tracks' data.
         if (!$resourceID)
         {
@@ -298,8 +214,16 @@ class DatabaseAccess
                 "data"     => $trackZipFile[0]["track_data_zip"]];
     }
 
+    // Returns the given track's data as a JSON string. The string will contain
+    // all data needed to load the track into RallySportED-js for editing. On
+    // failure, FALSE is returned.
     function get_track_data_as_json(TrackResourceID $resourceID = NULL)
     {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
         // For the moment, we can't return multiple tracks' data.
         if (!$resourceID)
         {
@@ -323,55 +247,5 @@ class DatabaseAccess
         }
 
         return $trackJSON[0]["track_data_json"];
-    }
-
-    // Wrapper function for sending queries to the database such that data is
-    // expected in response. E.g. database_query("SELECT * FROM table WHERE x = ?",
-    // [10]) returns such columns' values where x = 10. An empty array may be
-    // returned either if there was no data to return or if an error occurred.
-    private function issue_db_query(string $queryString, array $parameters = NULL): array
-    {
-        $stmt = mysqli_prepare($this->database, $queryString);
-
-        if ($parameters)
-        {
-            mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
-        }
-
-        $execute = mysqli_stmt_execute($stmt);
-
-        $result = mysqli_stmt_get_result($stmt);
-
-        if (!$stmt || !$execute || !$result || (mysqli_errno($this->database) !== 0))
-        {
-            return [];
-        }
-
-        $returnObject = [];
-        while ($row = mysqli_fetch_assoc($result))
-        {
-            $returnObject[] = $row;
-        }
-
-        return $returnObject;
-    }
-
-    // Wrapper function for sending queries to the database such that the database
-    // is expected to return no data in reponse. E.g. database_command("UPDATE table
-    // SET x = ? WHERE id = ?", [1, 2]) modifies the database but returns no data
-    // in response.
-    //
-    // Returns the last error code associated with executing the command; or 0 if
-    // no error occurred.
-    //
-    private function issue_db_command(string $commandString, array $parameters): int
-    {
-        $stmt = mysqli_prepare($this->database, $commandString);
-
-        mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
-
-        mysqli_stmt_execute($stmt);
-
-        return mysqli_errno($this->database);
     }
 }
