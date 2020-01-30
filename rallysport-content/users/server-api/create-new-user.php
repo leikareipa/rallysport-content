@@ -45,19 +45,13 @@ function create_new_user(array $parameters)
 
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
-    $userResourceID = new UserResourceID();
+    $userResourceID = ResourceID::random(ResourceType::USER);
 
-    if (!(new UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
+    if (!$userResourceID ||
+        !(new UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
         exit(ReturnObject::script_failed("Could not create a new user."));
     }
 
-    if ($userResourceID)
-    {
-        exit(ReturnObject::script_succeeded(["id"=>$userResourceID->resource_key()], "account"));
-    }
-    else
-    {
-        exit(ReturnObject::script_failed("Could not create a new user."));
-    }
+    exit(ReturnObject::script_succeeded(["id"=>$userResourceID->string()], "account"));
 }

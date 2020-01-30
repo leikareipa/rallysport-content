@@ -40,8 +40,8 @@ class TrackDatabaseConnection extends DatabaseConnection
     // TRUE on success; FALSE otherwise. The 'trackDataZIP' parameter is a string
     // representing the byte data of a zip file containing the track's end-user
     // data (container, manifesto, and HITABLE files).
-    function add_new_track(TrackResourceID $resourceID,
-                           UserResourceID $creatorID,
+    function add_new_track(ResourceID $resourceID,
+                           ResourceID $creatorID,
                            string $internalName,
                            string $displayName,
                            int $width,
@@ -112,7 +112,7 @@ class TrackDatabaseConnection extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On error, FALSE will be returned.
-    function get_track_metadata(TrackResourceID $resourceID = NULL)
+    function get_track_metadata(ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -180,7 +180,7 @@ class TrackDatabaseConnection extends DatabaseConnection
     //
     // On failure, FALSE is returned.
     //
-    function get_track_data_as_zip_file(TrackResourceID $resourceID = NULL)
+    function get_track_data_as_zip_file(ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -218,7 +218,7 @@ class TrackDatabaseConnection extends DatabaseConnection
     // Returns the given track's data as a JSON string. The string will contain
     // all data needed to load the track into RallySportED-js for editing. On
     // failure, FALSE is returned.
-    function get_track_data_as_json(TrackResourceID $resourceID = NULL)
+    function get_track_data_as_json(ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {

@@ -48,7 +48,7 @@ class UserDatabaseConnection extends DatabaseConnection
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(UserResourceID $resourceID,
+    function create_new_user(ResourceID $resourceID,
                              string $plaintextPassword,
                              string $plaintextEmail) : bool
     {
@@ -84,7 +84,7 @@ class UserDatabaseConnection extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On failure, FALSE is returned.
-    function get_user_information(UserResourceID $resourceID = NULL)
+    function get_user_information(ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {

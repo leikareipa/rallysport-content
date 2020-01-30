@@ -27,7 +27,7 @@ require_once __DIR__."/../../common-scripts/track-database-connection.php";
 //  - On success: The file's bytes as a stream
 //
 //
-function serve_track_data_as_zip_file(TrackResourceID $trackResourceID = NULL)
+function serve_track_data_as_zip_file(ResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -39,7 +39,7 @@ function serve_track_data_as_zip_file(TrackResourceID $trackResourceID = NULL)
     $trackZipFile = (new TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
-        exit(ReturnObject::script_failed("No matching tracks found."));
+        exit(ReturnObject::script_failed("No matching tracks found for '{$trackResourceID->string()}'."));
     }
 
     exit(ReturnObject::file($trackZipFile["filename"], $trackZipFile["data"]));
@@ -78,15 +78,15 @@ function serve_track_data_as_zip_file(TrackResourceID $trackResourceID = NULL)
 //              width: int,
 //              height: int,
 //
-//              // TrackResourceID identifying this track in RSC's database.
+//              // ResourceID identifying this track in RSC's database.
 //              contentID: string,
 //
-//              // UserResourceID identifying the track's creator in RSC's database.
+//              // ResourceID identifying the track's creator in RSC's database.
 //              creatorID: string,
 //          }
 //      }
 //
-function serve_track_data_as_json(TrackResourceID $trackResourceID = NULL)
+function serve_track_data_as_json(ResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -121,12 +121,12 @@ function serve_track_data_as_json(TrackResourceID $trackResourceID = NULL)
 //    information about the tracks queried. The 'errorMessage' string will
 //    not be included.
 //
-function serve_track_metadata_as_json(TrackResourceID $trackResourceID = NULL)
+function serve_track_metadata_as_json(ResourceID $trackResourceID = NULL)
 {
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(ReturnObject::script_failed("No matching tracks found."));
+        exit(ReturnObject::script_failed("No matching tracks found for '{$trackResourceID->string()}'."));
     }
 
     exit(ReturnObject::script_succeeded($trackInfo, "tracks"));

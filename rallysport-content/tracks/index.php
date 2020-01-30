@@ -10,16 +10,32 @@
  */
 
 require_once __DIR__."/server-api/add-new-track.php";
+require_once __DIR__."/server-api/view-track-data.php";
 require_once __DIR__."/server-api/serve-track-data.php";
 require_once __DIR__."/../common-scripts/return.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
+require_once __DIR__."/../common-scripts/resource-view.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
     case "GET":
     {
-        $resourceID = (isset($_GET["id"])? (new RallySportContent\TrackResourceID($_GET["id"])) : NULL);
+        // Find which track we're requested to operate on. If no track ID is
+        // provided, we assume the query relates to all tracks in the database.
+        if ($_GET["id"] ?? false)
+        {
+            $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::TRACK);
+            if (!$resourceID)
+            {
+                exit(RallySportContent\ReturnObject::script_failed("Invalid track resource ID."));
+            }
+        }
+        else
+        {
+            $resourceID = NULL;
+        }
 
+        // Satisfy the GET request by outputting the relevant data.
         if ($_GET["zip"] ?? false)
         {
             RallySportContent\serve_track_data_as_zip_file($resourceID);
@@ -32,10 +48,9 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             RallySportContent\serve_track_metadata_as_json($resourceID);
         }
-        // Output as a view.
         else
         {
-            ///RallySportContent\view_track($resourceID);
+            RallySportContent\view_track_metadata($resourceID);
         }
 
         break;
@@ -57,7 +72,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "DELETE";
     {
-        /// TODO.
+        ///RallySportContent\delete_track(json_decode(file_get_contents("php://input"), true));
         
         break;
     }

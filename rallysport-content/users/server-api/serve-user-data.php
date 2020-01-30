@@ -31,7 +31,7 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 //    information about the users queried. The 'errorMessage' string will
 //    not be included.
 //
-function serve_user_metadata_as_json(UserResourceID $resourceID = NULL)
+function serve_user_metadata_as_json(ResourceID $resourceID = NULL)
 {
     $userInfo = (new UserDatabaseConnection())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))

@@ -130,8 +130,8 @@ function add_new_track(array $parameters)
 
     // Add the new track into the database.
     {
-        $resourceID = new TrackResourceID();
-        $creatorID = new UserResourceID(); /// TODO: Use the actual creator ID.
+        $resourceID = ResourceID::random(ResourceType::TRACK);
+        $creatorID = ResourceID::random(ResourceType::USER); /// TODO: Use the actual creator ID.
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 

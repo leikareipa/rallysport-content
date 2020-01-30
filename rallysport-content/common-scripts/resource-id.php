@@ -20,17 +20,26 @@
  * 
  * Usage:
  * 
- *  1. Construct a new resource ID: $id = new ResourceID("resourceType"). The
- *     "resourceType" string identifies the type of resource, e.g. "track",
- *     "user", etc.
+ *  1a. Construct a new random resource ID (for a track resource, in this case):
+ *      $id = ResourceID::random(ResourceType::TRACK).
  * 
- *  1b. Instead of constructing a ResourceID object directly, you can use one
- *      of its child classes. For instance, for a user resource ID, you would
- *      use the UserResourceID class ($id = new UserResourceID()).
+ *  1b. Construct a new resource ID from an existing resource ID string (for a
+ *      track resource, in this case): $id = ResourceID::from_string($idString, ResourceType::TRACK).
+ *      Note that if the resource string provides a type element, it must match
+ *      the type specified by the 2nd parameter.
  * 
- *  2. If needed, get the resource ID as a string: $idString = $id->string().
+ *  2.  Verify that the resource ID object is valid: if (!$id) { your error-handling here... }
+ * 
+ *  3.  Operate on the resource ID object.
  * 
  */
+
+// The types of resource we can generate a resource ID for.
+abstract class ResourceType
+{
+    public const TRACK = "track";
+    public const USER = "user";
+}
 
 class ResourceID
 {
@@ -39,16 +48,88 @@ class ResourceID
     // The set of characters that the resource key is allowed to use.
     const RESOURCE_KEY_CHARSET = "23789acefghjkmnprstuvw";
 
-    // These two constants should not be changed without a very good reason.
+    // These two constants should not be changed ever.
     const RESOURCE_TYPE_SEPARATOR = ".";
     const RESOURCE_KEY_FRAGMENT_SEPARATOR = "-";
 
     const RESOURCE_KEY_FRAGMENT_LENGTH = 3;
     const NUM_RESOURCE_KEY_FRAGMENTS = 3;
-    
-    function __construct(string $resourceType, string $resourceKey = NULL)
+
+    // Create a resource ID object of the given type and with a random key. On
+    // error, returns NULL.
+    public function random(string /*of ResourceType*/ $resourceType)
     {
-        // Verify fundamental assumptions.
+        try
+        {
+            $id = new ResourceID($resourceType, "random");
+        }
+        catch (\Exception $e)
+        {
+            return NULL;
+        }
+
+        return $id;
+    }
+
+    // Create a resource ID object of the given type from the given ID string.
+    // The string can be of the form "yyyy.xxx-xxx-xxx" or "xxx-xxx-xxx", where
+    // "yyyy" is the type element and "xxx-xxx-xxx" the key element - if no type
+    // element is given, it will be appended to the ID based on the resource
+    // type specified by the 2nd parameter. If a type element is specified by
+    // the 1st parameter, it must match that named by the 2nd parameter (so
+    // "track.xxx-xxx-xxx" must be accompanied by ResourceType::TRACK).
+    //
+    // On error, returns NULL.
+    //
+    public function from_string(string $resourceIDString, string /*of ResourceType*/ $resourceType)
+    {
+        try
+        {
+            // If the given ID string doesn't appear to contain a type element,
+            // we'll insert it manually.
+            if (stripos($resourceIDString, self::RESOURCE_TYPE_SEPARATOR) === FALSE)
+            {
+                $id = new ResourceID($resourceType, $resourceIDString);
+            }
+            else
+            {
+                $id = new ResourceID($resourceIDString);
+            }
+
+            if (($id->resource_type() !== $resourceType) ||
+                !$id->resource_key())
+            {
+                throw new \Exception("Invalid resource ID string.");
+            }
+        }
+        catch (\Exception $e)
+        {
+            return NULL;
+        }
+
+        return $id;
+    }
+
+    // Create a resource ID object from the given type and key. On error, returns
+    // NULL.
+    public function from_type_and_key(string /*of ResourceType*/ $resourceType, string $resourceKey)
+    {
+        try
+        {
+            $id = new ResourceID($resourceType, $resourceKey);
+        }
+        catch (\Exception $e)
+        {
+            return NULL;
+        }
+
+        return $id;
+    }
+    
+    // Throws if a valid resource ID object could not be created.
+    function __construct(string /*of ResourceType*/ $resourceType, string $resourceKey = NULL)
+    {
+        // Verify fundamental assumptions about class constants.
         {
             if (!strlen(self::RESOURCE_KEY_CHARSET))
             {
@@ -81,15 +162,48 @@ class ResourceID
             {
                 throw new \Exception("There must be at least one key fragment.");
             }
+
+            /// TODO: Make sure the key fragment separator doesn't occur in the key charset.
         }
 
+        // Create the resource ID.
         if (!isset($resourceKey))
+        {
+            // If no resource key is given, we'll assume the given resource type
+            // contains the full resource ID.
+            $this->resourceIDString = $resourceType;
+        }
+        else if ($resourceKey === "random")
         {
             $this->resourceIDString = $this->generate_random_resource_id($resourceType);
         }
         else
         {
             $this->resourceIDString = ($resourceType . self::RESOURCE_TYPE_SEPARATOR . $resourceKey);
+        }
+
+        // Verify that the resource ID is valid.
+        {
+            if (($this->resource_type() !== ResourceType::TRACK) &&
+                ($this->resource_type() !== ResourceType::USER))
+            {
+                throw new \Exception("Malformed resource ID type.");
+            }
+
+            $expectedKeyLength = (self::RESOURCE_KEY_FRAGMENT_LENGTH * self::NUM_RESOURCE_KEY_FRAGMENTS + (self::NUM_RESOURCE_KEY_FRAGMENTS - 1));
+            if (strlen($this->resource_key()) != $expectedKeyLength)
+            {
+                throw new \Exception("Malformed resource ID key.");
+            }
+
+            foreach (str_split($this->resource_key()) as $chr)
+            {
+                if (($chr !== self::RESOURCE_KEY_FRAGMENT_SEPARATOR) &&
+                    strpos(self::RESOURCE_KEY_CHARSET, $chr) === FALSE)
+                {
+                    throw new \Exception("Malformed resource ID key.");
+                }
+            }
         }
 
         return;
@@ -100,14 +214,28 @@ class ResourceID
         return $this->resourceIDString;
     }
 
-    function resource_type() : string
+    // Returns the type substring of this resource ID, or NULL if no type
+    // substring exists.
+    function resource_type()
     {
-        return explode(self::RESOURCE_TYPE_SEPARATOR, $this->resourceIDString)[0];
+        if (stripos($this->resourceIDString, self::RESOURCE_TYPE_SEPARATOR) === FALSE)
+        {
+            return NULL;
+        }
+
+        return (explode(self::RESOURCE_TYPE_SEPARATOR, $this->resourceIDString)[0] ?? NULL);
     }
 
-    function resource_key() : string
+    // Returns the key substring of this resource ID, or NULL if no key
+    // substring exists.
+    function resource_key()
     {
-        return explode(self::RESOURCE_TYPE_SEPARATOR, $this->resourceIDString)[1];
+        if (stripos($this->resourceIDString, self::RESOURCE_TYPE_SEPARATOR) === FALSE)
+        {
+            return NULL;
+        }
+
+        return (explode(self::RESOURCE_TYPE_SEPARATOR, $this->resourceIDString)[1] ?? NULL);
     }
 
     // Returns a random resource ID string, along the lines of "resourceType+xxx-xxx-xxx".
@@ -140,30 +268,5 @@ class ResourceID
         }
 
         return $randomResourceID;
-    }
-
-    static public function resource_type_separator() : string
-    {
-        return self::RESOURCE_TYPE_SEPARATOR;
-    }
-}
-
-class UserResourceID extends ResourceID
-{
-    const RESOURCE_TYPE = "user";
-
-    function __construct(string $resourceKey = NULL)
-    {
-        parent::__construct(self::RESOURCE_TYPE, $resourceKey);
-    }
-}
-
-class TrackResourceID extends ResourceID
-{
-    const RESOURCE_TYPE = "track";
-
-    function __construct(string $resourceKey = NULL)
-    {
-        parent::__construct(self::RESOURCE_TYPE, $resourceKey);
     }
 }

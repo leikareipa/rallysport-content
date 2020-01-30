@@ -18,13 +18,27 @@ switch ($_SERVER["REQUEST_METHOD"])
 {
     case "GET":
     {
-        $resourceID = (isset($_GET["id"])? (new RallySportContent\UserResourceID($_GET["id"])) : NULL);
+        // Find which user we're requested to operate on. If no user ID is
+        // provided, we assume the query relates to all users in the database.
+        if ($_GET["id"] ?? false)
+        {
+            $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::USER);
+            if (!$resourceID)
+            {
+                echo $_GET["id"];
+                exit(RallySportContent\ReturnObject::script_failed("Invalid user resource ID."));
+            }
+        }
+        else
+        {
+            $resourceID = NULL;
+        }
 
+        // Satisfy the GET request by outputting the relevant data.
         if ($_GET["metadata"] ?? false)
         {
             RallySportContent\serve_user_metadata_as_json($resourceID);
         }
-        // Output as a view.
         else
         {
             ///RallySportContent\view_user($resourceID);
