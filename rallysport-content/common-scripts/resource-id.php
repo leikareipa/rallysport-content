@@ -46,7 +46,7 @@ class ResourceID
     private $resourceIDString;
 
     // The set of characters that the resource key is allowed to use.
-    const RESOURCE_KEY_CHARSET = "23789acefghjkmnprstuvw";
+    const RESOURCE_KEY_CHARSET = "23789acefghjkmnprstuv";
 
     // These two constants should not be changed ever.
     const RESOURCE_TYPE_SEPARATOR = ".";
