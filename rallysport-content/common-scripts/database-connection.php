@@ -7,8 +7,9 @@
  * 
  * Provides base functionality for interacting with the Rally-Sport Content database.
  * 
- * Usage: You are not expected to use this class directory. Instead, use the derived
- * classes. like TrackDatabaseConnection and UserDatabaseConnection.
+ * Usage: You are not expected to use this class directory. Instead, its the derived
+ * classes, like TrackDatabaseConnection and UserDatabaseConnection, depending on
+ * what type of data you want to access.
  * 
  */
 
@@ -16,7 +17,7 @@ require_once "return.php";
 require_once "resource-id.php";
 require_once "create-zip.php";
 
-class DatabaseConnection
+abstract class DatabaseConnection
 {
     // An object returned from mysqli_connect() for accessing the database. Will be
     // initialized by the class constructor.
