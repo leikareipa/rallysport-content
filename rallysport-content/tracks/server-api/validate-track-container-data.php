@@ -52,7 +52,8 @@ function is_valid_container_data(string $containerData,
 
         if (($heightOffset != 0) &&
             ($heightOffset != 1) &&
-            ($heightOffset != 255))
+            ($heightOffset != 255) &&
+            ($heightOffset != 15))
         {
             return false;
         }
