@@ -39,7 +39,7 @@ function serve_track_data_as_zip_file(ResourceID $trackResourceID = NULL)
     $trackZipFile = (new TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
-        exit(ReturnObject::script_failed("No matching tracks found for '{$trackResourceID->string()}'."));
+        exit(ReturnObject::script_failed("No matching tracks found."));
     }
 
     exit(ReturnObject::file($trackZipFile["filename"], $trackZipFile["data"]));
@@ -126,7 +126,7 @@ function serve_track_metadata_as_json(ResourceID $trackResourceID = NULL)
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(ReturnObject::script_failed("No matching tracks found for '{$trackResourceID->string()}'."));
+        exit(ReturnObject::script_failed("No matching tracks found."));
     }
 
     exit(ReturnObject::script_succeeded($trackInfo, "tracks"));

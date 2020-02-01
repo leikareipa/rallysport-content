@@ -14,7 +14,6 @@ require_once __DIR__."/server-api/view-track-data.php";
 require_once __DIR__."/server-api/serve-track-data.php";
 require_once __DIR__."/../common-scripts/return.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
-require_once __DIR__."/../common-scripts/resource-view.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
@@ -65,6 +64,8 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "PUT":
     {
+        error_log("Unhandled request: PUT");
+
         ///RallySportContent\update_track(json_decode(file_get_contents("php://input"), true));
 
         break;
@@ -72,6 +73,8 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "DELETE";
     {
+        error_log("Unhandled request: DELETE");
+
         ///RallySportContent\delete_track(json_decode(file_get_contents("php://input"), true));
         
         break;
