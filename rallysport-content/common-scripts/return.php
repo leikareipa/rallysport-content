@@ -52,4 +52,11 @@ class ReturnObject
 
         return 0;
     }
+
+    static function html(string $html)
+    {
+        echo $html;
+
+        return 0;
+    }
 }
