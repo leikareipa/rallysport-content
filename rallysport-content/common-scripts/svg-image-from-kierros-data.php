@@ -82,7 +82,7 @@ function svg_image_from_kierros_data(string $trackDataContainer)
 
     // Close the polygon element. We expect the target HTML page to use CSS for
     // styling the SVG.
-    $svgString .= "'/></svg>";
+    $svgString .= "' vector-effect='non-scaling-stroke'/></svg>";
 
     return $svgString;
 }
