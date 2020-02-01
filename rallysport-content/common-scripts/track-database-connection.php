@@ -48,6 +48,7 @@ class TrackDatabaseConnection extends DatabaseConnection
                            int $height,
                            string $containerData,
                            string $manifestoData,
+                           string $kierrosSVGImage,
                            string $hitableData) : bool
     {
         if (!$this->is_connected())
@@ -94,8 +95,9 @@ class TrackDatabaseConnection extends DatabaseConnection
                                     track_data_zip,
                                     track_data_json,
                                     creation_timestamp,
-                                    creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                    creator_resource_id,
+                                    kierros_image_svg)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
                                    $displayName,
@@ -104,7 +106,8 @@ class TrackDatabaseConnection extends DatabaseConnection
                                    $trackDataZIP,
                                    $trackDataJSON,
                                    time(),
-                                   $creatorID->string()]);
+                                   $creatorID->string(),
+                                   $kierrosSVGImage]);
 
         return (($databaseReturnValue == 0)? true : false);
     }
@@ -131,7 +134,8 @@ class TrackDatabaseConnection extends DatabaseConnection
                           track_name_internal,
                           track_name_display,
                           track_width,
-                          track_height
+                          track_height,
+                          kierros_image_svg
                          FROM rsc_tracks
                          {$rowSelector}",
                          ($resourceID? [$resourceID->string()] : NULL));
@@ -154,6 +158,7 @@ class TrackDatabaseConnection extends DatabaseConnection
                 "width"            => $track["track_width"],
                 "height"           => $track["track_height"],
                 "creationTimestamp"=> $track["creation_timestamp"],
+                "kierrosSVG"       => $track["kierros_image_svg"],
             ];
         }
 

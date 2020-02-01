@@ -19,6 +19,7 @@
 require_once __DIR__."/../../common-scripts/return.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/track-database-connection.php";
+require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
 require_once __DIR__."/validate-track-container-data.php";
 require_once __DIR__."/validate-track-manifesto-data.php";
 
@@ -150,6 +151,7 @@ function add_new_track(array $parameters)
                                                             $parameters["height"],
                                                             $parameters["containerData"],
                                                             $parameters["manifestoData"],
+                                                            svg_image_from_kierros_data($parameters["containerData"]),
                                                             $hitableData))
         {
             exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
