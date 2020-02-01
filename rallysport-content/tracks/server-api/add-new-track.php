@@ -77,7 +77,7 @@ function add_new_track(array $parameters)
             // alphabet characters.
             if (!mb_strlen($parameters["displayName"], "UTF-8") ||
                 (mb_strlen($parameters["displayName"], "UTF-8") > 15) ||
-                preg_match("/[^A-Za-z\x{c5}\x{e5}\x{c4}\x{e4}\x{d6}\x{f6}]/u", $parameters["displayName"]))
+                preg_match("/[^A-Za-z- \x{c5}\x{e5}\x{c4}\x{e4}\x{d6}\x{f6}]/u", $parameters["displayName"]))
             {
                 exit(ReturnObject::script_failed("Malformed 'displayName' parameter."));
             }
