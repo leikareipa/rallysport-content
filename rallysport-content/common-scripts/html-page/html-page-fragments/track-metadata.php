@@ -108,7 +108,7 @@ class TrackMetadata extends HTMLPageFragment
                         <div class='value-field' id='download'>
                             <span class='value'>
                                 <i class='fas fa-fw fa-database'></i>
-                                <a href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as a ZIP</a>
+                                <a download href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as a ZIP</a>
                             </span>
                         </div>
 
