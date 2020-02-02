@@ -10,13 +10,13 @@
  * 
  * Usage:
  * 
- *  - To indicate failure, call exit(ReturnObject::script_failed("Error message")).
+ *  - To indicate failure, call exit(Response::script_failed("Error message")).
  * 
- *  - To indicate success, call exit(ReturnObject::script_succeeded($optionalOutputData)).
+ *  - To indicate success, call exit(Response::script_succeeded($optionalOutputData)).
  * 
  */
 
-class ReturnObject
+class Response
 {
     static function script_succeeded(array $returnObject = [], string $returnObjectKey = "payload")
     {

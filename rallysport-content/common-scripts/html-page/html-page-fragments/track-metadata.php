@@ -49,7 +49,8 @@ class TrackMetadata extends HTMLPageFragment
         $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
         $trackUploadTimestamp = ($trackMetadata["creationTimestamp"] ?? "0");
-        $trackLoaderVersion   = 5;
+        $trackLoaderVersion   = 5; /// TODO.
+        $trackDownloadCount   = 13; /// TODO.
 
         return "
         <div class='track-metadata'>
@@ -71,6 +72,11 @@ class TrackMetadata extends HTMLPageFragment
                     <div class='value-field' id='loader-version' title='Requires RallySportED Loader v.{$trackLoaderVersion}'>
                         <i class='fas fa-fw fa-sm fa-code-branch'></i>
                         <span class='value'>{$trackLoaderVersion}</span>
+                    </div>
+
+                    <div class='value-field' id='view-count' title='Viewed {$trackDownloadCount} times'>
+                        <i class='fas fa-fw fa-sm fa-eye'></i>
+                        <span class='value'>{$trackDownloadCount}</span>
                     </div>
 
                     <div class='value-field' id='dimensions' title='Dimensions: {$trackWidth} x {$trackHeight} tiles'>
@@ -102,14 +108,14 @@ class TrackMetadata extends HTMLPageFragment
                         <div class='value-field' id='download'>
                             <span class='value'>
                                 <i class='fas fa-fw fa-database'></i>
-                                <a href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as ZIP</a>
+                                <a href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as a ZIP</a>
                             </span>
                         </div>
 
                         <div class='value-field' id='download'>
                             <span class='value'>
                                 <i class='fas fa-fw fa-database'></i>
-                                <a href='#' onclick=\"request_track_deletion('/rallysport-content/tracks', '{$trackID}')\">Delete</a>
+                                <a href='#' onclick=\"request_track_deletion('/rallysport-content/tracks', '{$trackID}')\">Remove</a>
                             </span>
                         </div>
 

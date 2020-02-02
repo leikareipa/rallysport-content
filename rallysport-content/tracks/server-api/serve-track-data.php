@@ -10,7 +10,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/track-database-connection.php";
 
@@ -18,7 +18,7 @@ require_once __DIR__."/../../common-scripts/track-database-connection.php";
 // the client.
 //
 // Note: This function should always return using exit() with either
-// ReturnObject::script_failed() or ReturnObject::file().
+// Response::script_failed() or Response::file().
 //
 // Returns:
 //
@@ -33,23 +33,23 @@ function serve_track_data_as_zip_file(ResourceID $trackResourceID = NULL)
     // tracks. However, for now, we only support serving individual tracks' data.
     if (!$trackResourceID)
     {
-        exit(ReturnObject::script_failed("A track ID must be provided."));
+        exit(Response::script_failed("A track ID must be provided."));
     }
 
     $trackZipFile = (new TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
-        exit(ReturnObject::script_failed("No matching tracks found."));
+        exit(Response::script_failed("No matching tracks found."));
     }
 
-    exit(ReturnObject::file($trackZipFile["filename"], $trackZipFile["data"]));
+    exit(Response::file($trackZipFile["filename"], $trackZipFile["data"]));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing the
 // track's data.
 //
 // Note: This function should always return using exit() with either
-// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+// Response::script_failed() or Response::script_succeeded().
 //
 // Returns: JSON {succeeded: bool [, track: object[, errorMessage: string]]}
 //
@@ -92,16 +92,16 @@ function serve_track_data_as_json(ResourceID $trackResourceID = NULL)
     // tracks. However, for now, we only support serving individual tracks' data.
     if (!$trackResourceID)
     {
-        exit(ReturnObject::script_failed("A track ID must be provided."));
+        exit(Response::script_failed("A track ID must be provided."));
     }
 
     $trackDataJSON = (new TrackDatabaseConnection())->get_track_data_as_json($trackResourceID);
     if (!$trackDataJSON)
     {
-        exit(ReturnObject::script_failed("Failed to fetch track data."));
+        exit(Response::script_failed("Failed to fetch track data."));
     }
 
-    exit(ReturnObject::script_succeeded(json_decode($trackDataJSON, true), "track"));
+    exit(Response::script_succeeded(json_decode($trackDataJSON, true), "track"));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing public
@@ -109,7 +109,7 @@ function serve_track_data_as_json(ResourceID $trackResourceID = NULL)
 // track resource ID is NULL.
 //
 // Note: This function should always return using exit() with either
-// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+// Response::script_failed() or Response::script_succeeded().
 //
 // Returns: JSON {succeeded: bool [, tracks: object[, errorMessage: string]]}
 //
@@ -126,8 +126,8 @@ function serve_track_metadata_as_json(ResourceID $trackResourceID = NULL)
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(ReturnObject::script_failed("No matching tracks found."));
+        exit(Response::script_failed("No matching tracks found."));
     }
 
-    exit(ReturnObject::script_succeeded($trackInfo, "tracks"));
+    exit(Response::script_succeeded($trackInfo, "tracks"));
 }

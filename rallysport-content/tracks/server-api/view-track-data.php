@@ -10,7 +10,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata.php";
@@ -22,7 +22,7 @@ function view_track_metadata(ResourceID $trackResourceID = NULL)
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(ReturnObject::script_failed("No matching tracks found."));
+        exit(Response::script_failed("No matching tracks found."));
     }
 
     // Build a HTML page that displays the requested tracks' metadata.
@@ -41,5 +41,5 @@ function view_track_metadata(ResourceID $trackResourceID = NULL)
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::close());
     }
 
-    exit(ReturnObject::html($view->html()));
+    exit(Response::html($view->html()));
 }

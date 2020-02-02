@@ -28,7 +28,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/user-database-connection.php";
 
@@ -36,12 +36,12 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 // password is specified by the function call parameters.
 //
 // Note: This function should always return using exit() with either
-// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+// Response::script_failed() or Response::script_succeeded().
 //
 function create_new_user(array $parameters)
 {
-    if (!isset($parameters["password"])) exit(ReturnObject::script_failed("Missing the 'password' parameter."));
-    if (!isset($parameters["email"])) exit(ReturnObject::script_failed("Missing the 'email' parameter."));
+    if (!isset($parameters["password"])) exit(Response::script_failed("Missing the 'password' parameter."));
+    if (!isset($parameters["email"])) exit(Response::script_failed("Missing the 'email' parameter."));
 
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
@@ -50,8 +50,8 @@ function create_new_user(array $parameters)
     if (!$userResourceID ||
         !(new UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
-        exit(ReturnObject::script_failed("Could not create a new user."));
+        exit(Response::script_failed("Could not create a new user."));
     }
 
-    exit(ReturnObject::script_succeeded(["id"=>$userResourceID->string()], "account"));
+    exit(Response::script_succeeded(["id"=>$userResourceID->string()], "account"));
 }

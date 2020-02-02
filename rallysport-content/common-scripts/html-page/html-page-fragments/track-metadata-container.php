@@ -13,19 +13,21 @@ require_once __DIR__."/html-page-fragment.php";
 //
 // Sample usage:
 //
-//   1. Create the page object: $page = new HTMLPage();
+//   1.  Create the page object: $page = new HTMLPage();
 //
-//   2. Add the container's CSS to the page: $page->head->css .= TrackMetadataContainer::css();
+//   2a. Add the container's CSS to the page: $page->head->css .= TrackMetadataContainer::css();
 //
-//   3. Insert an instance of the container onto the page: $page->body->add_element(TrackMetadataContainer::open());
-//      Any subsequent elements inserted into the body will be placed inside the
-//      container, until its ::close() function is used as shown in (5).
+//   2b. Add the container's scripts to the page: $page->body->add_script(...TrackMetadataContainer::scripts());
 //
-//   4. Insert elements inside the container: $page->body->add_element("<div>This is inside the container</div>");
+//   3.  Insert an instance of the container onto the page: $page->body->add_element(TrackMetadataContainer::open());
+//       Any subsequent elements inserted into the body will be placed inside the
+//       container, until its ::close() function is used as shown in (5).
 //
-//   5. Close the container: $page->body->add_element(TrackMetadataContainer::close());
-//      Subsequent elements added into the body will now go outside the container
-//      again.
+//   4.  Insert elements inside the container: $page->body->add_element("<div>This is inside the container</div>");
+//
+//   5.  Close the container: $page->body->add_element(TrackMetadataContainer::close());
+//       Subsequent elements added into the body will now go outside the container
+//       again.
 //
 class TrackMetadataContainer extends HTMLPageFragment
 {

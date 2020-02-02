@@ -10,7 +10,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/user-database-connection.php";
 
@@ -19,7 +19,7 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 // the user resource ID is NULL.
 //
 // Note: This function should always return using exit() with either
-// ReturnObject::script_failed() or ReturnObject::script_succeeded().
+// Response::script_failed() or Response::script_succeeded().
 //
 // Returns: JSON {succeeded: bool [, users: object[, errorMessage: string]]}
 // 
@@ -36,8 +36,8 @@ function serve_user_metadata_as_json(ResourceID $resourceID = NULL)
     $userInfo = (new UserDatabaseConnection())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
-        exit(ReturnObject::script_failed("No matching users found."));
+        exit(Response::script_failed("No matching users found."));
     }
 
-    exit(ReturnObject::script_succeeded($userInfo, "users"));
+    exit(Response::script_succeeded($userInfo, "users"));
 }

@@ -12,7 +12,7 @@
 require_once __DIR__."/server-api/add-new-track.php";
 require_once __DIR__."/server-api/view-track-data.php";
 require_once __DIR__."/server-api/serve-track-data.php";
-require_once __DIR__."/../common-scripts/return.php";
+require_once __DIR__."/../common-scripts/response.php";
 require_once __DIR__."/../common-scripts/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::TRACK);
             if (!$resourceID)
             {
-                exit(RallySportContent\ReturnObject::script_failed("Invalid track resource ID."));
+                exit(RallySportContent\Response::script_failed("Invalid track resource ID."));
             }
         }
         else
@@ -80,5 +80,5 @@ switch ($_SERVER["REQUEST_METHOD"])
         break;
     }
 
-    default: exit(RallySportContent\ReturnObject::script_failed("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(RallySportContent\Response::script_failed("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
 }

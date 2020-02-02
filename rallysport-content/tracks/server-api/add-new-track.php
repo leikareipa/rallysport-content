@@ -16,7 +16,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/return.php";
+require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/track-database-connection.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
@@ -37,30 +37,30 @@ require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 //    RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
 //
 //  - The function should always return using exit() with either
-//    ReturnObject::script_failed() or ReturnObject::script_succeeded().
+//    Response::script_failed() or Response::script_succeeded().
 //
 function add_new_track(array $parameters)
 {
     // Validate input parameters.
     {
-        if (!isset($parameters["internalName"]))  exit(ReturnObject::script_failed("Missing the 'internalName' parameter."));
-        if (!isset($parameters["displayName"]))   exit(ReturnObject::script_failed("Missing the 'displayName' parameter."));
-        if (!isset($parameters["width"]))         exit(ReturnObject::script_failed("Missing the 'width' parameter."));
-        if (!isset($parameters["height"]))        exit(ReturnObject::script_failed("Missing the 'height' parameter."));
-        if (!isset($parameters["containerData"])) exit(ReturnObject::script_failed("Missing the 'containerData' parameter."));
-        if (!isset($parameters["manifestoData"])) exit(ReturnObject::script_failed("Missing the 'manifestoData' parameter."));
+        if (!isset($parameters["internalName"]))  exit(Response::script_failed("Missing the 'internalName' parameter."));
+        if (!isset($parameters["displayName"]))   exit(Response::script_failed("Missing the 'displayName' parameter."));
+        if (!isset($parameters["width"]))         exit(Response::script_failed("Missing the 'width' parameter."));
+        if (!isset($parameters["height"]))        exit(Response::script_failed("Missing the 'height' parameter."));
+        if (!isset($parameters["containerData"])) exit(Response::script_failed("Missing the 'containerData' parameter."));
+        if (!isset($parameters["manifestoData"])) exit(Response::script_failed("Missing the 'manifestoData' parameter."));
 
         // Validate track dimensions.
         {
             if ($parameters["width"] != $parameters["height"])
             {
-                exit(ReturnObject::script_failed("Track dimensions must be square."));
+                exit(Response::script_failed("Track dimensions must be square."));
             }
 
             if (($parameters["width"] != 64) &&
                 ($parameters["height"] != 128))
             {
-                exit(ReturnObject::script_failed("Unsupported track dimensions ."));
+                exit(Response::script_failed("Unsupported track dimensions ."));
             }
         }
 
@@ -71,7 +71,7 @@ function add_new_track(array $parameters)
                 (mb_strlen($parameters["internalName"], "UTF-8") > 8) ||
                 preg_match("/[^a-zA-Z]/", $parameters["internalName"]))
             {
-                exit(ReturnObject::script_failed("Malformed 'internalName' parameter."));
+                exit(Response::script_failed("Malformed 'internalName' parameter."));
             }
 
             // Display names are allowed to consist of 1-15 ASCII + Finnish umlaut
@@ -80,7 +80,7 @@ function add_new_track(array $parameters)
                 (mb_strlen($parameters["displayName"], "UTF-8") > 15) ||
                 preg_match("/[^A-Za-z-. \x{c5}\x{e5}\x{c4}\x{e4}\x{d6}\x{f6}]/u", $parameters["displayName"]))
             {
-                exit(ReturnObject::script_failed("Malformed 'displayName' parameter."));
+                exit(Response::script_failed("Malformed 'displayName' parameter."));
             }
 
             // We'll want the internal name to be all uppercase, for legacy reasons.
@@ -94,7 +94,7 @@ function add_new_track(array $parameters)
             // a bit).
             if (strlen($parameters["containerData"]) > 358400)
             {
-                exit(ReturnObject::script_failed("Invalid container data."));
+                exit(Response::script_failed("Invalid container data."));
             }
 
             // The container data was sent in as Base64, but we'll want to process
@@ -102,26 +102,26 @@ function add_new_track(array $parameters)
             $parameters["containerData"] = base64_decode($parameters["containerData"], true);
             if (!$parameters["containerData"])
             {
-                exit(ReturnObject::script_failed("Invalid container data."));
+                exit(Response::script_failed("Invalid container data."));
             }
 
             // Note: At this point, we assume that the track's width and height are
             // equal, e.g. that it's square.
             if (!is_valid_container_data($parameters["containerData"], $parameters["width"]))
             {
-                exit(ReturnObject::script_failed("Invalid container data."));
+                exit(Response::script_failed("Invalid container data."));
             }
 
             // Manifesto files are fairly simple and relatively short text files -
             // they should not be very large at all, often less than a kilobyte.
             if (strlen($parameters["manifestoData"]) > 10240)
             {
-                exit(ReturnObject::script_failed("Invalid manifesto data."));
+                exit(Response::script_failed("Invalid manifesto data."));
             }
 
             if (!is_valid_manifesto_data($parameters["manifestoData"]))
             {
-                exit(ReturnObject::script_failed("Invalid manifesto data."));
+                exit(Response::script_failed("Invalid manifesto data."));
             }
         }
 
@@ -140,7 +140,7 @@ function add_new_track(array $parameters)
         // which is required by RallySportED for playing the track in-game.
         if (!($hitableData = file_get_contents(__DIR__."/../server-data/HITABLE.TXT")))
         {
-            exit(ReturnObject::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
+            exit(Response::script_failed("Server-side failure. Invalid HITABLE.TXT file."));
         }
 
         if (!(new TrackDatabaseConnection())->add_new_track($resourceID,
@@ -154,9 +154,9 @@ function add_new_track(array $parameters)
                                                             svg_image_from_kierros_data($parameters["containerData"]),
                                                             $hitableData))
         {
-            exit(ReturnObject::script_failed("Server-side failure. Could not add the new track."));
+            exit(Response::script_failed("Server-side failure. Could not add the new track."));
         }
     }
 
-    exit(ReturnObject::script_succeeded());
+    exit(Response::script_succeeded());
 }
