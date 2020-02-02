@@ -89,9 +89,12 @@ class Response
 
     public function json(array $jsonObject = [], int $cacheForNumSeconds = 86400)
     {
-        header("Content-Type: application/json");
+        $jsonText = json_encode($jsonObject, JSON_UNESCAPED_UNICODE);
 
-        $this->send_response(json_encode($jsonObject, JSON_UNESCAPED_UNICODE), $cacheForNumSeconds);
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Content-Length: ".strlen($jsonText));
+
+        $this->send_response($jsonText, $cacheForNumSeconds);
 
         return 1;
     }
@@ -116,6 +119,7 @@ class Response
     public function html(string $html, int $cacheForNumSeconds = 0)
     {
         header("Content-Type: text/html; charset=UTF-8");
+        header("Content-Length: ".strlen($html));
 
         $this->send_response($html, $cacheForNumSeconds);
 
