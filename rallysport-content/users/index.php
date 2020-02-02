@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             if (!$resourceID)
             {
                 echo $_GET["id"];
-                exit(RallySportContent\Response::script_failed("Invalid user resource ID."));
+                exit(RallySportContent\Response::code(400)->error_message("Invalid user resource ID."));
             }
         }
         else
@@ -68,5 +68,5 @@ switch ($_SERVER["REQUEST_METHOD"])
         break;
     }
 
-    default: exit(RallySportContent\Response::script_failed("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(RallySportContent\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
 }

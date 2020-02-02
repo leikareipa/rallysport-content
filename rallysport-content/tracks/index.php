@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::TRACK);
             if (!$resourceID)
             {
-                exit(RallySportContent\Response::script_failed("Invalid track resource ID."));
+                exit(RallySportContent\Response::code(400)->error_message("Invalid track resource ID."));
             }
         }
         else
@@ -80,5 +80,5 @@ switch ($_SERVER["REQUEST_METHOD"])
         break;
     }
 
-    default: exit(RallySportContent\Response::script_failed("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(RallySportContent\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
 }

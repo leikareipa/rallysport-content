@@ -18,8 +18,8 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 // public information about the given user, or of all users in the database if
 // the user resource ID is NULL.
 //
-// Note: This function should always return using exit() with either
-// Response::script_failed() or Response::script_succeeded().
+// Note: The function should always return using exit() together with a
+// Response object, e.g. exit(Response::code(200)->json([...]).
 //
 // Returns: JSON {succeeded: bool [, users: object[, errorMessage: string]]}
 // 
@@ -36,8 +36,8 @@ function serve_user_metadata_as_json(ResourceID $resourceID = NULL)
     $userInfo = (new UserDatabaseConnection())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
-        exit(Response::script_failed("No matching users found."));
+        exit(Response::code(404)->error_message("No matching user data found."));
     }
 
-    exit(Response::script_succeeded($userInfo, "users"));
+    exit(Response::code(200)->json($userInfo));
 }

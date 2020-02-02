@@ -22,7 +22,7 @@ function view_track_metadata(ResourceID $trackResourceID = NULL)
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(Response::script_failed("No matching tracks found."));
+        exit(Response::code(404)->error_message("No matching track data found."));
     }
 
     // Build a HTML page that displays the requested tracks' metadata.
@@ -41,5 +41,5 @@ function view_track_metadata(ResourceID $trackResourceID = NULL)
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::close());
     }
 
-    exit(Response::html($view->html()));
+    exit(Response::code(200)->html($view->html()));
 }

@@ -35,13 +35,13 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // password is specified by the function call parameters.
 //
-// Note: This function should always return using exit() with either
-// Response::script_failed() or Response::script_succeeded().
+// Note: The function should always return using exit() together with a
+// Response object, e.g. exit(Response::code(200)->json([...]).
 //
 function create_new_user(array $parameters)
 {
-    if (!isset($parameters["password"])) exit(Response::script_failed("Missing the 'password' parameter."));
-    if (!isset($parameters["email"])) exit(Response::script_failed("Missing the 'email' parameter."));
+    if (!isset($parameters["password"])) exit(Response::code(400)->error_message("Missing the 'password' parameter."));
+    if (!isset($parameters["email"]))    exit(Response::code(400)->error_message("Missing the 'email' parameter."));
 
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
@@ -50,8 +50,8 @@ function create_new_user(array $parameters)
     if (!$userResourceID ||
         !(new UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
-        exit(Response::script_failed("Could not create a new user."));
+        exit(Response::code(500)->error_message("Could not create a new user."));
     }
 
-    exit(Response::script_succeeded(["id"=>$userResourceID->string()], "account"));
+    exit(Response::code(201)->json(["id"=>$userResourceID->string()]));
 }
