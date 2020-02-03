@@ -13,7 +13,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/user-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
 
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // password is specified by the function call parameters.
@@ -39,7 +39,7 @@ function create_new_user(array $parameters)
     $userResourceID = \RSC\ResourceID::random(\RSC\ResourceType::USER);
 
     if (!$userResourceID ||
-        !(new DatabaseConnection\UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
+        !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
         exit(Response::code(500)->error_message("Could not create a new user."));
     }

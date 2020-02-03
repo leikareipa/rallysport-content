@@ -8,7 +8,7 @@
  * Provides base functionality for interacting with the Rally-Sport Content database.
  * 
  * Usage: You are not expected to use this class directory. Instead, its the derived
- * classes, like TrackDatabaseConnection and UserDatabaseConnection, depending on
+ * classes, like TrackDatabase and UserDatabase, depending on
  * what type of data you want to access.
  * 
  */

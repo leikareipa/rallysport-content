@@ -13,7 +13,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/track-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Sends the track's data (container and manifesto files) as a zip file to
 // the client.
@@ -38,7 +38,7 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
         exit(Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $trackZipFile = (new DatabaseConnection\TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
+    $trackZipFile = (new DatabaseConnection\TrackDatabase())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
         exit(Response::code(404)->error_message("No matching track data found."));
@@ -97,7 +97,7 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
         exit(Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $trackDataJSON = (new DatabaseConnection\TrackDatabaseConnection())->get_track_data_as_json($trackResourceID);
+    $trackDataJSON = (new DatabaseConnection\TrackDatabase())->get_track_data_as_json($trackResourceID);
     if (!$trackDataJSON)
     {
         exit(Response::code(404)->error_message("No matching track data found."));
@@ -117,7 +117,7 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
 //
 function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL)
 {
-    $trackInfo = (new DatabaseConnection\TrackDatabaseConnection())->get_track_metadata($trackResourceID);
+    $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(Response::code(404)->error_message("No matching track data found."));

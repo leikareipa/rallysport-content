@@ -11,9 +11,9 @@
  * 
  * Usage:
  * 
- *  1. Create a new TrackDatabaseConnection instance: $trackDB = new TrackDatabaseConnection().
+ *  1. Create a new TrackDatabase instance: $trackDB = new DatabaseConnection\TrackDatabase().
  * 
- *  2. Use the methods provided by the TrackDatabaseConnection class for manipulating
+ *  2. Use the methods provided by the TrackDatabase class for manipulating
  *     the contents of the track database.
  * 
  */
@@ -21,7 +21,7 @@
 require_once __DIR__."/database-connection.php";
 require_once __DIR__."/../resource-id.php";
 
-class TrackDatabaseConnection extends DatabaseConnection
+class TrackDatabase extends DatabaseConnection
 {
     /*
      * The track database is currently a table ("rsc_tracks") in the general

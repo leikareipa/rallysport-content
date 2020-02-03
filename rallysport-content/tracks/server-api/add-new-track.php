@@ -12,7 +12,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/track-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
 require_once __DIR__."/../../common-scripts/validate-track-container-data.php";
 require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
@@ -144,7 +144,7 @@ function add_new_track(array $parameters)
             exit(Response::code(500)->error_message("Invalid HITABLE.TXT file."));
         }
 
-        if (!(new DatabaseConnection\TrackDatabaseConnection())->add_new_track(
+        if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
                                                                  $resourceID,
                                                                  $creatorID,
                                                                  $parameters["internalName"],

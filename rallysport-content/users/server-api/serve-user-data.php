@@ -13,7 +13,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/user-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
 
 // Prints into the PHP output stream a stringified JSON object containing
 // public information about the given user, or of all users in the database if
@@ -32,7 +32,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database-co
 //
 function serve_user_metadata_as_json(\RSC\ResourceID $resourceID = NULL)
 {
-    $userInfo = (new DatabaseConnection\UserDatabaseConnection())->get_user_information($resourceID);
+    $userInfo = (new DatabaseConnection\UserDatabase())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
         exit(Response::code(404)->error_message("No matching user data found."));

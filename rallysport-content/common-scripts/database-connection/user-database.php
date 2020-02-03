@@ -11,9 +11,9 @@
  * 
  * Usage:
  * 
- *  1. Create a new UserDatabaseConnection instance: $trackDB = new UserDatabaseConnection().
+ *  1. Create a new UserDatabase instance: $trackDB = new DatabaseConnection\UserDatabase().
  * 
- *  2. Use the methods provided by the UserDatabaseConnection class for manipulating
+ *  2. Use the methods provided by the UserDatabase class for manipulating
  *     the contents of the user database.
  * 
  */
@@ -21,7 +21,7 @@
 require_once __DIR__."/database-connection.php";
 require_once __DIR__."/../resource-id.php";
 
-class UserDatabaseConnection extends DatabaseConnection
+class UserDatabase extends DatabaseConnection
 {
     /*
      * The user database is currently a table ("rsc_users") in the general

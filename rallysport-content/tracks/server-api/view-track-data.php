@@ -17,7 +17,7 @@ require_once __DIR__."/../../common-scripts/resource-id.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata-container.php";
-require_once __DIR__."/../../common-scripts/database-connection/track-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
 // The page provides metadata about the requested track, identified by the
@@ -38,7 +38,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database-c
 //
 function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL)
 {
-    $trackInfo = (new DatabaseConnection\TrackDatabaseConnection())->get_track_metadata($trackResourceID);
+    $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(Response::code(404)->error_message("No matching track data found."));
