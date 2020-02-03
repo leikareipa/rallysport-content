@@ -7,13 +7,6 @@
  * 
  * This script attempts to add a new track into RSC's database.
  * 
- * Returns: JSON {succeeded: bool [, errorMessage: string]}
- * 
- *  - On failure (that is, when succeeded == false), 'errorMessage' will provide
- *    a brief description of the error.
- * 
- *  - On success, only the 'succeeded' parameter (set to true) is returned.
- * 
  */
 
 require_once __DIR__."/../../common-scripts/response.php";
@@ -25,6 +18,13 @@ require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 
 // Attempts to add to the Rally-Sport Content database a new track, whose data
 // are specified by the function call parameters.
+//
+// Returns: a response from the Response class (HTML status code + body).
+//
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error.
+//
+//  - On success, returns the HTML status code 201 without a body.
 //
 // Note:
 //

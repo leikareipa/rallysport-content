@@ -20,12 +20,13 @@ require_once __DIR__."/../../common-scripts/track-database-connection.php";
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(Response::code(200)->json([...]).
 //
-// Returns:
+// Returns: a response from the Response class (HTML status code + body).
 //
-//  - On failure: JSON {succeeded: false, errorMessage: string}
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error. No track data will
+//    be returned in this case.
 //
-//  - On success: The file's bytes as a stream
-//
+//  - On success, the response body will consist of the file's bytes.
 //
 function serve_track_data_as_zip_file(ResourceID $trackResourceID = NULL)
 {
@@ -51,14 +52,14 @@ function serve_track_data_as_zip_file(ResourceID $trackResourceID = NULL)
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(Response::code(200)->json([...]).
 //
-// Returns: JSON {succeeded: bool [, track: object[, errorMessage: string]]}
+// Returns: a response from the Response class (HTML status code + body).
 //
-//  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
-//    provide a brief description of the error. No track data will be returned
-//    in this case.
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error. No track data will
+//    be returned in this case.
 //
-//  - On success (when 'succeeded' == true), the 'track' object will contain
-//    the track's data. The data will be in the following form:
+//  - On success, the response body will be a JSON string that contains the
+//    track's data. The data will be in the following form:
 //
 //      {
 //          // Base64-encoded string representing the bytes of Rally-Sport's HITABLE.TXT file.
@@ -111,15 +112,7 @@ function serve_track_data_as_json(ResourceID $trackResourceID = NULL)
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(Response::code(200)->json([...]).
 //
-// Returns: JSON {succeeded: bool [, tracks: object[, errorMessage: string]]}
-//
-//  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
-//    provide a brief description of the error. No track data will be returned
-//    in this case.
-//
-//  - On success (when 'succeeded' == true), the 'tracks' object will contain
-//    information about the tracks queried. The 'errorMessage' string will
-//    not be included.
+// Returns: a response from the Response class (HTML status code + body).
 //
 function serve_track_metadata_as_json(ResourceID $trackResourceID = NULL)
 {

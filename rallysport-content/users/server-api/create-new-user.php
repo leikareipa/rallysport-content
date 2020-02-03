@@ -8,24 +8,6 @@
  * This script attempts to create and populate a new entry in the database's
  * table of users.
  * 
- * Returns: JSON {succeeded: bool [, account: object[, errorMessage: string]]}
- * 
- *  - On failure (that is, when 'succeeded' == false), 'errorMessage' will
- *    provide a brief description of the error. The 'account' object will
- *    not be returned.
- * 
- *  - On success (when 'succeeded' == TRUE), the 'account' object will provide
- *    information about the new account. Currently, the following info is
- *    included:
- * 
- *      {
- *          // The new user's resource id, without the resource type; e.g.
- *          // "xxx-xxx-xxx". The full resource id, including the resource
- *          // type, would be "user:xxx-xxx-xxx", but this won't be needed
- *          // in client-to-server interaction.
- *          id: string
- *      }
- * 
  */
 
 require_once __DIR__."/../../common-scripts/response.php";
@@ -37,6 +19,14 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 //
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(Response::code(200)->json([...]).
+//
+// Returns: a response from the Response class (HTML status code + body).
+//
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error.
+//
+//  - On success, returns the HTML status code 201 and a body as a JSON string
+//    that provides information about the newly-created user account.
 //
 function create_new_user(array $parameters)
 {

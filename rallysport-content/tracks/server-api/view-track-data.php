@@ -17,6 +17,23 @@ require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata-container.php";
 require_once __DIR__."/../../common-scripts/track-database-connection.php";
 
+// Constructs a HTML page in memory, and sends it to the client for display.
+// The page provides metadata about the requested track, identified by the
+// 'trackResourceID' parameter (or of all public tracks in the database if
+// this parameter is NULL).
+//
+// Note: The function should always return using exit() together with a
+// Response object, e.g. exit(Response::code(200)->json([...]).
+//
+// Returns: a response from the Response class (HTML status code + body).
+//
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error. No track data will
+//    be returned in this case.
+//
+//  - On success, the response body will consist of the HTML page's source
+//    code as a string.
+//
 function view_track_metadata(ResourceID $trackResourceID = NULL)
 {
     $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
