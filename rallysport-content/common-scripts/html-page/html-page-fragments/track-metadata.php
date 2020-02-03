@@ -48,7 +48,7 @@ class TrackMetadata extends HTMLPageFragment
         $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "Image unavailable");
         $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
-        $trackTimestamp       = ($trackMetadata["modificationTimestamp"] ?? "0");
+        $trackTimestamp       = ($trackMetadata["creationTimestamp"] ?? "0");
         $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
 
         return "
@@ -106,7 +106,7 @@ class TrackMetadata extends HTMLPageFragment
                             </span>
                         </div>
 
-                        <div class='value-field' id='download'>
+                        <div class='value-field' id='request-deletion'>
                             <span class='value'>
                                 <i class='fas fa-fw fa-database'></i>
                                 <a href='#' onclick=\"request_track_deletion('/rallysport-content/tracks', '{$trackID}')\">Remove</a>
