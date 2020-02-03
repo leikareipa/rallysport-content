@@ -30,26 +30,42 @@ class TrackDatabase extends DatabaseConnection
      * 
      */
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
+
         return;
+    }
+
+    private function increment_track_download_count(\RSC\ResourceID $resourceID) : bool 
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $databaseReturnValue = $this->issue_db_command("UPDATE rsc_tracks
+                                                        SET download_count = download_count + 1
+                                                        WHERE resource_id = ?",
+                                                        [$resourceID->string()]);
+
+        return (($databaseReturnValue == 0)? true : false);
     }
 
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise. The 'trackDataZIP' parameter is a string
     // representing the byte data of a zip file containing the track's end-user
     // data (container, manifesto, and HITABLE files).
-    function add_new_track(\RSC\ResourceID $resourceID,
-                           \RSC\ResourceID $creatorID,
-                           string $internalName,
-                           string $displayName,
-                           int $width,
-                           int $height,
-                           string $containerData,
-                           string $manifestoData,
-                           string $kierrosSVGImage,
-                           string $hitableData) : bool
+    public function add_new_track(\RSC\ResourceID $resourceID,
+                                  \RSC\ResourceID $creatorID,
+                                  string $internalName,
+                                  string $displayName,
+                                  int $width,
+                                  int $height,
+                                  string $containerData,
+                                  string $manifestoData,
+                                  string $kierrosSVGImage,
+                                  string $hitableData) : bool
     {
         if (!$this->is_connected())
         {
@@ -119,7 +135,7 @@ class TrackDatabase extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On error, FALSE will be returned.
-    function get_track_metadata(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_metadata(\RSC\ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -131,16 +147,16 @@ class TrackDatabase extends DatabaseConnection
         $rowSelector = ($resourceID? "WHERE resource_id = ?" : "");
 
         $trackInfo = $this->issue_db_query(
-                        "SELECT
-                          resource_id,
-                          creator_resource_id,
-                          creation_timestamp,
-                          modification_timestamp,
-                          track_name_internal,
-                          track_name_display,
-                          track_width,
-                          track_height,
-                          kierros_image_svg
+                        "SELECT resource_id,
+                                creator_resource_id,
+                                creation_timestamp,
+                                modification_timestamp,
+                                download_count,
+                                track_name_internal,
+                                track_name_display,
+                                track_width,
+                                track_height,
+                                kierros_image_svg
                          FROM rsc_tracks
                          {$rowSelector}",
                          ($resourceID? [$resourceID->string()] : NULL));
@@ -156,15 +172,16 @@ class TrackDatabase extends DatabaseConnection
         {
             $returnObject[] =
             [
-                "resourceID"       => $track["resource_id"],
-                "creatorID"        => $track["creator_resource_id"],
-                "internalName"     => $track["track_name_internal"],
-                "displayName"      => $track["track_name_display"],
-                "width"            => $track["track_width"],
-                "height"           => $track["track_height"],
-                "creationTimestamp"=> $track["creation_timestamp"],
-                "modificationTimestamp"=> $track["modification_timestamp"],
-                "kierrosSVG"       => $track["kierros_image_svg"],
+                "resourceID"            => $track["resource_id"],
+                "creatorID"             => $track["creator_resource_id"],
+                "internalName"          => $track["track_name_internal"],
+                "displayName"           => $track["track_name_display"],
+                "width"                 => $track["track_width"],
+                "height"                => $track["track_height"],
+                "creationTimestamp"     => $track["creation_timestamp"],
+                "modificationTimestamp" => $track["modification_timestamp"],
+                "kierrosSVG"            => $track["kierros_image_svg"],
+                "downloadCount"         => $track["download_count"],
             ];
         }
 
@@ -191,7 +208,7 @@ class TrackDatabase extends DatabaseConnection
     //
     // On failure, FALSE is returned.
     //
-    function get_track_data_as_zip_file(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_data_as_zip_file(\RSC\ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -205,9 +222,8 @@ class TrackDatabase extends DatabaseConnection
         }
 
         $trackZipFile = $this->issue_db_query(
-                            "SELECT
-                              track_data_zip,
-                              track_name_internal
+                            "SELECT track_data_zip,
+                                    track_name_internal
                              FROM rsc_tracks
                              WHERE resource_id = ?",
                             [$resourceID->string()]);
@@ -222,6 +238,8 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
+        $this->increment_track_download_count($resourceID);
+
         return ["filename" => "{$trackZipFile[0]['track_name_internal']}.ZIP",
                 "data"     => $trackZipFile[0]["track_data_zip"]];
     }
@@ -229,7 +247,7 @@ class TrackDatabase extends DatabaseConnection
     // Returns the given track's data as a JSON string. The string will contain
     // all data needed to load the track into RallySportED-js for editing. On
     // failure, FALSE is returned.
-    function get_track_data_as_json(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_data_as_json(\RSC\ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -243,8 +261,7 @@ class TrackDatabase extends DatabaseConnection
         }
 
         $trackJSON = $this->issue_db_query(
-                        "SELECT
-                          track_data_json
+                        "SELECT track_data_json
                          FROM rsc_tracks
                          WHERE resource_id = ?",
                         [$resourceID->string()]);
@@ -257,6 +274,8 @@ class TrackDatabase extends DatabaseConnection
         {
             return false;
         }
+
+        $this->increment_track_download_count($resourceID);
 
         return $trackJSON[0]["track_data_json"];
     }

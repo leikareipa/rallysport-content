@@ -49,8 +49,7 @@ class TrackMetadata extends HTMLPageFragment
         $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
         $trackTimestamp       = ($trackMetadata["modificationTimestamp"] ?? "0");
-        $trackLoaderVersion   = 5; /// TODO.
-        $trackDownloadCount   = 13; /// TODO.
+        $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
 
         return "
         <div class='track-metadata'>
@@ -79,7 +78,7 @@ class TrackMetadata extends HTMLPageFragment
                         <span class='value'>{$trackWidth} x {$trackHeight}</span>
                     </div>
 
-                    <div class='value-field' id='upload-date' title='Last modified on ".date("j.n.Y H:i", $trackTimestamp)."'>
+                    <div class='value-field' id='upload-date' title='Last modified: ".date("j.n.Y H:i", $trackTimestamp)."'>
                         <i class='fas fa-fw fa-sm fa-user-clock'></i>
                         <span class='value'>".date("j M Y", $trackTimestamp)."</span>
                     </div>
