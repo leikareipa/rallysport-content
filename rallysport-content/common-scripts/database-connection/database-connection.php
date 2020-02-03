@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -13,9 +13,9 @@
  * 
  */
 
-require_once "response.php";
-require_once "resource-id.php";
-require_once "create-zip.php";
+require_once __DIR__."/../response.php";
+require_once __DIR__."/../resource-id.php";
+require_once __DIR__."/../create-zip.php";
 
 abstract class DatabaseConnection
 {

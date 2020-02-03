@@ -1,4 +1,5 @@
 <?php namespace RSC\API;
+      use RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -11,7 +12,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/track-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/track-database-connection.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
 require_once __DIR__."/../../common-scripts/validate-track-container-data.php";
 require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
@@ -143,17 +144,17 @@ function add_new_track(array $parameters)
             exit(Response::code(500)->error_message("Invalid HITABLE.TXT file."));
         }
 
-        if (!(new \RSC\TrackDatabaseConnection())->add_new_track(
-                                                                $resourceID,
-                                                                $creatorID,
-                                                                $parameters["internalName"],
-                                                                $parameters["displayName"],
-                                                                $parameters["width"],
-                                                                $parameters["height"],
-                                                                $parameters["containerData"],
-                                                                $parameters["manifestoData"],
-                                                                \RSC\svg_image_from_kierros_data($parameters["containerData"]),
-                                                                $hitableData))
+        if (!(new DatabaseConnection\TrackDatabaseConnection())->add_new_track(
+                                                                 $resourceID,
+                                                                 $creatorID,
+                                                                 $parameters["internalName"],
+                                                                 $parameters["displayName"],
+                                                                 $parameters["width"],
+                                                                 $parameters["height"],
+                                                                 $parameters["containerData"],
+                                                                 $parameters["manifestoData"],
+                                                                 \RSC\svg_image_from_kierros_data($parameters["containerData"]),
+                                                                 $hitableData))
         {
             exit(Response::code(500)->error_message("Database error."));
         }

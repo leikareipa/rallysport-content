@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -18,8 +18,8 @@
  * 
  */
 
-require_once "database-connection.php";
-require_once "resource-id.php";
+require_once __DIR__."/database-connection.php";
+require_once __DIR__."/../resource-id.php";
 
 class UserDatabaseConnection extends DatabaseConnection
 {
@@ -48,7 +48,7 @@ class UserDatabaseConnection extends DatabaseConnection
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(ResourceID $resourceID,
+    function create_new_user(\RSC\ResourceID $resourceID,
                              string $plaintextPassword,
                              string $plaintextEmail) : bool
     {
@@ -84,7 +84,7 @@ class UserDatabaseConnection extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On failure, FALSE is returned.
-    function get_user_information(ResourceID $resourceID = NULL)
+    function get_user_information(\RSC\ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {

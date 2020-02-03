@@ -1,4 +1,5 @@
 <?php namespace RSC\API;
+      use RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -12,7 +13,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource-id.php";
-require_once __DIR__."/../../common-scripts/user-database-connection.php";
+require_once __DIR__."/../../common-scripts/database-connection/user-database-connection.php";
 
 // Prints into the PHP output stream a stringified JSON object containing
 // public information about the given user, or of all users in the database if
@@ -31,7 +32,7 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 //
 function serve_user_metadata_as_json(\RSC\ResourceID $resourceID = NULL)
 {
-    $userInfo = (new \RSC\UserDatabaseConnection())->get_user_information($resourceID);
+    $userInfo = (new DatabaseConnection\UserDatabaseConnection())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
         exit(Response::code(404)->error_message("No matching user data found."));
