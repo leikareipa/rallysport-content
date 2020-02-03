@@ -58,6 +58,8 @@ class TrackDatabase extends DatabaseConnection
 
         /// TODO: Validate the input parameters.
 
+        $timestamp = time();
+
         // The full track data as a zip file. The file contains everything needed
         // to play the track in Rally-Sport using the RallySportED Loader.
         $trackDataZIP = \RSC\create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
@@ -95,9 +97,10 @@ class TrackDatabase extends DatabaseConnection
                                     track_data_zip,
                                     track_data_json,
                                     creation_timestamp,
+                                    modification_timestamp,
                                     creator_resource_id,
                                     kierros_image_svg)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
                                    $displayName,
@@ -105,7 +108,8 @@ class TrackDatabase extends DatabaseConnection
                                    $height,
                                    $trackDataZIP,
                                    $trackDataJSON,
-                                   time(),
+                                   $timestamp,
+                                   $timestamp,
                                    $creatorID->string(),
                                    $kierrosSVGImage]);
 
@@ -131,6 +135,7 @@ class TrackDatabase extends DatabaseConnection
                           resource_id,
                           creator_resource_id,
                           creation_timestamp,
+                          modification_timestamp,
                           track_name_internal,
                           track_name_display,
                           track_width,
@@ -158,6 +163,7 @@ class TrackDatabase extends DatabaseConnection
                 "width"            => $track["track_width"],
                 "height"           => $track["track_height"],
                 "creationTimestamp"=> $track["creation_timestamp"],
+                "modificationTimestamp"=> $track["modification_timestamp"],
                 "kierrosSVG"       => $track["kierros_image_svg"],
             ];
         }

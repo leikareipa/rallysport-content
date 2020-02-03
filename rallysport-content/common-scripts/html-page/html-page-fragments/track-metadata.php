@@ -48,7 +48,7 @@ class TrackMetadata extends HTMLPageFragment
         $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "Image unavailable");
         $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
-        $trackUploadTimestamp = ($trackMetadata["creationTimestamp"] ?? "0");
+        $trackTimestamp       = ($trackMetadata["modificationTimestamp"] ?? "0");
         $trackLoaderVersion   = 5; /// TODO.
         $trackDownloadCount   = 13; /// TODO.
 
@@ -79,9 +79,9 @@ class TrackMetadata extends HTMLPageFragment
                         <span class='value'>{$trackWidth} x {$trackHeight}</span>
                     </div>
 
-                    <div class='value-field' id='upload-date' title='Uploaded on ".date("j.n.Y H:i", $trackUploadTimestamp)."'>
+                    <div class='value-field' id='upload-date' title='Last modified on ".date("j.n.Y H:i", $trackTimestamp)."'>
                         <i class='fas fa-fw fa-sm fa-user-clock'></i>
-                        <span class='value'>".date("j M Y", $trackUploadTimestamp)."</span>
+                        <span class='value'>".date("j M Y", $trackTimestamp)."</span>
                     </div>
 
                     <div class='value-field' id='uploader' title='Uploaded by {$trackUploaderID}'>

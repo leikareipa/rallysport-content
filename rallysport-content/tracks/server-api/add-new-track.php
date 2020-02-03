@@ -108,7 +108,7 @@ function add_new_track(array $parameters)
 
             // Note: At this point, we assume that the track's width and height are
             // equal, e.g. that it's square.
-            if (!is_valid_container_data($parameters["containerData"], $parameters["width"]))
+            if (!\RSC\is_valid_container_data($parameters["containerData"], $parameters["width"]))
             {
                 exit(Response::code(400)->error_message("Invalid container data."));
             }
@@ -120,7 +120,7 @@ function add_new_track(array $parameters)
                 exit(Response::code(400)->error_message("Invalid manifesto data."));
             }
 
-            if (!is_valid_manifesto_data($parameters["manifestoData"]))
+            if (!\RSC\is_valid_manifesto_data($parameters["manifestoData"]))
             {
                 exit(Response::code(400)->error_message("Invalid manifesto data."));
             }
