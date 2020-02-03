@@ -69,11 +69,6 @@ class TrackMetadata extends HTMLPageFragment
 
                 <div class='fields'>
 
-                    <div class='value-field' id='loader-version' title='Requires RallySportED Loader v.{$trackLoaderVersion}'>
-                        <i class='fas fa-fw fa-sm fa-code-branch'></i>
-                        <span class='value'>{$trackLoaderVersion}</span>
-                    </div>
-
                     <div class='value-field' id='view-count' title='Viewed {$trackDownloadCount} times'>
                         <i class='fas fa-fw fa-sm fa-eye'></i>
                         <span class='value'>{$trackDownloadCount}</span>
