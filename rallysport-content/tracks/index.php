@@ -1,4 +1,4 @@
-<?php
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -23,10 +23,10 @@ switch ($_SERVER["REQUEST_METHOD"])
         // provided, we assume the query relates to all tracks in the database.
         if ($_GET["id"] ?? false)
         {
-            $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::TRACK);
+            $resourceID = ResourceID::from_string($_GET["id"], ResourceType::TRACK);
             if (!$resourceID)
             {
-                exit(RallySportContent\Response::code(400)->error_message("Invalid track resource ID."));
+                exit(API\Response::code(400)->error_message("Invalid track resource ID."));
             }
         }
         else
@@ -37,19 +37,19 @@ switch ($_SERVER["REQUEST_METHOD"])
         // Satisfy the GET request by outputting the relevant data.
         if ($_GET["zip"] ?? false)
         {
-            RallySportContent\serve_track_data_as_zip_file($resourceID);
+            API\serve_track_data_as_zip_file($resourceID);
         }
         else if ($_GET["json"] ?? false)
         {
-            RallySportContent\serve_track_data_as_json($resourceID);
+            API\serve_track_data_as_json($resourceID);
         }
         else if ($_GET["metadata"] ?? false)
         {
-            RallySportContent\serve_track_metadata_as_json($resourceID);
+            API\serve_track_metadata_as_json($resourceID);
         }
         else
         {
-            RallySportContent\view_track_metadata($resourceID);
+            API\view_track_metadata($resourceID);
         }
 
         break;
@@ -57,7 +57,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "POST":
     {
-        RallySportContent\add_new_track(json_decode(file_get_contents("php://input"), true));
+        API\add_new_track(json_decode(file_get_contents("php://input"), true));
 
     break;
     }
@@ -80,5 +80,5 @@ switch ($_SERVER["REQUEST_METHOD"])
         break;
     }
 
-    default: exit(RallySportContent\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(API\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
 }

@@ -22,8 +22,8 @@ function request_track_deletion(rallySportContentURL, trackID)
     let password = "";
 
     /// TODO: A better mechanism for querying the username and password.
-    if (((userID = window.prompt("Track removal requires authentication.\nEnter your user ID:", "user.xxx-xxx-xxx")) === null) ||
-        ((password = window.prompt("Track removal requires authentication.\nEnter your password:", "")) === null))
+    if (((userID = window.prompt(`Track removal requires authentication.\n\nEnter your user ID:`, "user.xxx-xxx-xxx")) === null) ||
+        ((password = window.prompt(`Track removal requires authentication.\n\nEnter your password:`, "")) === null))
     {
         window.alert("Authentication interrupted.");
         return;

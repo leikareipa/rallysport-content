@@ -1,4 +1,5 @@
-<?php namespace RallySportContent;
+<?php namespace RallySportContent\API;
+      use \RallySportContent\HTMLPage;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -34,9 +35,9 @@ require_once __DIR__."/../../common-scripts/track-database-connection.php";
 //  - On success, the response body will consist of the HTML page's source
 //    code as a string.
 //
-function view_track_metadata(ResourceID $trackResourceID = NULL)
+function view_track_metadata(\RallySportContent\ResourceID $trackResourceID = NULL)
 {
-    $trackInfo = (new TrackDatabaseConnection())->get_track_metadata($trackResourceID);
+    $trackInfo = (new \RallySportContent\TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(Response::code(404)->error_message("No matching track data found."));

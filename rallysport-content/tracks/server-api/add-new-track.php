@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RallySportContent\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -131,8 +131,8 @@ function add_new_track(array $parameters)
 
     // Add the new track into the database.
     {
-        $resourceID = ResourceID::random(ResourceType::TRACK);
-        $creatorID = ResourceID::random(ResourceType::USER); /// TODO: Use the actual creator ID.
+        $resourceID = \RallySportContent\ResourceID::random(\RallySportContent\ResourceType::TRACK);
+        $creatorID = \RallySportContent\ResourceID::random(\RallySportContent\ResourceType::USER); /// TODO: Use the actual creator ID.
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
@@ -143,16 +143,17 @@ function add_new_track(array $parameters)
             exit(Response::code(500)->error_message("Invalid HITABLE.TXT file."));
         }
 
-        if (!(new TrackDatabaseConnection())->add_new_track($resourceID,
-                                                            $creatorID,
-                                                            $parameters["internalName"],
-                                                            $parameters["displayName"],
-                                                            $parameters["width"],
-                                                            $parameters["height"],
-                                                            $parameters["containerData"],
-                                                            $parameters["manifestoData"],
-                                                            svg_image_from_kierros_data($parameters["containerData"]),
-                                                            $hitableData))
+        if (!(new \RallySportContent\TrackDatabaseConnection())->add_new_track(
+                                                                $resourceID,
+                                                                $creatorID,
+                                                                $parameters["internalName"],
+                                                                $parameters["displayName"],
+                                                                $parameters["width"],
+                                                                $parameters["height"],
+                                                                $parameters["containerData"],
+                                                                $parameters["manifestoData"],
+                                                                svg_image_from_kierros_data($parameters["containerData"]),
+                                                                $hitableData))
         {
             exit(Response::code(500)->error_message("Database error."));
         }

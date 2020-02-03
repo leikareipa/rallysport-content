@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RallySportContent\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -35,10 +35,10 @@ function create_new_user(array $parameters)
 
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
-    $userResourceID = ResourceID::random(ResourceType::USER);
+    $userResourceID = \RallySportContent\ResourceID::random(ResourceType::USER);
 
     if (!$userResourceID ||
-        !(new UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
+        !(new \RallySportContent\UserDatabaseConnection())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
         exit(Response::code(500)->error_message("Could not create a new user."));
     }

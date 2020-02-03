@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RallySportContent\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -29,9 +29,9 @@ require_once __DIR__."/../../common-scripts/user-database-connection.php";
 //  - On success, the response body will be a JSON string that provides
 //    information about the user(s) queried.
 //
-function serve_user_metadata_as_json(ResourceID $resourceID = NULL)
+function serve_user_metadata_as_json(\RallySportContent\ResourceID $resourceID = NULL)
 {
-    $userInfo = (new UserDatabaseConnection())->get_user_information($resourceID);
+    $userInfo = (new \RallySportContent\UserDatabaseConnection())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
         exit(Response::code(404)->error_message("No matching user data found."));

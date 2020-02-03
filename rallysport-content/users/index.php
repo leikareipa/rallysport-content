@@ -1,4 +1,4 @@
-<?php
+<?php namespace RallySportContent;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -22,11 +22,11 @@ switch ($_SERVER["REQUEST_METHOD"])
         // provided, we assume the query relates to all users in the database.
         if ($_GET["id"] ?? false)
         {
-            $resourceID = RallySportContent\ResourceID::from_string($_GET["id"], RallySportContent\ResourceType::USER);
+            $resourceID = ResourceID::from_string($_GET["id"], ResourceType::USER);
             if (!$resourceID)
             {
                 echo $_GET["id"];
-                exit(RallySportContent\Response::code(400)->error_message("Invalid user resource ID."));
+                exit(API\Response::code(400)->error_message("Invalid user resource ID."));
             }
         }
         else
@@ -37,7 +37,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         // Satisfy the GET request by outputting the relevant data.
         if ($_GET["metadata"] ?? false)
         {
-            RallySportContent\serve_user_metadata_as_json($resourceID);
+            API\serve_user_metadata_as_json($resourceID);
         }
         else
         {
@@ -49,7 +49,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "POST":
     {
-        RallySportContent\create_new_user(json_decode(file_get_contents("php://input"), true));
+        API\create_new_user(json_decode(file_get_contents("php://input"), true));
 
         break;
     }
@@ -68,5 +68,5 @@ switch ($_SERVER["REQUEST_METHOD"])
         break;
     }
 
-    default: exit(RallySportContent\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(API\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
 }
