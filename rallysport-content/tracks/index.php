@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RSC;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -66,7 +66,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         error_log("Unhandled request: PUT");
 
-        ///RallySportContent\update_track(json_decode(file_get_contents("php://input"), true));
+        ///RSC\update_track(json_decode(file_get_contents("php://input"), true));
 
         break;
     }
@@ -75,7 +75,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         error_log("Unhandled request: DELETE");
 
-        ///RallySportContent\delete_track(json_decode(file_get_contents("php://input"), true));
+        ///RSC\delete_track(json_decode(file_get_contents("php://input"), true));
         
         break;
     }

@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RSC;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -41,7 +41,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
         else
         {
-            ///RallySportContent\view_user($resourceID);
+            ///RSC\view_user($resourceID);
         }
 
         break;
@@ -56,7 +56,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
     case "PUT":
     {
-        ///RallySportContent\update_user(json_decode(file_get_contents("php://input"), true));
+        ///RSC\update_user(json_decode(file_get_contents("php://input"), true));
 
         break;
     }

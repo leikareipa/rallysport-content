@@ -1,4 +1,4 @@
-<?php namespace RallySportContent;
+<?php namespace RSC;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -60,10 +60,10 @@ class TrackDatabaseConnection extends DatabaseConnection
 
         // The full track data as a zip file. The file contains everything needed
         // to play the track in Rally-Sport using the RallySportED Loader.
-        $trackDataZIP = create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
-                                                   "{$internalName}.\$FT" => $manifestoData,
-                                                   "HITABLE.TXT"          => $hitableData],
-                                                   $internalName);
+        $trackDataZIP = \RSC\create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
+                                                        "{$internalName}.\$FT" => $manifestoData,
+                                                        "HITABLE.TXT"          => $hitableData],
+                                                        $internalName);
         if (!$trackDataZIP)
         {
             return false;

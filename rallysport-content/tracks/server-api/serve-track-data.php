@@ -1,4 +1,4 @@
-<?php namespace RallySportContent\API;
+<?php namespace RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -28,7 +28,7 @@ require_once __DIR__."/../../common-scripts/track-database-connection.php";
 //
 //  - On success, the response body will consist of the file's bytes.
 //
-function serve_track_data_as_zip_file(\RallySportContent\ResourceID $trackResourceID = NULL)
+function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -37,7 +37,7 @@ function serve_track_data_as_zip_file(\RallySportContent\ResourceID $trackResour
         exit(Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $trackZipFile = (new \RallySportContent\TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
+    $trackZipFile = (new \RSC\TrackDatabaseConnection())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
         exit(Response::code(404)->error_message("No matching track data found."));
@@ -87,7 +87,7 @@ function serve_track_data_as_zip_file(\RallySportContent\ResourceID $trackResour
 //          }
 //      }
 //
-function serve_track_data_as_json(\RallySportContent\ResourceID $trackResourceID = NULL)
+function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -96,7 +96,7 @@ function serve_track_data_as_json(\RallySportContent\ResourceID $trackResourceID
         exit(Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $trackDataJSON = (new \RallySportContent\TrackDatabaseConnection())->get_track_data_as_json($trackResourceID);
+    $trackDataJSON = (new \RSC\TrackDatabaseConnection())->get_track_data_as_json($trackResourceID);
     if (!$trackDataJSON)
     {
         exit(Response::code(404)->error_message("No matching track data found."));
@@ -114,9 +114,9 @@ function serve_track_data_as_json(\RallySportContent\ResourceID $trackResourceID
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
-function serve_track_metadata_as_json(\RallySportContent\ResourceID $trackResourceID = NULL)
+function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL)
 {
-    $trackInfo = (new \RallySportContent\TrackDatabaseConnection())->get_track_metadata($trackResourceID);
+    $trackInfo = (new \RSC\TrackDatabaseConnection())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(Response::code(404)->error_message("No matching track data found."));
