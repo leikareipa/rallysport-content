@@ -44,7 +44,9 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
         exit(Response::code(404)->error_message("No matching track data found."));
     }
 
-    exit(Response::code(200)->file($trackZipFile["filename"], $trackZipFile["data"]));
+    // We ask the client to keep the file cached for 30 days, as server-side
+    // track data are not expected to change.
+    exit(Response::code(200)->file($trackZipFile["filename"], $trackZipFile["data"], 2592000));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing the
@@ -103,7 +105,9 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
         exit(Response::code(404)->error_message("No matching track data found."));
     }
 
-    exit(Response::code(200)->json(json_decode($trackDataJSON, true)));
+    // We ask the client to keep the response data cached for 30 days, as
+    // server-side track data are not expected to change.
+    exit(Response::code(200)->json(json_decode($trackDataJSON, true), 2592000));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing public
@@ -123,5 +127,7 @@ function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL)
         exit(Response::code(404)->error_message("No matching track data found."));
     }
 
-    exit(Response::code(200)->json($trackInfo));
+    // We ask the client to keep the response data cached for 30 days, as
+    // server-side track data are not expected to change.
+    exit(Response::code(200)->json($trackInfo, 2592000));
 }
