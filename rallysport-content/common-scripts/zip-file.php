@@ -5,6 +5,9 @@
  *      CODE: https://github.com/phpmyadmin/phpmyadmin/blob/RELEASE_4_5_5_1/libraries/zip.lib.php
  *      LICENSE: https://github.com/phpmyadmin/phpmyadmin/blob/RELEASE_4_5_5_1/LICENSE
  * 
+ * NOTE: Although the license, linked above, suggests 'GPL2 or later', it's
+ * unclear whether the particular code file allows 'or later'.
+ * 
  * SUPERFICIALLY MODIFIED by Tarpeeksi Hyvae Soft (2020) for use in Rally-Sport
  * Content. Please diff against the original source file, linked above, to find
  * what has changed.
