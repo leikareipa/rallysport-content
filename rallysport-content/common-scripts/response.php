@@ -81,6 +81,16 @@ class Response
         return 0;
     }
 
+    // Should be used together with response code 405. The 'allowedMethods'
+    // string lists the allowed request methods separated by commas, e.g.
+    // "GET, POST, DELETE".
+    public function allowed(string $allowedMethods) : int
+    {
+        header("Allow: {$allowedMethods}");
+
+        return $this->empty_body();
+    }
+
     // For responding with an error message string. You would use this with
     // response codes indicating an error, e.g. 404. The return value is expected
     // to be received by exit().
