@@ -46,7 +46,7 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL) :
 
     // We ask the client to keep the file cached for 30 days, as server-side
     // track data are not expected to change.
-    exit(Response::code(200)->file($trackZipFile["filename"], $trackZipFile["data"], 2592000));
+    exit(Response::code(200)->binary_file($trackZipFile["filename"], $trackZipFile["data"], 2592000));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing the
@@ -127,4 +127,17 @@ function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL) :
     // We ask the client to keep the response data cached for 30 days, as
     // server-side track data are not expected to change.
     exit(Response::code(200)->json($trackInfo, 2592000));
+}
+
+function serve_track_kierros_svg(\RSC\ResourceID $trackResourceID = NULL) : void
+{
+    $kierrosSVG = (new DatabaseConnection\TrackDatabase())->get_track_kierros_svg($trackResourceID);
+    if (!$kierrosSVG)
+    {
+        exit(Response::code(404)->error_message("No matching track data found."));
+    }
+
+    // We ask the client to keep the response data cached for 30 days, as
+    // server-side track data are not expected to change.
+    exit(Response::code(200)->svg_image($kierrosSVG, 2592000));
 }

@@ -114,10 +114,10 @@ class Response
 
         return 1;
     }
-
-    // Initiates a client download of the given file data with the given file
-    // name. The return value is expected to be received by exit().
-    public function file(string $fileName, string $fileData, int $cacheForNumSeconds = 86400) : int
+    
+    // Initiates a client download of the given binary file data with the given
+    // file name. The return value is expected to be received by exit().
+    public function binary_file(string $fileName, string $fileData, int $cacheForNumSeconds = 86400) : int
     {
         $baseFilename = str_replace("\"", "'", basename($fileName));
 
