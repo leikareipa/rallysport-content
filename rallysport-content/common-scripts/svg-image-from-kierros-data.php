@@ -65,7 +65,10 @@ function svg_image_from_kierros_data(string $trackDataContainer)
     }
 
     // The string into which we'll create the image.
-    $svgString = "<svg width='100%' height='100%' viewBox='0 0 ".($trackSideLength * 128)." ".($trackSideLength * 128)."' preserveAspectRatio='none'><polygon points='";
+    $svgString = "<svg width='100%' height='100%' viewBox='0 0 ".
+                 ($trackSideLength * 128)." ".($trackSideLength * 128).
+                 "' preserveAspectRatio='none'>".
+                 "<polygon vector-effect='non-scaling-stroke' points='";
 
     // Add the <polyline> points. Each point receives a checkpoint's X,Y
     // coordinates.
@@ -77,12 +80,17 @@ function svg_image_from_kierros_data(string $trackDataContainer)
         $checkpointX = $checkpointData[1];
         $checkpointY = $checkpointData[2];
 
-        $svgString .= "{$checkpointX},{$checkpointY} ";
+        $svgString .= "{$checkpointX},{$checkpointY}";
+
+        if ($i < ($numCheckpoints - 1))
+        {
+            $svgString .= " ";
+        }
     }
 
     // Close the polygon element. We expect the target HTML page to use CSS for
     // styling the SVG.
-    $svgString .= "' vector-effect='non-scaling-stroke'/></svg>";
+    $svgString .= "'/></svg>";
 
     return $svgString;
 }
