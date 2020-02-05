@@ -13,7 +13,7 @@
  */
 
 require_once __DIR__."/../../common-scripts/response.php";
-require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata-container.php";

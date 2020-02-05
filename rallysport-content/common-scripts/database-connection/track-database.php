@@ -19,7 +19,7 @@
  */
 
 require_once __DIR__."/database-connection.php";
-require_once __DIR__."/../resource-id.php";
+require_once __DIR__."/../resource/resource-id.php";
 require_once __DIR__."/../zip-file.php";
 
 class TrackDatabase extends DatabaseConnection

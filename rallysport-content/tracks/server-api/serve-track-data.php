@@ -12,7 +12,7 @@
  */
 
 require_once __DIR__."/../../common-scripts/response.php";
-require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Sends the track's data (container and manifesto files) as a zip file to

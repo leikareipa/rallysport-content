@@ -12,7 +12,7 @@
 require_once __DIR__."/server-api/create-new-user.php";
 require_once __DIR__."/server-api/serve-user-data.php";
 require_once __DIR__."/../common-scripts/response.php";
-require_once __DIR__."/../common-scripts/resource-id.php";
+require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

@@ -12,7 +12,7 @@
  */
 
 require_once __DIR__."/../../common-scripts/response.php";
-require_once __DIR__."/../../common-scripts/resource-id.php";
+require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
 
 // Attempts to add to the Rally-Sport Content database a new user, whose

@@ -13,7 +13,7 @@ require_once __DIR__."/server-api/add-new-track.php";
 require_once __DIR__."/server-api/view-track-data.php";
 require_once __DIR__."/server-api/serve-track-data.php";
 require_once __DIR__."/../common-scripts/response.php";
-require_once __DIR__."/../common-scripts/resource-id.php";
+require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

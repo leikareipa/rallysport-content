@@ -14,7 +14,7 @@
  */
 
 require_once __DIR__."/../response.php";
-require_once __DIR__."/../resource-id.php";
+require_once __DIR__."/../resource/resource-id.php";
 
 abstract class DatabaseConnection
 {
