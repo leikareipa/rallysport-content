@@ -64,33 +64,46 @@ function svg_image_from_kierros_data(string $trackDataContainer)
         return $nullImage;
     }
 
-    // The string into which we'll create the image.
-    $svgString = "<svg width='100%' height='100%' viewBox='0 0 ".
-                 ($trackSideLength * 128)." ".($trackSideLength * 128).
-                 "' preserveAspectRatio='none'>".
-                 "<polygon vector-effect='non-scaling-stroke' points='";
+    // A value in the range (0,1] used to scale from Rally-Sport's world coordinates
+    // into coordinates in the SVG. For instance, if this value is 0.5, then the
+    // Rally-Sport coordinate value 453 would be stored as floor(453 * 0.5) = 226.
+    // Without this reduction in scale, the SVG coordinate space would be on the
+    // order of 16384 x 16384, which is larger than we need - though we still want
+    // to keep it large enough, like 4096 x 4096, so that lines connecting points
+    // in the coordinate system appear smooth when the SVG is displayed on the page.
+    // (A smaller coordinate system also results in fewer bytes required to store
+    // the image, since the individual coordinate value strings will be shorter.)
+    $svgCoordinateScale = 0.125;
 
-    // Add the <polyline> points. Each point receives a checkpoint's X,Y
-    // coordinates.
-    for ($i = 0; $i < $numCheckpoints; $i++)
+    // Create the SVG image.
+    $svgString = "";
     {
-        $checkpointData = unpack("v4", $trackDataContainer, $containerByteOffset);
-        $containerByteOffset += 8;
+        $svgString = "<svg width='100%' height='100%' viewBox='0 0 ".
+                        (int)floor($trackSideLength * (128 * $svgCoordinateScale))." ".
+                        (int)floor($trackSideLength * (128 * $svgCoordinateScale)).
+                        "' preserveAspectRatio='none'>".
+                     "<polygon vector-effect='non-scaling-stroke' points='";
 
-        $checkpointX = $checkpointData[1];
-        $checkpointY = $checkpointData[2];
-
-        $svgString .= "{$checkpointX},{$checkpointY}";
-
-        if ($i < ($numCheckpoints - 1))
+        // Add the <polyline> points. Each point receives a checkpoint's X,Y
+        // coordinates.
+        for ($i = 0; $i < $numCheckpoints; $i++)
         {
-            $svgString .= " ";
-        }
-    }
+            $checkpointData = unpack("v4", $trackDataContainer, $containerByteOffset);
+            $containerByteOffset += 8;
 
-    // Close the polygon element. We expect the target HTML page to use CSS for
-    // styling the SVG.
-    $svgString .= "'/></svg>";
+            $checkpointX = (int)floor($checkpointData[1] * $svgCoordinateScale);
+            $checkpointY = (int)floor($checkpointData[2] * $svgCoordinateScale);
+
+            $svgString .= "{$checkpointX},{$checkpointY}";
+
+            if ($i < ($numCheckpoints - 1))
+            {
+                $svgString .= " ";
+            }
+        }
+
+        $svgString .= "'/></svg>";
+    }
 
     return $svgString;
 }
