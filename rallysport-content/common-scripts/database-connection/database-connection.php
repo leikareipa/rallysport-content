@@ -15,7 +15,6 @@
 
 require_once __DIR__."/../response.php";
 require_once __DIR__."/../resource-id.php";
-require_once __DIR__."/../create-zip.php";
 
 abstract class DatabaseConnection
 {
