@@ -54,31 +54,17 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
+    case "HEAD":
+    {
+        /// TODO.
 
+        break;
+    }
     case "POST":
     {
         API\add_new_track(json_decode(file_get_contents("php://input"), true));
 
-    break;
-    }
-
-    case "PUT":
-    {
-        error_log("Unhandled request: PUT");
-
-        ///RSC\update_track(json_decode(file_get_contents("php://input"), true));
-
         break;
     }
-
-    case "DELETE";
-    {
-        error_log("Unhandled request: DELETE");
-
-        ///RSC\delete_track(json_decode(file_get_contents("php://input"), true));
-        
-        break;
-    }
-
-    default: exit(API\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(API\Response::code(405)->allowed("GET, HEAD, POST"));
 }

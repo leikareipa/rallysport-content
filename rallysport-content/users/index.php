@@ -46,27 +46,17 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
+    case "HEAD":
+    {
+        /// TODO.
 
+        break;
+    }
     case "POST":
     {
         API\create_new_user(json_decode(file_get_contents("php://input"), true));
 
         break;
     }
-
-    case "PUT":
-    {
-        ///RSC\update_user(json_decode(file_get_contents("php://input"), true));
-
-        break;
-    }
-
-    case "DELETE";
-    {
-        /// TODO.
-
-        break;
-    }
-
-    default: exit(API\Response::code(400)->error_message("Unknown request: {$_SERVER["REQUEST_METHOD"]}"));
+    default: exit(API\Response::code(405)->allowed("GET, HEAD, POST"));
 }
