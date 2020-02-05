@@ -137,24 +137,16 @@ function add_new_track(array $parameters)
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
-        // We'll also need to include Rally-Sport's default HITABLE.TXT file,
-        // which is required by RallySportED for playing the track in-game.
-        if (!($hitableData = file_get_contents(__DIR__."/../server-data/HITABLE.TXT")))
-        {
-            exit(Response::code(500)->error_message("Invalid HITABLE.TXT file."));
-        }
-
         if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
-                                                                 $resourceID,
-                                                                 $creatorID,
-                                                                 $parameters["internalName"],
-                                                                 $parameters["displayName"],
-                                                                 $parameters["width"],
-                                                                 $parameters["height"],
-                                                                 $parameters["containerData"],
-                                                                 $parameters["manifestoData"],
-                                                                 \RSC\svg_image_from_kierros_data($parameters["containerData"]),
-                                                                 $hitableData))
+                                                       $resourceID,
+                                                       $creatorID,
+                                                       $parameters["internalName"],
+                                                       $parameters["displayName"],
+                                                       $parameters["width"],
+                                                       $parameters["height"],
+                                                       $parameters["containerData"],
+                                                       $parameters["manifestoData"],
+                                                       \RSC\svg_image_from_kierros_data($parameters["containerData"])))
         {
             exit(Response::code(500)->error_message("Database error."));
         }

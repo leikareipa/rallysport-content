@@ -20,6 +20,7 @@
 
 require_once __DIR__."/database-connection.php";
 require_once __DIR__."/../resource-id.php";
+require_once __DIR__."/../zip-file.php";
 
 class TrackDatabase extends DatabaseConnection
 {
@@ -53,9 +54,7 @@ class TrackDatabase extends DatabaseConnection
     }
 
     // Adds into the TRACKS table a new track with the given parameters. Returns
-    // TRUE on success; FALSE otherwise. The 'trackDataZIP' parameter is a string
-    // representing the byte data of a zip file containing the track's end-user
-    // data (container, manifesto, and HITABLE files).
+    // TRUE on success; FALSE otherwise.
     public function add_new_track(\RSC\ResourceID $resourceID,
                                   \RSC\ResourceID $creatorID,
                                   string $internalName,
@@ -64,8 +63,7 @@ class TrackDatabase extends DatabaseConnection
                                   int $height,
                                   string $containerData,
                                   string $manifestoData,
-                                  string $kierrosSVGImage,
-                                  string $hitableData) : bool
+                                  string $kierrosSVGImage) : bool
     {
         if (!$this->is_connected())
         {
@@ -74,56 +72,36 @@ class TrackDatabase extends DatabaseConnection
 
         /// TODO: Validate the input parameters.
 
-        // The full track data as a zip file. The file contains everything needed
-        // to play the track in Rally-Sport using the RallySportED Loader.
-        $trackDataZIP = \RSC\create_zip_from_file_data(["{$internalName}.DTA"  => $containerData,
-                                                        "{$internalName}.\$FT" => $manifestoData,
-                                                        "HITABLE.TXT"          => $hitableData],
-                                                        $internalName);
-        if (!$trackDataZIP)
+        if (!($compressedContainer = gzencode($containerData, 9, FORCE_GZIP)) ||
+            !($compressedManifesto = gzencode($manifestoData, 9, FORCE_GZIP)) ||
+            !($compressedKierrosSVG = gzencode($kierrosSVGImage, 9, FORCE_GZIP)))
         {
             return false;
         }
 
-        // The full track data as a JSON object. The JSON contains everything
-        // needed to load the track into RallySportED-js for editing.
-        $trackDataJSON = json_encode([
-            "hitable"   => base64_encode($hitableData),
-            "container" => base64_encode($containerData),
-            "manifesto" => $manifestoData,
-            "meta"      => [
-                "internalName" => $internalName,
-                "displayName"  => $displayName,
-                "width"        => $width,
-                "height"       => $height,
-                "contentID"    => $resourceID->string(),
-                "creatorID"    => $creatorID->string(),
-            ],
-        ]);
-
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_tracks
-                                   (resource_id,
-                                    track_name_internal,
-                                    track_name_display,
-                                    track_width,
-                                    track_height,
-                                    track_data_zip,
-                                    track_data_json,
-                                    creation_timestamp,
-                                    creator_resource_id,
-                                    kierros_image_svg)
+                                  (resource_id,
+                                   track_name_internal,
+                                   track_name_display,
+                                   track_width,
+                                   track_height,
+                                   track_container_gzip,
+                                   track_manifesto_gzip,
+                                   kierros_svg_gzip,
+                                   creation_timestamp,
+                                   creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $internalName,
                                    $displayName,
                                    $width,
                                    $height,
-                                   $trackDataZIP,
-                                   $trackDataJSON,
+                                   $compressedContainer,
+                                   $compressedManifesto,
+                                   $compressedKierrosSVG,
                                    time(),
-                                   $creatorID->string(),
-                                   $kierrosSVGImage]);
+                                   $creatorID->string()]);
 
         return (($databaseReturnValue == 0)? true : false);
     }
@@ -151,7 +129,7 @@ class TrackDatabase extends DatabaseConnection
                                 track_name_display,
                                 track_width,
                                 track_height,
-                                kierros_image_svg
+                                kierros_svg_gzip
                          FROM rsc_tracks
                          {$rowSelector}",
                          ($resourceID? [$resourceID->string()] : NULL));
@@ -167,22 +145,22 @@ class TrackDatabase extends DatabaseConnection
         {
             $returnObject[] =
             [
-                "resourceID"            => $track["resource_id"],
-                "creatorID"             => $track["creator_resource_id"],
-                "internalName"          => $track["track_name_internal"],
-                "displayName"           => $track["track_name_display"],
-                "width"                 => $track["track_width"],
-                "height"                => $track["track_height"],
-                "creationTimestamp"     => $track["creation_timestamp"],
-                "kierrosSVG"            => $track["kierros_image_svg"],
-                "downloadCount"         => $track["download_count"],
+                "resourceID"        => $track["resource_id"],
+                "creatorID"         => $track["creator_resource_id"],
+                "internalName"      => $track["track_name_internal"],
+                "displayName"       => $track["track_name_display"],
+                "width"             => $track["track_width"],
+                "height"            => $track["track_height"],
+                "creationTimestamp" => $track["creation_timestamp"],
+                "kierrosSVG"        => gzdecode($track["kierros_svg_gzip"]),
+                "downloadCount"     => $track["download_count"],
             ];
         }
 
         return $returnObject;
     }
 
-    // Returns the given track's data as a zip file. The zip file will contain
+    // Returns the given track's data as a zip file. The zip file will include
     // the track's container, manifesto, and HITABLE files; and is thus suitable
     // for serving the track to end-users of the RallySportED Loader.
     //
@@ -215,27 +193,52 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
-        $trackZipFile = $this->issue_db_query(
-                            "SELECT track_data_zip,
-                                    track_name_internal
+        $trackData = $this->issue_db_query(
+                            "SELECT track_container_gzip,
+                                    track_manifesto_gzip,
+                                    track_name_internal,
+                                    creation_timestamp
                              FROM rsc_tracks
                              WHERE resource_id = ?",
                             [$resourceID->string()]);
 
         // We should receive an array with exactly one element: the given
         // track's data.
-        if (!is_array($trackZipFile) ||
-            (count($trackZipFile) != 1) ||
-            !isset($trackZipFile[0]["track_data_zip"]) ||
-            !isset($trackZipFile[0]["track_name_internal"]))
+        if (!is_array($trackData) || (count($trackData) != 1))
         {
             return false;
         }
 
+        // Build a RallySportED Loader-compatible zip archive out of the track's
+        // data files.
+        $zipArchive = new \RSC\ZipFile();
+        {
+            $internalTrackName = strtoupper($trackData[0]["track_name_internal"]);
+            $fileTimestamp = $trackData[0]["creation_timestamp"];
+
+            // We'll include Rally-Sport's default HITABLE.TXT file.
+            if (!($hitableData = file_get_contents(__DIR__."/../../tracks/server-data/HITABLE.TXT")))
+            {
+                return false;
+            }
+
+            $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.DTA",
+                                  gzdecode($trackData[0]["track_container_gzip"]),
+                                  $fileTimestamp);
+
+            $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.\$FT",
+                                  gzdecode($trackData[0]["track_manifesto_gzip"]),
+                                  $fileTimestamp);
+
+            $zipArchive->add_file("{$internalTrackName}/HITABLE.TXT",
+                                  $hitableData,
+                                  $fileTimestamp);
+        }
+
         $this->increment_track_download_count($resourceID);
 
-        return ["filename" => "{$trackZipFile[0]['track_name_internal']}.ZIP",
-                "data"     => $trackZipFile[0]["track_data_zip"]];
+        return ["filename" => "{$internalTrackName}.ZIP",
+                "data"     => $zipArchive->string()];
     }
 
     // Returns the given track's data as a JSON string. The string will contain
@@ -254,23 +257,40 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
-        $trackJSON = $this->issue_db_query(
-                        "SELECT track_data_json
+        $trackData = $this->issue_db_query(
+                        "SELECT track_container_gzip,
+                                track_manifesto_gzip,
+                                track_name_internal,
+                                track_name_display,
+                                track_width,
+                                track_height,
+                                creator_resource_id
                          FROM rsc_tracks
                          WHERE resource_id = ?",
                         [$resourceID->string()]);
 
         // We should receive an array with exactly one element: the given
         // track's data.
-        if (!is_array($trackJSON) ||
-            (count($trackJSON) != 1) ||
-            !isset($trackJSON[0]["track_data_json"]))
+        if (!is_array($trackData) || (count($trackData) != 1))
         {
             return false;
         }
 
+        $trackDataJSON = json_encode([
+            "container" => base64_encode(gzdecode($trackData[0]["track_container_gzip"])),
+            "manifesto" => gzdecode($trackData[0]["track_manifesto_gzip"]),
+            "meta"      => [
+                "internalName" => $trackData[0]["track_name_internal"],
+                "displayName"  => $trackData[0]["track_name_display"],
+                "width"        => $trackData[0]["track_width"],
+                "height"       => $trackData[0]["track_height"],
+                "contentID"    => $resourceID->string(),
+                "creatorID"    => $trackData[0]["creator_resource_id"],
+            ],
+        ]);
+
         $this->increment_track_download_count($resourceID);
 
-        return $trackJSON[0]["track_data_json"];
+        return $trackDataJSON;
     }
 }

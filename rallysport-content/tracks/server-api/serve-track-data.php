@@ -65,9 +65,6 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
 //    track's data. The data will be in the following form:
 //
 //      {
-//          // Base64-encoded string representing the bytes of Rally-Sport's HITABLE.TXT file.
-//          hitable: string,
-//
 //          // Base64-encoded string representing the track's container file.
 //          container: string,
 //
