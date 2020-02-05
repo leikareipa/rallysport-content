@@ -14,7 +14,7 @@
 // Assumes tha the container is valid; i.e. that we don't need to check for
 // overflow while reading, etc.
 //
-function svg_image_from_kierros_data(string $trackDataContainer)
+function svg_image_from_kierros_data(string $trackDataContainer) : string
 {
     // The string returned if we fail to generate a valid SVG.
     $nullImage = "

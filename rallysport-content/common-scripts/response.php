@@ -46,7 +46,7 @@ class Response
     }
 
     // Writes the response into the PHP output stream.
-    private function send_response(string $string, int $cacheForNumSeconds)
+    private function send_response(string $string, int $cacheForNumSeconds) : void
     {
         $this->set_cache_header($cacheForNumSeconds);
         
@@ -56,7 +56,7 @@ class Response
     }
 
     // Indicate to the client for how many seconds it should cache our response.
-    private function set_cache_header(int $numSeconds = 0)
+    private function set_cache_header(int $numSeconds = 0) : void
     {
         // Note: we don't allow non-successful responses to cache.
         if (($numSeconds <= 0) ||
@@ -72,22 +72,28 @@ class Response
         return;
     }
 
-    // For sending a response that contains no body.
-    public function empty_body()
+    // For sending a response that contains no body. The return value is expected
+    // to be received by exit().
+    public function empty_body() : int
     {
         header("Content-Length: 0");
 
         return 0;
     }
 
-    public function error_message(string $errorMessage)
+    // For responding with an error message string. You would use this with
+    // response codes indicating an error, e.g. 404. The return value is expected
+    // to be received by exit().
+    public function error_message(string $errorMessage) : int
     {
         return $this->json(["responseCode"=>$this->htmlResponseCode,
                             "errorMessage"=>$errorMessage,],
                            0);
     }
 
-    public function json(array $jsonObject = [], int $cacheForNumSeconds = 86400)
+    // For responding with a JSON object as a string. The return value is
+    // expected to be received by exit().
+    public function json(array $jsonObject = [], int $cacheForNumSeconds = 86400) : int
     {
         $jsonText = json_encode($jsonObject, JSON_UNESCAPED_UNICODE);
 
@@ -100,8 +106,8 @@ class Response
     }
 
     // Initiates a client download of the given file data with the given file
-    // name.
-    public function file(string $fileName, string $fileData, int $cacheForNumSeconds = 86400)
+    // name. The return value is expected to be received by exit().
+    public function file(string $fileName, string $fileData, int $cacheForNumSeconds = 86400) : int
     {
         $baseFilename = str_replace("\"", "'", basename($fileName));
 
@@ -115,8 +121,9 @@ class Response
         return 0;
     }
 
-    // For sending web pages as HTML source code.
-    public function html(string $html, int $cacheForNumSeconds = 0)
+    // For sending web pages as HTML source code.  The return value is expected
+    // to be received by exit().
+    public function html(string $html, int $cacheForNumSeconds = 0) : int
     {
         header("Content-Type: text/html; charset=UTF-8");
         header("Content-Length: ".strlen($html));

@@ -40,7 +40,7 @@ require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 //  - The function should always return using exit() together with a Response
 //    object, e.g. exit(Response::code(200)->json([...]).
 //
-function add_new_track(array $parameters)
+function add_new_track(array $parameters) : void
 {
     // Validate input parameters.
     {

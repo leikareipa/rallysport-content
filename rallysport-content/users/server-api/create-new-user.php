@@ -29,7 +29,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //  - On success, returns the HTML status code 201 and a body as a JSON string
 //    that provides information about the newly-created user account.
 //
-function create_new_user(array $parameters)
+function create_new_user(array $parameters) : void
 {
     if (!isset($parameters["password"])) exit(Response::code(400)->error_message("Missing the 'password' parameter."));
     if (!isset($parameters["email"]))    exit(Response::code(400)->error_message("Missing the 'email' parameter."));

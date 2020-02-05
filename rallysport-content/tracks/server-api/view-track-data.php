@@ -36,7 +36,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //  - On success, the response body will consist of the HTML page's source
 //    code as a string.
 //
-function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL)
+function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
 {
     $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))

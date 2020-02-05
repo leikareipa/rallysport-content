@@ -49,6 +49,7 @@ abstract class DatabaseConnection
                                          $databaseCredentials["database"]);
 
         $this->isConnected = (bool)($this->database && !mysqli_connect_error());
+        
         return;
     }
 

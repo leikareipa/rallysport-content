@@ -29,7 +29,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //
 //  - On success, the response body will consist of the file's bytes.
 //
-function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
+function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL) : void
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -87,7 +87,7 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL)
 //          }
 //      }
 //
-function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
+function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL) : void
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -116,7 +116,7 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL)
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
-function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL)
+function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL) : void
 {
     $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
