@@ -36,7 +36,18 @@ class HTMLPage
         return;
     }
 
-    public function html()
+    // Pass to this function the class name of a fragment you intent to use
+    // on the page - e.g. PageFooter::class, if PageFooter is the fragment's
+    // class name.
+    public function use_fragment(string $fragmentClass) : void
+    {
+        $this->head->css .= $fragmentClass::css();
+        $this->body->add_script(...$fragmentClass::scripts());
+
+        return;
+    }
+
+    public function html() : string
     {
         return "
         <!doctype html>

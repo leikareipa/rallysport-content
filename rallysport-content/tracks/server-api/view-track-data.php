@@ -48,12 +48,10 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
     {
         $view = new HTMLPage\HTMLPage();
 
-        $view->head->title = "Custom tracks for Rally-Sport";
-        $view->head->css .= HTMLPage\Fragment\TrackMetadataContainer::css();
-        $view->head->css .= HTMLPage\Fragment\TrackMetadata::css();
+        $view->use_fragment(HTMLPage\Fragment\TrackMetadataContainer::class);
+        $view->use_fragment(HTMLPage\Fragment\TrackMetadata::class);
 
-        $view->body->add_script(...HTMLPage\Fragment\TrackMetadataContainer::scripts());
-        $view->body->add_script(...HTMLPage\Fragment\TrackMetadata::scripts());
+        $view->head->title = "Custom tracks for Rally-Sport";
         
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::open());
         foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Fragment\TrackMetadata::html($track));

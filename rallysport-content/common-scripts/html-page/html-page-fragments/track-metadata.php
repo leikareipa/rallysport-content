@@ -16,7 +16,7 @@ require_once __DIR__."/html-page-fragment.php";
 //
 //   1. Create the page object: $page = new HTMLPage();
 //
-//   2. Add the element's CSS to the page: $page->head->css .= TrackMetadata::css();
+//   2. Import the element's fragment class into the page object: $page->use_fragment(TrackMetadata::class);
 //
 //   3. Insert an instance of the element onto the page: $page->body->add_element(TrackMetadata::html($trackInfo));
 //      The $trackInfo parameter contains the actual track metadata as fetched

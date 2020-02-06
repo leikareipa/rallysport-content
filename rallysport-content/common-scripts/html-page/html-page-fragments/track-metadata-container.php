@@ -15,9 +15,7 @@ require_once __DIR__."/html-page-fragment.php";
 //
 //   1.  Create the page object: $page = new HTMLPage();
 //
-//   2a. Add the container's CSS to the page: $page->head->css .= TrackMetadataContainer::css();
-//
-//   2b. Add the container's scripts to the page: $page->body->add_script(...TrackMetadataContainer::scripts());
+//   2.  Import the container's fragment class into the page object: $view->use_fragment(TrackMetadataContainer::class);
 //
 //   3.  Insert an instance of the container onto the page: $page->body->add_element(TrackMetadataContainer::open());
 //       Any subsequent elements inserted into the body will be placed inside the
