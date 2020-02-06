@@ -35,11 +35,14 @@ class HTMLPageBody
 
     public function add_script(string $script)
     {
-        $this->scripts[] = "
-        <script>
-            {$script}
-        </script>
-        ";
+        if (!empty($script))
+        {
+            $this->scripts[] = "
+            <script>
+                {$script}
+            </script>
+            ";
+        }
 
         return;
     }
