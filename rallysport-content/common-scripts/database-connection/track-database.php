@@ -46,6 +46,14 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
+        // The HEAD request is identical to a GET request in all respects except
+        // that the data body is not returned to the caller. As such, we shouldn't
+        // increment the download count then.
+        if ($_SERVER["REQUEST_METHOD"] === "HEAD")
+        {
+            return true;
+        }
+
         $databaseReturnValue = $this->issue_db_command("UPDATE rsc_tracks
                                                         SET download_count = download_count + 1
                                                         WHERE resource_id = ?",
