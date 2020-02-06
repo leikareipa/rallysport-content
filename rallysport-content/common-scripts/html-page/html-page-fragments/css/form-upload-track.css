@@ -1,0 +1,48 @@
+.form-upload-track-container
+{
+    width: 420px;
+    height: auto;
+    display: inline-block;
+    margin: 20px;
+    padding: 20px;
+    padding-top: 0;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.1);
+}
+
+.form-upload-track-container > header
+{
+    font-weight: bold;
+    margin: 20px;
+    padding: 0;
+}
+
+.form-upload-track-container > form > input
+{
+    box-sizing: border-box;
+}
+
+.form-upload-track-container > form > label
+{
+    display: block;
+    text-align: left;
+}
+
+.form-upload-track-container > form > input, select
+{
+    margin-bottom: 10px;
+    background-color: white;
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    padding: 10px;
+    border: 1px solid lightgray;
+}
+
+.form-upload-track-container > form > button[type="submit"]
+{
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+}
