@@ -20,6 +20,7 @@
 
 require_once __DIR__."/database-connection.php";
 require_once __DIR__."/../resource/resource-id.php";
+require_once __DIR__."/../resource/resource-visibility.php";
 require_once __DIR__."/../zip-file.php";
 
 class TrackDatabase extends DatabaseConnection
@@ -82,6 +83,7 @@ class TrackDatabase extends DatabaseConnection
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_tracks
                                   (resource_id,
+                                   resource_visibility,
                                    track_name_internal,
                                    track_name_display,
                                    track_width,
@@ -91,8 +93,9 @@ class TrackDatabase extends DatabaseConnection
                                    kierros_svg_gzip,
                                    creation_timestamp,
                                    creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
+                                   \RSC\ResourceVisibility::EVERYONE,
                                    $internalName,
                                    $displayName,
                                    $width,
