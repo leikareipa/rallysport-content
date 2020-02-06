@@ -16,6 +16,7 @@ require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
+    case "HEAD":
     case "GET":
     {
         // Find which user we're requested to operate on. If no user ID is
@@ -23,6 +24,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         if ($_GET["id"] ?? false)
         {
             $resourceID = ResourceID::from_string($_GET["id"], ResourceType::USER);
+            
             if (!$resourceID)
             {
                 echo $_GET["id"];
@@ -43,12 +45,6 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             ///RSC\view_user($resourceID);
         }
-
-        break;
-    }
-    case "HEAD":
-    {
-        /// TODO.
 
         break;
     }

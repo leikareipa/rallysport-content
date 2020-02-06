@@ -17,6 +17,7 @@ require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
+    case "HEAD":
     case "GET":
     {
         // Find which track we're requested to operate on. If no track ID is
@@ -24,6 +25,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         if ($_GET["id"] ?? false)
         {
             $resourceID = ResourceID::from_string($_GET["id"], ResourceType::TRACK);
+            
             if (!$resourceID)
             {
                 exit(API\Response::code(400)->error_message("Invalid track resource ID."));
@@ -51,12 +53,6 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             API\view_track_metadata($resourceID);
         }
-
-        break;
-    }
-    case "HEAD":
-    {
-        /// TODO.
 
         break;
     }

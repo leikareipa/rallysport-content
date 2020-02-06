@@ -46,11 +46,14 @@ class Response
     }
 
     // Writes the response into the PHP output stream.
-    private function send_response(string $string, int $cacheForNumSeconds) : void
+    private function send_response(string $body, int $cacheForNumSeconds) : void
     {
         $this->set_cache_header($cacheForNumSeconds);
         
-        echo $string;
+        if ($_SERVER["REQUEST_METHOD"] !== "HEAD")
+        {
+            echo $body;
+        }
 
         return;
     }
