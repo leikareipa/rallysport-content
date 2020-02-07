@@ -51,6 +51,7 @@ class TrackMetadata extends HTMLPage\HTMLPageFragment
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
         $trackTimestamp       = ($trackMetadata["creationTimestamp"] ?? "0");
         $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
+        $trackVisibilityLevel = ($trackMetadata["visibilityLevel"]   ?? "0");
 
         return "
         <div class='track-metadata'>
@@ -84,11 +85,16 @@ class TrackMetadata extends HTMLPage\HTMLPageFragment
                         <span class='value'>".date("j M Y", $trackTimestamp)."</span>
                     </div>
 
-                    <div class='value-field' id='uploader' title='Uploaded by {$trackUploaderID}'>
+                    <div class='value-field' id='uploader' title='Uploaded by: {$trackUploaderID}'>
                         <i class='fas fa-fw fa-sm fa-user-tag'></i>
                         <span class='value'>
                             <a href='/rallysport-content/users/?id={$trackUploaderID}'>{$trackUploaderID}</a>
                         </span>
+                    </div>
+
+                    <div class='value-field' id='visibility' title='Visibility: ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."'>
+                        <i class='fas fa-fw fa-sm fa-users'></i>
+                        <span class='value'>".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>
                     </div>
 
                     <div class='actions'>
@@ -104,13 +110,6 @@ class TrackMetadata extends HTMLPage\HTMLPageFragment
                             <span class='value'>
                                 <i class='fas fa-fw fa-database'></i>
                                 <a download href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as a ZIP</a>
-                            </span>
-                        </div>
-
-                        <div class='value-field' id='request-deletion'>
-                            <span class='value'>
-                                <i class='fas fa-fw fa-database'></i>
-                                <a href='#' onclick=\"request_track_deletion('/rallysport-content/tracks', '{$trackID}')\">Remove</a>
                             </span>
                         </div>
 

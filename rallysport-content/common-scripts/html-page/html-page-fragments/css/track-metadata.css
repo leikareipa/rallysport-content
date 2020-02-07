@@ -63,8 +63,9 @@
     border-radius: 3px;
     padding: 10px;
     margin-top: 17px;
-    margin-left: -18px;
+    margin-left: -20px;
     box-shadow: -4px 4px 2px rgba(0, 0, 0, 0.1);
+    position: absolute;
 }
 
 .track-metadata > .form > .fields > .value-field .fas
@@ -112,5 +113,5 @@
 
 .track-metadata > .form > .fields > .actions > div + div
 {
-    padding-top: 6px;
+    padding-top: 8px;
 }

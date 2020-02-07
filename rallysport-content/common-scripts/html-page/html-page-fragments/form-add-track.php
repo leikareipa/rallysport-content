@@ -38,15 +38,15 @@ class Form_AddTrack extends HTMLPageFragment_Form
 
                 <label for='track-visibility'>Initial visibility</label>
                 <select id='track-visibility' name='track_visibility' required>
-                    <option value='".\RSC\ResourceVisibility::EVERYONE."'>Public</option>
-                    <option value='".\RSC\ResourceVisibility::UNLISTED."'>Unlisted</option>
-                    <option value='".\RSC\ResourceVisibility::PRIVATE."'>Private</option>
+                    <option value='".\RSC\ResourceVisibility::PUBLIC."'>".\RSC\ResourceVisibility::label(\RSC\ResourceVisibility::PUBLIC)."</option>
+                    <option value='".\RSC\ResourceVisibility::UNLISTED."'>".\RSC\ResourceVisibility::label(\RSC\ResourceVisibility::UNLISTED)."</option>
+                    <option value='".\RSC\ResourceVisibility::PRIVATE."'>".\RSC\ResourceVisibility::label(\RSC\ResourceVisibility::PRIVATE)."</option>
                 </select>
 
                 <label for='track_file'>File</label>
                 <input type='file' accept='.zip' id='track-file' name='track_file' required>
 
-                <button type='submit'>Add to Rally-Sport Content</button>
+                <button type='submit'>Upload to Rally-Sport Content</button>
 
             </form>
 

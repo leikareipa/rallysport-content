@@ -103,7 +103,7 @@ class TrackDatabase extends DatabaseConnection
                                    creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
-                                   \RSC\ResourceVisibility::EVERYONE,
+                                   \RSC\ResourceVisibility::PUBLIC,
                                    $internalName,
                                    $displayName,
                                    $width,
@@ -133,6 +133,7 @@ class TrackDatabase extends DatabaseConnection
 
         $trackInfo = $this->issue_db_query(
                         "SELECT resource_id,
+                                resource_visibility,
                                 creator_resource_id,
                                 creation_timestamp,
                                 download_count,
@@ -165,6 +166,7 @@ class TrackDatabase extends DatabaseConnection
                 "creationTimestamp" => $track["creation_timestamp"],
                 "kierrosSVG"        => gzdecode($track["kierros_svg_gzip"]),
                 "downloadCount"     => $track["download_count"],
+                "visibilityLevel"   => $track["resource_visibility"],
             ];
         }
 

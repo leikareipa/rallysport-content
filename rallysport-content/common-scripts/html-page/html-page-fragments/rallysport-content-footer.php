@@ -25,7 +25,7 @@ class RallySportContentFooter extends HTMLPage\HTMLPageFragment
         return "
         <footer id='rallysport-content-footer'>
             Rally-Sport Content &copy; 2020 Tarpeeksi Hyvae Soft.
-            <a href='https://www.github.com/leikareipa/rallysport-content/'>See on GitHub.</a>
+            <a href='https://www.github.com/leikareipa/rallysport-content/'>Find this on GitHub.</a>
         </footer>
         ";
     }
