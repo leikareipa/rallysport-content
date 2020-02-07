@@ -20,39 +20,24 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
+        $resourceID = NULL;
+
         // Find which track we're requested to operate on. If no track ID is
         // provided, we assume the query relates to all tracks in the database.
         if ($_GET["id"] ?? false)
         {
             $resourceID = ResourceID::from_string($_GET["id"], ResourceType::TRACK);
-            
             if (!$resourceID)
             {
                 exit(API\Response::code(400)->error_message("Invalid track resource ID."));
             }
         }
-        else
-        {
-            $resourceID = NULL;
-        }
 
         // Satisfy the GET request by outputting the relevant data.
-        if ($_GET["zip"] ?? false)
-        {
-            API\serve_track_data_as_zip_file($resourceID);
-        }
-        else if ($_GET["json"] ?? false)
-        {
-            API\serve_track_data_as_json($resourceID);
-        }
-        else if ($_GET["metadata"] ?? false)
-        {
-            API\serve_track_metadata_as_json($resourceID);
-        }
-        else
-        {
-            API\view_track_metadata($resourceID);
-        }
+        if ($_GET["zip"] ?? false)           API\serve_track_data_as_zip_file($resourceID);
+        else if ($_GET["json"] ?? false)     API\serve_track_data_as_json($resourceID);
+        else if ($_GET["metadata"] ?? false) API\serve_track_metadata_as_json($resourceID);
+        else                                 API\view_track_metadata($resourceID);
 
         break;
     }

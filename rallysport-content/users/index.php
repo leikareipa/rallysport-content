@@ -19,32 +19,22 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
+        $resourceID = NULL;
+
         // Find which user we're requested to operate on. If no user ID is
         // provided, we assume the query relates to all users in the database.
         if ($_GET["id"] ?? false)
         {
             $resourceID = ResourceID::from_string($_GET["id"], ResourceType::USER);
-            
             if (!$resourceID)
             {
                 echo $_GET["id"];
                 exit(API\Response::code(400)->error_message("Invalid user resource ID."));
             }
         }
-        else
-        {
-            $resourceID = NULL;
-        }
 
         // Satisfy the GET request by outputting the relevant data.
-        if ($_GET["metadata"] ?? false)
-        {
-            API\serve_user_metadata_as_json($resourceID);
-        }
-        else
-        {
-            ///RSC\view_user($resourceID);
-        }
+        if ($_GET["metadata"] ?? false) API\serve_user_metadata_as_json($resourceID);
 
         break;
     }
