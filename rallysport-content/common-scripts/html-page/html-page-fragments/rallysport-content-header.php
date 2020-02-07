@@ -1,4 +1,5 @@
 <?php namespace RSC\HTMLPage\Fragment;
+      use RSC\HTMLPage;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,12 +8,12 @@
  * 
  */
 
-require_once __DIR__."/html-page-fragment.php";
+require_once __DIR__."/../html-page-fragment.php";
 require_once __DIR__."/../../resource/resource-visibility.php";
 
 // A basic header element intended to be displayed on Rally-Sport Content's
 // HTML pages.
-class RallySportContentHeader extends HTMLPageFragment
+class RallySportContentHeader extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {

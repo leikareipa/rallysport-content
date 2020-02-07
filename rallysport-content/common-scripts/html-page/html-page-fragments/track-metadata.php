@@ -1,4 +1,5 @@
 <?php namespace RSC\HTMLPage\Fragment;
+      use RSC\HTMLPage;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,7 +8,7 @@
  * 
  */
 
-require_once __DIR__."/html-page-fragment.php";
+require_once __DIR__."/../html-page-fragment.php";
 
 // Represents a HTML element in a HTMLPage object that provides metadata about
 // the tracks of Rally-Sport Content.
@@ -25,7 +26,7 @@ require_once __DIR__."/html-page-fragment.php";
 //   4. Optionally, you can use the TrackMetadataContainer to hold multiple
 //      track metadata elements.
 //
-class TrackMetadata extends HTMLPageFragment
+class TrackMetadata extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {

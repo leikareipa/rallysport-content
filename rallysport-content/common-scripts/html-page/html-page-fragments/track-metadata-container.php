@@ -1,4 +1,5 @@
 <?php namespace RSC\HTMLPage\Fragment;
+      use RSC\HTMLPage;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,7 +8,7 @@
  * 
  */
 
-require_once __DIR__."/html-page-fragment.php";
+require_once __DIR__."/../html-page-fragment.php";
 
 // Represents a HTML container for TrackMetadata elements in a HTMLPage object.
 //
@@ -27,7 +28,7 @@ require_once __DIR__."/html-page-fragment.php";
 //       Subsequent elements added into the body will now go outside the container
 //       again.
 //
-class TrackMetadataContainer extends HTMLPageFragment
+class TrackMetadataContainer extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {
