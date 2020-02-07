@@ -18,6 +18,8 @@ require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata-container.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-header.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-footer.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
@@ -49,14 +51,18 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
     {
         $view = new HTMLPage\HTMLPage();
 
+        $view->use_fragment(HTMLPage\Fragment\RallySportContentHeader::class);
+        $view->use_fragment(HTMLPage\Fragment\RallySportContentFooter::class);
         $view->use_fragment(HTMLPage\Fragment\TrackMetadataContainer::class);
         $view->use_fragment(HTMLPage\Fragment\TrackMetadata::class);
 
         $view->head->title = "Custom tracks for Rally-Sport";
         
+        $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::open());
         foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Fragment\TrackMetadata::html($track));
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::close());
+        $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
     }
 
     exit(API\Response::code(200)->html($view->html()));

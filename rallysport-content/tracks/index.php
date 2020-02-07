@@ -10,9 +10,9 @@
  */
 
 require_once __DIR__."/../server-api/tracks/add-new-track.php";
-require_once __DIR__."/../server-api/tracks/view-track-data.php";
-require_once __DIR__."/../server-api/tracks/serve-track-data.php";
 require_once __DIR__."/../server-api/tracks/view-form.php";
+require_once __DIR__."/../server-api/tracks/view-track.php";
+require_once __DIR__."/../server-api/tracks/serve-track-data.php";
 require_once __DIR__."/../common-scripts/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
