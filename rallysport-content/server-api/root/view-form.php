@@ -11,11 +11,11 @@
  * 
  */
 
-require_once __DIR__."/../common-scripts/response.php";
-require_once __DIR__."/../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-fragments/form-add-track.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-fragments/rallysport-content-header.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-fragments/rallysport-content-footer.php";
+require_once __DIR__."/../../common-scripts/response.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/form-add-track.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-header.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-footer.php";
 
 function view_form(string $formName) : void
 {

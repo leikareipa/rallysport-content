@@ -9,7 +9,7 @@
  * 
  */
 
-require_once __DIR__."/server-api/view-form.php";
+require_once __DIR__."/server-api/root/view-form.php";
 require_once __DIR__."/common-scripts/response.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
