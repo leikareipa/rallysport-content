@@ -1,5 +1,6 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Users;
       use RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -19,7 +20,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // password is specified by the function call parameters.
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -31,8 +32,8 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //
 function create_new_user(array $parameters) : void
 {
-    if (!isset($parameters["password"])) exit(Response::code(400)->error_message("Missing the 'password' parameter."));
-    if (!isset($parameters["email"]))    exit(Response::code(400)->error_message("Missing the 'email' parameter."));
+    if (!isset($parameters["password"])) exit(API\Response::code(400)->error_message("Missing the 'password' parameter."));
+    if (!isset($parameters["email"]))    exit(API\Response::code(400)->error_message("Missing the 'email' parameter."));
 
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
@@ -41,8 +42,8 @@ function create_new_user(array $parameters) : void
     if (!$userResourceID ||
         !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
     {
-        exit(Response::code(500)->error_message("Could not create a new user."));
+        exit(API\Response::code(500)->error_message("Could not create a new user."));
     }
 
-    exit(Response::code(201)->json(["id"=>$userResourceID->string()]));
+    exit(API\Response::code(201)->json(["id"=>$userResourceID->string()]));
 }

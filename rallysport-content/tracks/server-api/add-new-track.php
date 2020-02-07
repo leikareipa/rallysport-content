@@ -1,5 +1,6 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Tracks;
       use RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -38,30 +39,30 @@ require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 //    RallySportED-js's repo, https://github.com/leikareipa/rallysported-js.
 //
 //  - The function should always return using exit() together with a Response
-//    object, e.g. exit(Response::code(200)->json([...]).
+//    object, e.g. exit(API\Response::code(200)->json([...]).
 //
 function add_new_track(array $parameters) : void
 {
     // Validate input parameters.
     {
-        if (!isset($parameters["internalName"]))  exit(Response::code(400)->error_message("Missing the 'internalName' parameter."));
-        if (!isset($parameters["displayName"]))   exit(Response::code(400)->error_message("Missing the 'displayName' parameter."));
-        if (!isset($parameters["width"]))         exit(Response::code(400)->error_message("Missing the 'width' parameter."));
-        if (!isset($parameters["height"]))        exit(Response::code(400)->error_message("Missing the 'height' parameter."));
-        if (!isset($parameters["containerData"])) exit(Response::code(400)->error_message("Missing the 'containerData' parameter."));
-        if (!isset($parameters["manifestoData"])) exit(Response::code(400)->error_message("Missing the 'manifestoData' parameter."));
+        if (!isset($parameters["internalName"]))  exit(API\Response::code(400)->error_message("Missing the 'internalName' parameter."));
+        if (!isset($parameters["displayName"]))   exit(API\Response::code(400)->error_message("Missing the 'displayName' parameter."));
+        if (!isset($parameters["width"]))         exit(API\Response::code(400)->error_message("Missing the 'width' parameter."));
+        if (!isset($parameters["height"]))        exit(API\Response::code(400)->error_message("Missing the 'height' parameter."));
+        if (!isset($parameters["containerData"])) exit(API\Response::code(400)->error_message("Missing the 'containerData' parameter."));
+        if (!isset($parameters["manifestoData"])) exit(API\Response::code(400)->error_message("Missing the 'manifestoData' parameter."));
 
         // Validate track dimensions.
         {
             if ($parameters["width"] != $parameters["height"])
             {
-                exit(Response::code(400)->error_message("Track dimensions must be square."));
+                exit(API\Response::code(400)->error_message("Track dimensions must be square."));
             }
 
             if (($parameters["width"] != 64) &&
                 ($parameters["height"] != 128))
             {
-                exit(Response::code(400)->error_message("Unsupported track dimensions ."));
+                exit(API\Response::code(400)->error_message("Unsupported track dimensions ."));
             }
         }
 
@@ -72,7 +73,7 @@ function add_new_track(array $parameters) : void
                 (mb_strlen($parameters["internalName"], "UTF-8") > 8) ||
                 preg_match("/[^a-zA-Z]/", $parameters["internalName"]))
             {
-                exit(Response::code(400)->error_message("Malformed 'internalName' parameter."));
+                exit(API\Response::code(400)->error_message("Malformed 'internalName' parameter."));
             }
 
             // Display names are allowed to consist of 1-15 ASCII + Finnish umlaut
@@ -81,7 +82,7 @@ function add_new_track(array $parameters) : void
                 (mb_strlen($parameters["displayName"], "UTF-8") > 15) ||
                 preg_match("/[^A-Za-z-.,():\/ \x{c5}\x{e5}\x{c4}\x{e4}\x{d6}\x{f6}]/u", $parameters["displayName"]))
             {
-                exit(Response::code(400)->error_message("Malformed 'displayName' parameter."));
+                exit(API\Response::code(400)->error_message("Malformed 'displayName' parameter."));
             }
 
             // We'll want the internal name to be all uppercase, for legacy reasons.
@@ -95,7 +96,7 @@ function add_new_track(array $parameters) : void
             // a bit).
             if (strlen($parameters["containerData"]) > 358400)
             {
-                exit(Response::code(400)->error_message("Invalid container data."));
+                exit(API\Response::code(400)->error_message("Invalid container data."));
             }
 
             // The container data was sent in as Base64, but we'll want to process
@@ -103,26 +104,26 @@ function add_new_track(array $parameters) : void
             $parameters["containerData"] = base64_decode($parameters["containerData"], true);
             if (!$parameters["containerData"])
             {
-                exit(Response::code(400)->error_message("Invalid container data."));
+                exit(API\Response::code(400)->error_message("Invalid container data."));
             }
 
             // Note: At this point, we assume that the track's width and height are
             // equal, e.g. that it's square.
             if (!\RSC\is_valid_container_data($parameters["containerData"], $parameters["width"]))
             {
-                exit(Response::code(400)->error_message("Invalid container data."));
+                exit(API\Response::code(400)->error_message("Invalid container data."));
             }
 
             // Manifesto files are fairly simple and relatively short text files -
             // they should not be very large at all, often less than a kilobyte.
             if (strlen($parameters["manifestoData"]) > 10240)
             {
-                exit(Response::code(400)->error_message("Invalid manifesto data."));
+                exit(API\Response::code(400)->error_message("Invalid manifesto data."));
             }
 
             if (!\RSC\is_valid_manifesto_data($parameters["manifestoData"]))
             {
-                exit(Response::code(400)->error_message("Invalid manifesto data."));
+                exit(API\Response::code(400)->error_message("Invalid manifesto data."));
             }
         }
 
@@ -148,9 +149,9 @@ function add_new_track(array $parameters) : void
                                                        $parameters["manifestoData"],
                                                        \RSC\svg_image_from_kierros_data($parameters["containerData"])))
         {
-            exit(Response::code(500)->error_message("Database error."));
+            exit(API\Response::code(500)->error_message("Database error."));
         }
     }
 
-    exit(Response::code(201)->empty_body());
+    exit(API\Response::code(201)->empty_body());
 }

@@ -9,7 +9,7 @@
  * 
  */
 
-require_once __DIR__."/server-api/view-form-page.php";
+require_once __DIR__."/server-api/view-form.php";
 require_once __DIR__."/common-scripts/response.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
@@ -17,7 +17,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
-        API\view_form_page($_GET["form"] ?? "unknown_form_identifier");
+        API\Root\view_form($_GET["form"] ?? "unknown_form_identifier");
 
         break;
     }

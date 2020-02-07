@@ -1,5 +1,6 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Tracks;
       use RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -19,7 +20,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 // the client.
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -35,25 +36,25 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL) :
     // tracks. However, for now, we only support serving individual tracks' data.
     if (!$trackResourceID)
     {
-        exit(Response::code(400)->error_message("A track ID must be provided."));
+        exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
     $trackZipFile = (new DatabaseConnection\TrackDatabase())->get_track_data_as_zip_file($trackResourceID);
     if (!$trackZipFile)
     {
-        exit(Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching track data found."));
     }
 
     // We ask the client to keep the file cached for 30 days, as server-side
     // track data are not expected to change.
-    exit(Response::code(200)->binary_file($trackZipFile["filename"], $trackZipFile["data"], 2592000));
+    exit(API\Response::code(200)->binary_file($trackZipFile["filename"], $trackZipFile["data"], 2592000));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing the
 // track's data.
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -93,18 +94,18 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL) : voi
     // tracks. However, for now, we only support serving individual tracks' data.
     if (!$trackResourceID)
     {
-        exit(Response::code(400)->error_message("A track ID must be provided."));
+        exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
     $trackDataJSON = (new DatabaseConnection\TrackDatabase())->get_track_data_as_json($trackResourceID);
     if (!$trackDataJSON)
     {
-        exit(Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching track data found."));
     }
 
     // We ask the client to keep the response data cached for 30 days, as
     // server-side track data are not expected to change.
-    exit(Response::code(200)->json(json_decode($trackDataJSON, true), 2592000));
+    exit(API\Response::code(200)->json(json_decode($trackDataJSON, true), 2592000));
 }
 
 // Prints into the PHP output stream a stringified JSON object containing public
@@ -112,7 +113,7 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL) : voi
 // track resource ID is NULL.
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -121,12 +122,12 @@ function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL) :
     $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching track data found."));
     }
 
     // We ask the client to keep the response data cached for 30 days, as
     // server-side track data are not expected to change.
-    exit(Response::code(200)->json($trackInfo, 2592000));
+    exit(API\Response::code(200)->json($trackInfo, 2592000));
 }
 
 function serve_track_kierros_svg(\RSC\ResourceID $trackResourceID = NULL) : void
@@ -134,10 +135,10 @@ function serve_track_kierros_svg(\RSC\ResourceID $trackResourceID = NULL) : void
     $kierrosSVG = (new DatabaseConnection\TrackDatabase())->get_track_kierros_svg($trackResourceID);
     if (!$kierrosSVG)
     {
-        exit(Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching track data found."));
     }
 
     // We ask the client to keep the response data cached for 30 days, as
     // server-side track data are not expected to change.
-    exit(Response::code(200)->svg_image($kierrosSVG, 2592000));
+    exit(API\Response::code(200)->svg_image($kierrosSVG, 2592000));
 }

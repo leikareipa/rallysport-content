@@ -1,5 +1,6 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Root;
       use RSC\HTMLPage;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -12,41 +13,23 @@
 
 require_once __DIR__."/../common-scripts/response.php";
 require_once __DIR__."/../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-fragments/form-upload-track.php";
+require_once __DIR__."/../common-scripts/html-page/html-page-fragments/form-add-track.php";
 require_once __DIR__."/../common-scripts/html-page/html-page-fragments/rallysport-content-header.php";
 require_once __DIR__."/../common-scripts/html-page/html-page-fragments/rallysport-content-footer.php";
 
-function view_form_page(string $formName) : void
+function view_form(string $formName) : void
 {
     $formView;
 
     switch ($formName)
     {
-        case "upload_track": $formView = form_page_upload_track(); break;
-        default: $formView = form_page_unknown(); break;
+        default: $formView = form_unknown(); break;
     }
 
-    exit(Response::code(200)->html($formView->html()));
+    exit(API\Response::code(200)->html($formView->html()));
 }
 
-function form_page_upload_track() : HTMLPage\HTMLPage
-{
-    $view = new HTMLPage\HTMLPage();
-
-    $view->use_fragment(HTMLPage\Fragment\Form_UploadTrack::class);
-    $view->use_fragment(HTMLPage\Fragment\RallySportContentHeader::class);
-    $view->use_fragment(HTMLPage\Fragment\RallySportContentFooter::class);
-
-    $view->head->title = "Upload a track";
-
-    $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
-    $view->body->add_element(HTMLPage\Fragment\Form_UploadTrack::html());
-    $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
-
-    return $view;
-}
-
-function form_page_unknown() : HTMLPage\HTMLPage
+function form_unknown() : HTMLPage\HTMLPage
 {
     $view = new HTMLPage\HTMLPage();
 

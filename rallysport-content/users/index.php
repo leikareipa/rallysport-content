@@ -11,6 +11,7 @@
 
 require_once __DIR__."/server-api/create-new-user.php";
 require_once __DIR__."/server-api/serve-user-data.php";
+require_once __DIR__."/server-api/view-form.php";
 require_once __DIR__."/../common-scripts/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
@@ -34,13 +35,14 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
 
         // Satisfy the GET request by outputting the relevant data.
-        if ($_GET["metadata"] ?? false) API\serve_user_metadata_as_json($resourceID);
+        if ($_GET["form"] ?? false)          API\Users\view_form($_GET["form"] ?? "unknown_form_identifier");
+        else if ($_GET["metadata"] ?? false) API\Users\serve_user_metadata_as_json($resourceID);
 
         break;
     }
     case "POST":
     {
-        API\create_new_user(json_decode(file_get_contents("php://input"), true));
+        API\Users\create_new_user(json_decode(file_get_contents("php://input"), true));
 
         break;
     }

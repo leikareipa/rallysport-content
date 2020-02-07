@@ -1,5 +1,6 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Users;
       use RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -20,7 +21,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // the user resource ID is NULL.
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -35,8 +36,8 @@ function serve_user_metadata_as_json(\RSC\ResourceID $resourceID = NULL) : void
     $userInfo = (new DatabaseConnection\UserDatabase())->get_user_information($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
-        exit(Response::code(404)->error_message("No matching user data found."));
+        exit(API\Response::code(404)->error_message("No matching user data found."));
     }
 
-    exit(Response::code(200)->json($userInfo));
+    exit(API\Response::code(200)->json($userInfo));
 }

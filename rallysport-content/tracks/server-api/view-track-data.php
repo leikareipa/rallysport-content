@@ -1,6 +1,7 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Tracks;
       use RSC\HTMLPage;
       use RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -25,7 +26,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 // this parameter is NULL).
 //
 // Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->json([...]).
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
@@ -41,7 +42,7 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
     $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
-        exit(Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching track data found."));
     }
 
     // Build a HTML page that displays the requested tracks' metadata.
@@ -58,5 +59,5 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
         $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::close());
     }
 
-    exit(Response::code(200)->html($view->html()));
+    exit(API\Response::code(200)->html($view->html()));
 }
