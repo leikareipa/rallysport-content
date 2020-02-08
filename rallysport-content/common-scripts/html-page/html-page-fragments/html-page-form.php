@@ -11,7 +11,7 @@
 require_once __DIR__."/../html-page-fragment.php";
 
 // A base class for creating HTML forms.
-abstract class HTMLPageFragment_Form extends HTMLPage\HTMLPageFragment
+abstract class HTMLPageForm extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {

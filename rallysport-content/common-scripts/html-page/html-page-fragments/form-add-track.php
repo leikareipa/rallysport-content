@@ -12,7 +12,7 @@ require_once __DIR__."/../../resource/resource-visibility.php";
 
 // Represents a HTML form with which the user can upload a new track resource
 // onto the server.
-class Form_AddTrack extends HTMLPageFragment_Form
+class Form_AddTrack extends HTMLPageForm
 {
     static public function title() : string
     {
