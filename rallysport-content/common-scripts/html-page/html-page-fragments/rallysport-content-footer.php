@@ -13,7 +13,7 @@ require_once __DIR__."/../../resource/resource-visibility.php";
 
 // A basic footer element intended to be displayed on Rally-Sport Content's
 // HTML pages.
-class RallySportContentFooter extends HTMLPage\HTMLPageFragment
+abstract class RallySportContentFooter extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {

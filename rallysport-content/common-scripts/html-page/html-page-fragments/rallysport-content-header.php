@@ -13,7 +13,7 @@ require_once __DIR__."/../../resource/resource-visibility.php";
 
 // A basic header element intended to be displayed on Rally-Sport Content's
 // HTML pages.
-class RallySportContentHeader extends HTMLPage\HTMLPageFragment
+abstract class RallySportContentHeader extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {

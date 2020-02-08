@@ -28,7 +28,7 @@ require_once __DIR__."/../html-page-fragment.php";
 //       Subsequent elements added into the body will now go outside the container
 //       again.
 //
-class TrackMetadataContainer extends HTMLPage\HTMLPageFragment
+abstract class TrackMetadataContainer extends HTMLPage\HTMLPageFragment
 {
     static public function css() : string
     {
