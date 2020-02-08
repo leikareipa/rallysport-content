@@ -24,29 +24,25 @@ function view_form(string $formName) : void
 
     switch ($formName)
     {
-        case "login": $formView = form_user_login(); break;
+        case "login": $formView = form(HTMLPage\Fragment\Form_UserLogin::class); break;
         default: $formView = form_unknown(); break;
     }
 
     exit(API\Response::code(200)->html($formView->html()));
 }
 
-function form_user_login() : HTMLPage\HTMLPage
+function form(string $formClassName) : HTMLPage\HTMLPage
 {
     $view = new HTMLPage\HTMLPage();
 
-    $view->use_fragment(HTMLPage\Fragment\Form_UserLogin::class);
+    $view->use_fragment($formClassName);
     $view->use_fragment(HTMLPage\Fragment\RallySportContentHeader::class);
     $view->use_fragment(HTMLPage\Fragment\RallySportContentFooter::class);
 
-    $view->head->title = HTMLPage\Fragment\Form_UserLogin::title();
+    $view->head->title = $formClassName::title();
 
     $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
-    if (isset($_GET["error"]))
-    {
-        $view->body->add_element("<div class='form-error-string'>".htmlspecialchars($_GET["error"])."</div>");
-    }
-    $view->body->add_element(HTMLPage\Fragment\Form_UserLogin::html());
+    $view->body->add_element($formClassName::html());
     $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
 
     return $view;
