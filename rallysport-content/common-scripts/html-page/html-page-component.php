@@ -9,7 +9,7 @@
 
 // Represents an abstract element or set of elements on a HTMLPage. You would
 // use fragments to build reusable components, for instance.
-abstract class HTMLPageFragment
+abstract class HTMLPageComponent
 {
     // Returns as a string any CSS styling this fragment makes use of.
     public static function css() : string

@@ -16,10 +16,10 @@
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/track-metadata-container.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-header.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-fragments/rallysport-content-footer.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/track-metadata.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/track-metadata-container.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.

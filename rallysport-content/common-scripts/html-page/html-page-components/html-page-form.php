@@ -8,10 +8,10 @@
  * 
  */
 
-require_once __DIR__."/../html-page-fragment.php";
+require_once __DIR__."/../html-page-component.php";
 
 // A base class for creating HTML forms.
-abstract class HTMLPageForm extends HTMLPage\HTMLPageFragment
+abstract class HTMLPageForm extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {

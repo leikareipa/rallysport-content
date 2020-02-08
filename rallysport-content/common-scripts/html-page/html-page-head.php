@@ -21,7 +21,7 @@ class HTMLPageHead
 
     public function __construct()
     {
-        $this->css = file_get_contents(__DIR__."/html-page-fragments/css/html-page.css");
+        $this->css = file_get_contents(__DIR__."/html-page-components/css/html-page.css");
         $this->elements = [];
 
         return;

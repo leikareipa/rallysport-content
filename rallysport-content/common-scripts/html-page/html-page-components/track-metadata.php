@@ -8,7 +8,7 @@
  * 
  */
 
-require_once __DIR__."/../html-page-fragment.php";
+require_once __DIR__."/../html-page-component.php";
 
 // Represents a HTML element in a HTMLPage object that provides metadata about
 // the tracks of Rally-Sport Content.
@@ -26,7 +26,7 @@ require_once __DIR__."/../html-page-fragment.php";
 //   4. Optionally, you can use the TrackMetadataContainer to hold multiple
 //      track metadata elements.
 //
-abstract class TrackMetadata extends HTMLPage\HTMLPageFragment
+abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
