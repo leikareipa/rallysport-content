@@ -13,7 +13,7 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-add-track.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-create-track.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-user-login.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
@@ -42,6 +42,10 @@ function form_user_login() : HTMLPage\HTMLPage
     $view->head->title = HTMLPage\Fragment\Form_UserLogin::title();
 
     $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
+    if (isset($_GET["error"]))
+    {
+        $view->body->add_element("<div class='form-error-string'>".htmlspecialchars($_GET["error"])."</div>");
+    }
     $view->body->add_element(HTMLPage\Fragment\Form_UserLogin::html());
     $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
 

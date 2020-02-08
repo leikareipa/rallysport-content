@@ -94,6 +94,13 @@ class Response
         return $this->empty_body();
     }
 
+    public function redirect_to(string $url) : int
+    {
+        header("Location: {$url}");
+
+        return $this->empty_body();
+    }
+
     // For responding with an error message string. You would use this with
     // response codes indicating an error, e.g. 404. The return value is expected
     // to be received by exit().

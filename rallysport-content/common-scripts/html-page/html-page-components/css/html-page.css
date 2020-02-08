@@ -5,3 +5,23 @@ body
     text-align: center;
     font-family: sans-serif;
 }
+
+.form-error-string
+{
+    font-weight: bold;
+    color: red;
+    margin-bottom: 15px;
+}
+
+.form-error-string::before
+{
+    font-family: "Font Awesome 5 Free";
+    padding-right: 5px;
+    font-weight: bold;
+    content: "\f06a";
+}
+
+.form-error-string::after
+{
+    content: ".";
+}

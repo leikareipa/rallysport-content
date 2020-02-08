@@ -36,6 +36,29 @@ class UserDatabase extends DatabaseConnection
         return;
     }
 
+    // Returns true if the given password is that of the given user; false
+    // otherwise.
+    function validate_credentials(\RSC\ResourceID $resourceID, string $plaintextPassword) : bool
+    {
+        if (!$this->is_connected() ||
+            !$resourceID)
+        {
+            return false;
+        }
+
+        $userInfo = $this->issue_db_query("SELECT php_password_hash
+                                           FROM rsc_users
+                                           WHERE resource_id = ?",
+                                          [$resourceID->string()]);
+
+        if (!is_array($userInfo) || (count($userInfo) != 1))
+        {
+            return false;
+        }
+
+        return password_verify($plaintextPassword, $userInfo[0]["php_password_hash"]);
+    }
+
     // Adds into the USERS table a new user with the given password. The plaintext
     // password will not be entered into the database; instead, it will be ignored
     // once a salted hash has been derived from it, and the hash will be stored

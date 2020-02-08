@@ -1,5 +1,7 @@
 <?php namespace RSC;
 
+session_start();
+
 /*
  * 2020 Tarpeeksi Hyvae Soft
  * 
@@ -40,9 +42,20 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
-    case "POST":
+    case "POST": // Create a new user account.
     {
-        API\Users\create_new_user(json_decode(file_get_contents("php://input"), true));
+        if (isset($_SESSION["user_resource_id"]))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Already logged in as a user"));
+        }
+        
+        if (!isset($_POST["email"]) ||
+            !isset($_POST["password"]))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Missing email or password"));
+        }
+
+        API\Users\create_new_user($_POST["email"], $_POST["password"]);
 
         break;
     }

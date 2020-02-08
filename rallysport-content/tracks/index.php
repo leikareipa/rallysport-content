@@ -1,5 +1,7 @@
 <?php namespace RSC;
 
+session_start();
+
 /*
  * 2020 Tarpeeksi Hyvae Soft
  * 
@@ -45,7 +47,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     }
     case "POST":
     {
-        API\add_new_track(json_decode(file_get_contents("php://input"), true));
+        API\Tracks\add_new_track(json_decode(file_get_contents("php://input"), true));
 
         break;
     }

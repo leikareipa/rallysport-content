@@ -1,5 +1,7 @@
 <?php namespace RSC;
 
+session_start();
+
 /*
  * 2020 Tarpeeksi Hyvae Soft
  * 
