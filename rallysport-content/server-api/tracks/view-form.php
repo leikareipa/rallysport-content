@@ -23,14 +23,14 @@ function view_form(string $formName) : void
 
     switch ($formName)
     {
-        case "add": $formView = form_add(); break;
+        case "add": $formView = form_add_new_track(); break;
         default: $formView = form_unknown(); break;
     }
 
     exit(API\Response::code(200)->html($formView->html()));
 }
 
-function form_add() : HTMLPage\HTMLPage
+function form_add_new_track() : HTMLPage\HTMLPage
 {
     $view = new HTMLPage\HTMLPage();
 

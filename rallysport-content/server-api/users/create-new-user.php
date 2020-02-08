@@ -30,20 +30,17 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //  - On success, returns the HTML status code 201 and a body as a JSON string
 //    that provides information about the newly-created user account.
 //
-function create_new_user(array $parameters) : void
+function create_new_user(string $email, string $plaintextPassword) : void
 {
-    if (!isset($parameters["password"])) exit(API\Response::code(400)->error_message("Missing the 'password' parameter."));
-    if (!isset($parameters["email"]))    exit(API\Response::code(400)->error_message("Missing the 'email' parameter."));
-
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
     $userResourceID = \RSC\ResourceID::random(\RSC\ResourceType::USER);
 
     if (!$userResourceID ||
-        !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $parameters["password"], $parameters["email"]))
+        !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $plaintextPassword, $email))
     {
-        exit(API\Response::code(500)->error_message("Could not create a new user."));
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Failed to create a new user account"));
     }
 
-    exit(API\Response::code(201)->json(["id"=>$userResourceID->string()]));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=new-account-created&user-id=".$userResourceID->string()));
 }
