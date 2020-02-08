@@ -14,11 +14,6 @@ require_once __DIR__."/../../resource/resource-visibility.php";
 // onto the server.
 class Form_AddTrack extends HTMLPageFragment_Form
 {
-    static public function css() : string
-    {
-        return file_get_contents(__DIR__."/css/form-add-track.css");
-    }
-
     static public function title() : string
     {
         return "Add a new track";
@@ -27,11 +22,11 @@ class Form_AddTrack extends HTMLPageFragment_Form
     static public function html() : string
     {
         return "
-        <div class='form-add-track-container'>
+        <div class='html-page-form-container' id='add-track'>
 
             <header>".Form_AddTrack::title()."</header>
 
-            <form id='form-add-track' method='POST' action='/rallysport-content/tracks/'>
+            <form class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
 
                 <label for='track-title'>Track title</label>
                 <input type='text' id='track-title' name='track_title' required>

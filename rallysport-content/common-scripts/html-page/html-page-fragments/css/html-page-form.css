@@ -1,4 +1,4 @@
-.form-add-track-container
+.html-page-form-container
 {
     width: 420px;
     height: auto;
@@ -11,25 +11,25 @@
     box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.1);
 }
 
-.form-add-track-container > header
+.html-page-form-container > header
 {
     font-weight: bold;
     margin: 20px;
     padding: 0;
 }
 
-.form-add-track-container > form > input
+.html-page-form-container > form > input
 {
     box-sizing: border-box;
 }
 
-.form-add-track-container > form > label
+.html-page-form-container > form > label
 {
     display: block;
     text-align: left;
 }
 
-.form-add-track-container > form > input, select
+.html-page-form-container > form > input, select
 {
     margin-bottom: 10px;
     background-color: white;
@@ -40,18 +40,18 @@
     border: 1px solid lightgray;
 }
 
-.form-add-track-container > form > select
+.html-page-form-container > form > select
 {
     -moz-appearance: none;
     -webkit-appearance: none;
 }
 
-.form-add-track-container > form > input[type="file"]
+.html-page-form-container > form > input[type="file"]
 {
     padding: 7px;
 }
 
-.form-add-track-container > form > button[type="submit"]
+.html-page-form-container > form > button[type="submit"]
 {
     margin-top: 20px;
     margin-bottom: 5px;
