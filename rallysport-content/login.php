@@ -1,14 +1,14 @@
 <?php namespace RSC;
       use RSC\API;
 
-session_start();
-
 /*
  * 2020 Tarpeeksi Hyvae Soft
  * 
  * Software: Rally-Sport Content
  * 
  */
+
+session_start();
 
 require_once __DIR__."/common-scripts/response.php";
 require_once __DIR__."/common-scripts/resource/resource-id.php";
@@ -17,7 +17,7 @@ require_once __DIR__."/common-scripts/database-connection/user-database.php";
 
 if (isset($_SESSION["user_resource_id"]))
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Already logged in"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=You were already logged in"));
 }
 
 if (!isset($_POST["user_id"]) ||
@@ -38,7 +38,7 @@ if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResource
 }
 else // Successful login.
 {
-    $_SESSION["user_resource_id"] = $userResourceID;
+    $_SESSION["user_resource_id"] = $userResourceID->string();
 
     exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
 }

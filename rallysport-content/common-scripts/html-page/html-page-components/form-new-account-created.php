@@ -27,11 +27,11 @@ abstract class Form_NewAccountCreated extends HTMLPageForm
 
             <form class='html-page-form' method='GET' action='/rallysport-content/'>
 
-                <label for='user-id'>User ID*</label>
+                <label for='user-id'>Your user ID*</label>
                 <input type='text' id='user-id' name='email' value=".($_GET["user-id"] ?? "Unknown")." readonly>
 
                 <div style='margin-top: 5px; text-align: right; font-size: 90%;'>* Don't lose this ID! You'll need
-                it to log in to Rally-Sport Content.</div>
+                it to log in.</div>
 
             </form>
 

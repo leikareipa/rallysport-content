@@ -16,7 +16,7 @@ abstract class Form_AddUser extends HTMLPageForm
 {
     static public function title() : string
     {
-        return "Create a new user account";
+        return "New user registration";
     }
 
     static public function html() : string
@@ -32,9 +32,9 @@ abstract class Form_AddUser extends HTMLPageForm
                 <input type='email' id='user-id' name='email' required>
 
                 <label for='password'>Password</label>
-                <input type='password' id='password' name='password' required>
+                <input type='text' id='password' name='password' required>
 
-                <button type='submit'>Create account</button>
+                <button type='submit'>Register on Rally-Sport Content</button>
 
             </form>
 

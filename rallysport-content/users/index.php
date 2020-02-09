@@ -46,7 +46,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         if (isset($_SESSION["user_resource_id"]))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Already logged in as a user"));
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=You are already logged in as a user"));
         }
         
         if (!isset($_POST["email"]) ||

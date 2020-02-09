@@ -3,3 +3,28 @@
     font-size: 300%;
     margin: 30px 0 60px 0;
 }
+
+#rallysport-content-header > #header-login-container
+{
+    font-size: initial;
+    position: absolute;
+    right: 15%;
+    top: 50px;
+    display: flex;
+}
+
+#rallysport-content-header > #header-login-container > .separator
+{
+    margin: 0 5px;
+}
+
+#rallysport-content-header > #header-login-container > a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+#rallysport-content-header > #header-login-container > a:hover
+{
+    text-decoration: underline;
+}

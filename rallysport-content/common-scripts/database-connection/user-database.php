@@ -88,18 +88,16 @@ class UserDatabase extends DatabaseConnection
         $databaseReturnValue = $this->issue_db_command(
                                  "INSERT INTO rsc_users
                                    (resource_id,
+                                    resource_visibility,
                                     php_password_hash,
                                     php_password_hash_email,
-                                    account_creation_timestamp,
-                                    account_exists,
-                                    account_suspended)
-                                  VALUES (?, ?, ?, ?, ?, ?)",
+                                    creation_timestamp)
+                                  VALUES (?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
+                                   \RSC\ResourceVisibility::PUBLIC,
                                    $passwordHash,
                                    $emailHash,
-                                   time(),
-                                   1,
-                                   1]);
+                                   time()]);
 
         return (($databaseReturnValue == 0)? true : false);
     }

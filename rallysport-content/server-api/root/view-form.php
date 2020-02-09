@@ -13,7 +13,6 @@
 
 require_once __DIR__."/../../common-scripts/response.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-create-track.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-user-login.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
@@ -42,6 +41,10 @@ function form(string $formClassName) : HTMLPage\HTMLPage
     $view->head->title = $formClassName::title();
 
     $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
+    if (isset($_GET["error"]))
+    {
+        $view->body->add_element("<div class='form-error-string'>".htmlentities($_GET["error"])."</div>");
+    }
     $view->body->add_element($formClassName::html());
     $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
 

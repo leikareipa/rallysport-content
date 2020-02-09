@@ -28,7 +28,7 @@ abstract class Form_AddTrack extends HTMLPageForm
 
             <form class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
 
-                <label for='track-title'>Track title</label>
+                <label for='track-title'>Track name</label>
                 <input type='text' id='track-title' name='track_title' required>
 
                 <label for='track-visibility'>Initial visibility</label>
