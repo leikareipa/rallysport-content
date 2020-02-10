@@ -23,6 +23,12 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
                . LoginWidget::css();
     }
 
+    static public function scripts() : array
+    {
+        return array_merge([], // The scripts of this component (none right now, so an empty array).
+                           LoginWidget::scripts());
+    }
+
     static public function html()
     {
         return "
