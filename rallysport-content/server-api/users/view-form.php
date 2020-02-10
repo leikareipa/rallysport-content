@@ -11,7 +11,7 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/response.php";
+require_once __DIR__."/../../server-api/response.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-create-user.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/form-new-account-created.php";

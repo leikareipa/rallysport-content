@@ -9,7 +9,7 @@
 
 session_start();
 
-require_once __DIR__."/common-scripts/response.php";
+require_once __DIR__."/server-api/response.php";
 
 $_SESSION["user_resource_id"] = NULL;
 

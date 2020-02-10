@@ -14,7 +14,7 @@ session_start();
 require_once __DIR__."/../server-api/users/create-new-user.php";
 require_once __DIR__."/../server-api/users/serve-user-data.php";
 require_once __DIR__."/../server-api/users/view-form.php";
-require_once __DIR__."/../common-scripts/response.php";
+require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])

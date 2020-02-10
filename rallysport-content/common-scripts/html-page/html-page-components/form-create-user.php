@@ -34,7 +34,7 @@ abstract class Form_AddUser extends HTMLPageForm
                 <label for='password'>Password</label>
                 <input type='text' id='password' name='password' required>
 
-                <button type='submit'>Register on Rally-Sport Content</button>
+                <button type='submit'>Register to Rally-Sport Content</button>
 
             </form>
 

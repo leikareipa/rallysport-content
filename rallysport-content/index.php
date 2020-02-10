@@ -12,7 +12,7 @@ session_start();
  */
 
 require_once __DIR__."/server-api/root/view-form.php";
-require_once __DIR__."/common-scripts/response.php";
+require_once __DIR__."/server-api/response.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
