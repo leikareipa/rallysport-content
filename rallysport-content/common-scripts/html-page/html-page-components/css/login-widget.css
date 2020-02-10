@@ -1,0 +1,24 @@
+.login-widget
+{
+    font-size: initial;
+    position: absolute;
+    right: 15%;
+    top: 50px;
+    display: flex;
+}
+
+.login-widget > .separator
+{
+    margin: 0 5px;
+}
+
+.login-widget > a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+.login-widget > a:hover
+{
+    text-decoration: underline;
+}
