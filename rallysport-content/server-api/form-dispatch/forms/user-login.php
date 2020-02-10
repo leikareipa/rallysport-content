@@ -7,10 +7,10 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form with which the user can log into their user account.
-abstract class UserLogin extends \RSC\HTMLPage\Component\HTMLPageForm
+abstract class UserLogin extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {

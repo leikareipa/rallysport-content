@@ -7,10 +7,11 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 
-// Represents a HTML form with which the user can log into their user account.
-abstract class UnknownFormIdentifier extends \RSC\HTMLPage\Component\HTMLPageForm
+// Represents a HTML form conveying a generic error message about the given
+// form identifier (the "?form=" URL parameter) having an unrecognized value.
+abstract class UnknownFormIdentifier extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
@@ -19,6 +20,6 @@ abstract class UnknownFormIdentifier extends \RSC\HTMLPage\Component\HTMLPageFor
 
     static public function html() : string
     {
-        return "<div style='display: inline-block'>Unknown form identifier</div>";
+        return "<div style='display: inline-block; font-style: italic;'>Error: Unknown form identifier</div>";
     }
 }

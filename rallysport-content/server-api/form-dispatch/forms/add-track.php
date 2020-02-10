@@ -7,12 +7,12 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 require_once __DIR__."/../../../common-scripts/resource/resource-visibility.php";
 
 // Represents a HTML form with which the user can upload a new track resource
 // onto the server.
-abstract class AddTrack extends \RSC\HTMLPage\Component\HTMLPageForm
+abstract class AddTrack extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
@@ -22,7 +22,7 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\HTMLPageForm
     static public function html() : string
     {
         return "
-        <div class='html-page-form-container' id='add-track'>
+        <div class='html-page-form-container'>
 
             <header>".AddTrack::title()."</header>
 

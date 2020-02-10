@@ -7,10 +7,10 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form that informs the user about successful account creation.
-abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\HTMLPageForm
+abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
