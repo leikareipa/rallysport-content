@@ -13,7 +13,7 @@ session_start();
 
 require_once __DIR__."/../server-api/users/create-new-user.php";
 require_once __DIR__."/../server-api/users/serve-user-data.php";
-require_once __DIR__."/../server-api/users/view-form.php";
+require_once __DIR__."/../server-api/form-dispatch/dispatch-form.php";
 require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
@@ -37,7 +37,15 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
 
         // Satisfy the GET request by outputting the relevant data.
-        if ($_GET["form"] ?? false)          API\Users\view_form($_GET["form"] ?? "unknown_form_identifier");
+        if ($_GET["form"] ?? false)
+        {
+            switch ($_GET["form"])
+            {
+                case "add":                 API\dispatch_form(API\Form\CreateUserAccount::class); break;
+                case "new-account-created": API\dispatch_form(API\Form\NewUserAccountCreated::class); break;
+                default:                    API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+            }
+        }
         else if ($_GET["metadata"] ?? false) API\Users\serve_user_metadata_as_json($resourceID);
 
         break;

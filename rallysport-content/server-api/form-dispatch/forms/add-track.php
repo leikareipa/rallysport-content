@@ -1,4 +1,4 @@
-<?php namespace RSC\HTMLPage\Fragment;
+<?php namespace RSC\API\Form;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,12 +7,12 @@
  * 
  */
 
-require_once __DIR__."/html-page-form.php";
-require_once __DIR__."/../../resource/resource-visibility.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/resource/resource-visibility.php";
 
 // Represents a HTML form with which the user can upload a new track resource
 // onto the server.
-abstract class Form_AddTrack extends HTMLPageForm
+abstract class AddTrack extends \RSC\HTMLPage\Component\HTMLPageForm
 {
     static public function title() : string
     {
@@ -24,7 +24,7 @@ abstract class Form_AddTrack extends HTMLPageForm
         return "
         <div class='html-page-form-container' id='add-track'>
 
-            <header>".Form_AddTrack::title()."</header>
+            <header>".AddTrack::title()."</header>
 
             <form class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
 

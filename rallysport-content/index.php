@@ -11,7 +11,7 @@ session_start();
  * 
  */
 
-require_once __DIR__."/server-api/root/view-form.php";
+require_once __DIR__."/server-api/form-dispatch/dispatch-form.php";
 require_once __DIR__."/server-api/response.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
@@ -19,7 +19,11 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
-        API\Root\view_form($_GET["form"] ?? "unknown_form_identifier");
+        switch ($_GET["form"] ?? "unknown-form-identifier")
+        {
+            case "login": API\dispatch_form(API\Form\UserLogin::class); break;
+            default:      API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+        }
 
         break;
     }

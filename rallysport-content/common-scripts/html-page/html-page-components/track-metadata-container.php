@@ -1,4 +1,4 @@
-<?php namespace RSC\HTMLPage\Fragment;
+<?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
 
 /*

@@ -1,4 +1,4 @@
-<?php namespace RSC\HTMLPage\Fragment;
+<?php namespace RSC\API\Form;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,11 +7,10 @@
  * 
  */
 
-require_once __DIR__."/html-page-form.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/html-page-form.php";
 
-// Represents a HTML form with which the user can upload a new track resource
-// onto the server.
-abstract class Form_UserLogin extends HTMLPageForm
+// Represents a HTML form with which the user can log into their user account.
+abstract class UserLogin extends \RSC\HTMLPage\Component\HTMLPageForm
 {
     static public function title() : string
     {
@@ -23,7 +22,7 @@ abstract class Form_UserLogin extends HTMLPageForm
         return "
         <div class='html-page-form-container'>
 
-            <header>".Form_UserLogin::title()."</header>
+            <header>".UserLogin::title()."</header>
 
             <form class='html-page-form' method='POST' action='/rallysport-content/login.php'>
 

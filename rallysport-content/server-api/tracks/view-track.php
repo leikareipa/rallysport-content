@@ -51,18 +51,18 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
     {
         $view = new HTMLPage\HTMLPage();
 
-        $view->use_fragment(HTMLPage\Fragment\RallySportContentHeader::class);
-        $view->use_fragment(HTMLPage\Fragment\RallySportContentFooter::class);
-        $view->use_fragment(HTMLPage\Fragment\TrackMetadataContainer::class);
-        $view->use_fragment(HTMLPage\Fragment\TrackMetadata::class);
+        $view->use_fragment(HTMLPage\Component\RallySportContentHeader::class);
+        $view->use_fragment(HTMLPage\Component\RallySportContentFooter::class);
+        $view->use_fragment(HTMLPage\Component\TrackMetadataContainer::class);
+        $view->use_fragment(HTMLPage\Component\TrackMetadata::class);
 
         $view->head->title = "Custom tracks for Rally-Sport";
         
-        $view->body->add_element(HTMLPage\Fragment\RallySportContentHeader::html());
-        $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::open());
-        foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Fragment\TrackMetadata::html($track));
-        $view->body->add_element(HTMLPage\Fragment\TrackMetadataContainer::close());
-        $view->body->add_element(HTMLPage\Fragment\RallySportContentFooter::html());
+        $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+        foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Component\TrackMetadata::html($track));
+        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
     exit(API\Response::code(200)->html($view->html()));
