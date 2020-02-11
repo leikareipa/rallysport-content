@@ -29,8 +29,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
                 <label for='user-id'>Your user ID*</label>
                 <input type='text' id='user-id' name='email' value=".($_GET["user-id"] ?? "Unknown")." readonly>
 
-                <div style='margin-top: 5px; text-align: right; font-size: 90%;'>* Don't lose this ID! You'll need
-                it to log in.</div>
+                <div class='footnote'>* Don't lose this ID! You'll need it to log in.</div>
 
             </form>
 

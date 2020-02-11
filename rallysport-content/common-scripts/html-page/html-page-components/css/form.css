@@ -58,3 +58,10 @@
     padding: 10px;
     width: 80%;
 }
+
+.html-page-form-container > form > .footnote
+{
+    margin-top: 5px;
+    text-align: right;
+    font-size: 90%;
+}

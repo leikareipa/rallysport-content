@@ -33,6 +33,12 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <label for='password'>Password</label>
                 <input type='text' id='password' name='password' required>
 
+                <label for='track_file'>Sample track*</label>
+                <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
+
+                <div class='footnote'>* For verification, please provide a track you've
+                created in RallySportED-js.</div>
+
                 <button type='submit'>Register on Rally-Sport Content</button>
 
             </form>
