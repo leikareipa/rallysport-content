@@ -105,25 +105,23 @@ class UserDatabase extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On failure, FALSE is returned.
-    function get_user_information(\RSC\ResourceID $resourceID = NULL)
+    function get_user_metadata(\RSC\ResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
-        // If no resource ID is provided, we'll return info for all tracks
-        // in the database.
-        $resourceIDRowSelector = ($resourceID? "AND resource_id = ?" : "");
-
         $userInfo = $this->issue_db_query(
-                        "SELECT resource_id
+                        "SELECT resource_id,
+                                creation_timestamp
                          FROM rsc_users
-                         WHERE
-                          account_suspended = 0
-                          AND account_exists = 1
-                          {$resourceIDRowSelector}",
-                        ($resourceID? [$resourceID->string()] : NULL));
+                         WHERE resource_visibility = ?
+                         AND resource_id LIKE ?",
+                        [\RSC\ResourceVisibility::PUBLIC,
+                         ($resourceID? $resourceID->string() : "%")]);
+
+                         error_log(count($userInfo));
 
         if (!is_array($userInfo) || !count($userInfo))
         {
@@ -136,7 +134,8 @@ class UserDatabase extends DatabaseConnection
         {
             $returnObject[] =
             [
-                "resourceID" => $user["resource_id"],
+                "resourceID"        => $user["resource_id"],
+                "creationTimestamp" => (floor($user["creation_timestamp"] / 10000) * 10000), // For privacy concerns, we'll reduce the timestamp accuracy.
             ];
         }
 

@@ -1,62 +1,67 @@
-.track-metadata
+.user-metadata
 {
     padding: 0;
     border-radius: 0;
     margin-bottom: 32px;
     margin-top: 32px;
     text-align: left;
-    display: inline-block;
+    display: flex;
     background-color: white;
     min-width: 520px;
 }
 
-.track-metadata > .title
+.user-metadata > div
+{
+    flex-basis: 20%;
+}
+
+.user-metadata > .title
 {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 120%;
 }
 
-.track-metadata > .title >.tag
+.user-metadata > .title >.tag
 {
-    margin-left: 8px;
+    margin-left: 6px;
     font-size: 80%;
     font-weight: normal;
     color: dimgray;
 }
 
-.track-metadata > .title >.tag:hover
+.user-metadata > .title >.tag:hover
 {
     color: black;
 }
 
-.track-metadata > .form
+.user-metadata > .form
 {
     display: flex;
     flex-direction: row;
     margin-top: 7px;
 }
 
-.track-metadata > .form > .media
+.user-metadata > .form > .media
 {
     width: 370px;
     height: 230px;
     border-radius: 0;
 }
 
-.track-metadata > .form > .media > svg > polygon
+.user-metadata > .form > .media > svg > polygon
 {
     stroke: dimgray;
     stroke-width: 1;
     fill: none;
 }
 
-.track-metadata > .form > .fields
+.user-metadata > .form > .fields
 {
     margin-left: 20px;
 }
 
-.track-metadata > .form > .fields > .actions
+.user-metadata > .form > .fields > .actions
 {
     border-left: 6px solid rgb(48, 105, 230);
     background-color: rgb(244, 248, 255);
@@ -68,50 +73,50 @@
     position: absolute;
 }
 
-.track-metadata > .form > .fields > .value-field .fas
+.user-metadata > .form > .fields > .value-field .fas
 {
     margin-right: 1px;
 }
 
-.track-metadata > .form > .fields > .actions .fas
+.user-metadata > .form > .fields > .actions .fas
 {
     color: rgb(48, 105, 230);
 }
 
-.track-metadata > .form > .fields > .value-field
+.user-metadata > .form > .fields > .value-field
 {
     padding-bottom: 1px;
-    color: dimgray;
+    color: gray;
 }
 
-.track-metadata > .form > .fields > .value-field:hover
+.user-metadata > .form > .fields > .value-field:hover
 {
     color: black;
 }
 
-.track-metadata > .form > .fields a
+.user-metadata > .form > .fields a
 {
     text-decoration: none;
     color: inherit;
 }
 
-.track-metadata > .form > .fields > .actions  a
+.user-metadata > .form > .fields > .actions  a
 {
     text-decoration: none;
     color: rgb(14, 82, 230);
 }
 
-.track-metadata > .form > .fields > .actions a:hover
+.user-metadata > .form > .fields > .actions a:hover
 {
     text-decoration: underline;
 }
 
-.track-metadata > .form > .fields > div + div
+.user-metadata > .form > .fields > div + div
 {
     padding-top: 6px;
 }
 
-.track-metadata > .form > .fields > .actions > div + div
+.user-metadata > .form > .fields > .actions > div + div
 {
     padding-top: 8px;
 }

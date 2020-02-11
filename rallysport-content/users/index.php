@@ -13,6 +13,7 @@ session_start();
 
 require_once __DIR__."/../server-api/users/create-new-user.php";
 require_once __DIR__."/../server-api/users/serve-user-data.php";
+require_once __DIR__."/../server-api/users/view-user.php";
 require_once __DIR__."/../server-api/form-dispatch/dispatch-form.php";
 require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
@@ -31,7 +32,6 @@ switch ($_SERVER["REQUEST_METHOD"])
             $resourceID = ResourceID::from_string($_GET["id"], ResourceType::USER);
             if (!$resourceID)
             {
-                echo $_GET["id"];
                 exit(API\Response::code(400)->error_message("Invalid user resource ID."));
             }
         }
@@ -47,6 +47,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             }
         }
         else if ($_GET["metadata"] ?? false) API\Users\serve_user_metadata_as_json($resourceID);
+        else                                 API\Users\view_user_metadata($resourceID);
 
         break;
     }

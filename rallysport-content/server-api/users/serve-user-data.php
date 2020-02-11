@@ -33,7 +33,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //
 function serve_user_metadata_as_json(\RSC\ResourceID $resourceID = NULL) : void
 {
-    $userInfo = (new DatabaseConnection\UserDatabase())->get_user_information($resourceID);
+    $userInfo = (new DatabaseConnection\UserDatabase())->get_user_metadata($resourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))
     {
         exit(API\Response::code(404)->error_message("No matching user data found."));
