@@ -33,9 +33,9 @@ function dispatch_form(string $formClassName) : void
     {
         $view = new HTMLPage\HTMLPage();
 
-        $view->use_fragment($formClassName);
-        $view->use_fragment(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_fragment(HTMLPage\Component\RallySportContentFooter::class);
+        $view->use_component($formClassName);
+        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
     
         $view->head->title = $formClassName::title();
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());

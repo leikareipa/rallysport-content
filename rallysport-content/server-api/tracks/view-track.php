@@ -51,10 +51,10 @@ function view_track_metadata(\RSC\ResourceID $trackResourceID = NULL) : void
     {
         $view = new HTMLPage\HTMLPage();
 
-        $view->use_fragment(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_fragment(HTMLPage\Component\RallySportContentFooter::class);
-        $view->use_fragment(HTMLPage\Component\TrackMetadataContainer::class);
-        $view->use_fragment(HTMLPage\Component\TrackMetadata::class);
+        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $view->use_component(HTMLPage\Component\TrackMetadataContainer::class);
+        $view->use_component(HTMLPage\Component\TrackMetadata::class);
 
         $view->head->title = "Custom tracks for Rally-Sport";
         

@@ -51,10 +51,10 @@ function view_user_metadata(\RSC\ResourceID $userResourceID = NULL) : void
     {
         $view = new HTMLPage\HTMLPage();
 
-        $view->use_fragment(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_fragment(HTMLPage\Component\RallySportContentFooter::class);
-        $view->use_fragment(HTMLPage\Component\UserMetadataContainer::class);
-        $view->use_fragment(HTMLPage\Component\UserMetadata::class);
+        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $view->use_component(HTMLPage\Component\UserMetadataContainer::class);
+        $view->use_component(HTMLPage\Component\UserMetadata::class);
 
         $view->head->title = "Registered users on Rally-Sport Content";
         

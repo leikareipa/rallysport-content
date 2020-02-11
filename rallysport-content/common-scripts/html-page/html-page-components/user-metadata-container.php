@@ -16,7 +16,7 @@ require_once __DIR__."/../html-page-component.php";
 //
 //   1.  Create the page object: $page = new HTMLPage();
 //
-//   2.  Import the container's fragment class into the page object: $page->use_fragment(UserMetadataContainer::class);
+//   2.  Import the container's fragment class into the page object: $page->use_component(UserMetadataContainer::class);
 //
 //   3.  Insert an instance of the container onto the page: $page->body->add_element(UserMetadataContainer::open());
 //       Any subsequent elements inserted into the body will be placed inside the
@@ -38,8 +38,6 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
     static public function open()
     {
         return "
-        <div class='users-container-title'>A list of registered users</div>
-
         <table class='users-container'>
 
             <tr>
