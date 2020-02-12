@@ -62,6 +62,27 @@ class TrackDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
+    // Returns the number of tracks uploaded by the given user that are marked
+    // as being publically viewable.
+    public function num_public_tracks_by_user(\RSC\ResourceID $userResourceID)
+    {
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_tracks
+                                             WHERE creator_resource_id = ?
+                                             AND resource_visibility = ?",
+                                            [$userResourceID->string(),
+                                             \RSC\ResourceVisibility::PUBLIC]);
+
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return 0;
+        }
+
+        return $dbResponse[0]["COUNT(*)"];
+    }
+
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
     public function add_new_track(\RSC\ResourceID $resourceID,

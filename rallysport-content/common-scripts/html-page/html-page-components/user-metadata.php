@@ -9,6 +9,7 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
+require_once __DIR__."/../../database-connection/track-database.php";
 
 // Represents a HTML element in a HTMLPage object that provides metadata about
 // the tracks of Rally-Sport Content.
@@ -37,12 +38,13 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
     {
         $userResourceID        = ($userMetadata["resourceID"]        ?? "unknown");
         $userCreationTimestamp = ($userMetadata["creationTimestamp"] ?? "unknown");
-        $userNumTracksUploaded = random_int(0, 15); /// TODO.
+        $userNumPublicTracks   = (new \RSC\DatabaseConnection\TrackDatabase())
+                                 ->num_public_tracks_by_user(\RSC\ResourceID::from_string($userResourceID, \RSC\ResourceType::USER));
 
         return "
         <tr>
             <td style='font-weight: ".((($_SESSION["user_resource_id"] ?? false) == $userResourceID)? "bold" : "normal").";'>{$userResourceID}</td>
-            <td style='text-align: right'><a href='/rallysport-content/tracks/?by={$userResourceID}'>{$userNumTracksUploaded}</a></td>
+            <td style='text-align: right'><a href='/rallysport-content/tracks/?by={$userResourceID}'>{$userNumPublicTracks}</a></td>
             <td style='text-align: right'>".date("j.n.Y", $userCreationTimestamp)."</td>
         </tr>
         ";

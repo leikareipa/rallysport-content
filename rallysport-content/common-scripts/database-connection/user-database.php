@@ -121,8 +121,6 @@ class UserDatabase extends DatabaseConnection
                         [\RSC\ResourceVisibility::PUBLIC,
                          ($resourceID? $resourceID->string() : "%")]);
 
-                         error_log(count($userInfo));
-
         if (!is_array($userInfo) || !count($userInfo))
         {
             return false;
