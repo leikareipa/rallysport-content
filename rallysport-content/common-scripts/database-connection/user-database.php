@@ -38,7 +38,7 @@ class UserDatabase extends DatabaseConnection
 
     // Returns true if the given password is that of the given user; false
     // otherwise.
-    function validate_credentials(\RSC\ResourceID $resourceID, string $plaintextPassword) : bool
+    function validate_credentials(\RSC\UserResourceID $resourceID, string $plaintextPassword) : bool
     {
         if (!$this->is_connected() ||
             !$resourceID)
@@ -71,7 +71,7 @@ class UserDatabase extends DatabaseConnection
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(\RSC\ResourceID $resourceID,
+    function create_new_user(\RSC\UserResourceID $resourceID,
                              string $plaintextPassword,
                              string $plaintextEmail) : bool
     {
@@ -105,7 +105,7 @@ class UserDatabase extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On failure, FALSE is returned.
-    function get_user_metadata(\RSC\ResourceID $resourceID = NULL)
+    function get_user_metadata(\RSC\UserResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {

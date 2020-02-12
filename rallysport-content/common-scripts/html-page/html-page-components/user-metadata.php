@@ -39,7 +39,7 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
         $userResourceID        = ($userMetadata["resourceID"]        ?? "unknown");
         $userCreationTimestamp = ($userMetadata["creationTimestamp"] ?? "unknown");
         $userNumPublicTracks   = (new \RSC\DatabaseConnection\TrackDatabase())
-                                 ->num_public_tracks_by_user(\RSC\ResourceID::from_string($userResourceID, \RSC\ResourceType::USER));
+                                 ->num_public_tracks_by_user(\RSC\UserResourceID::from_string($userResourceID));
 
         return "
         <tr>

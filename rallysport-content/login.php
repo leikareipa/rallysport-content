@@ -26,7 +26,7 @@ if (!isset($_POST["user_id"]) ||
     exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Missing the user ID or password"));
 }
 
-$userResourceID = ResourceID::from_string($_POST["user_id"], ResourceType::USER);
+$userResourceID = UserResourceID::from_string($_POST["user_id"]);
 if (!$userResourceID)
 {
     exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Invalid user ID or password"));

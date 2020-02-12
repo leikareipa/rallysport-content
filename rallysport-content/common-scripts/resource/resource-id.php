@@ -21,12 +21,10 @@
  * Usage:
  * 
  *  1a. Construct a new random resource ID (for a track resource, in this case):
- *      $id = ResourceID::random(ResourceType::TRACK).
+ *      $id = TrackResourceID::random().
  * 
  *  1b. Construct a new resource ID from an existing resource ID string (for a
- *      track resource, in this case): $id = ResourceID::from_string($idString, ResourceType::TRACK).
- *      Note that if the resource string provides a type element, it must match
- *      the type specified by the 2nd parameter.
+ *      track resource, in this case): $id = TrackResourceID::from_string($idString).
  * 
  *  2.  Verify that the resource ID object is valid: if (!$id) { your error-handling here... }
  * 
@@ -37,8 +35,23 @@
 require_once __DIR__."/resource-type.php";
 require_once __DIR__."/forbidden-resource-key.php";
 
-class ResourceID
+class TrackResourceID extends ResourceID
 {
+    protected const RESOURCE_TYPE = ResourceType::TRACK;
+}
+
+class UserResourceID extends ResourceID
+{
+    protected const RESOURCE_TYPE = ResourceType::USER;
+}
+
+// Generic resource ID.
+abstract class ResourceID
+{
+    // Of \RSC\ResourceType - e,g, "track", "user", etc. This is expected to
+    // be set by child classes.
+    protected const RESOURCE_TYPE = "";
+
     private $resourceIDString;
 
     // The set of characters that the resource key is allowed to use.
@@ -51,13 +64,13 @@ class ResourceID
     public const RESOURCE_KEY_FRAGMENT_LENGTH = 3;
     public const NUM_RESOURCE_KEY_FRAGMENTS = 3;
 
-    // Create a resource ID object of the given type and with a random key. On
-    // error, returns NULL.
-    public function random(string /*of ResourceType*/ $resourceType)
+    // Create a resource ID object with a random key. Returns the created
+    // resource ID object; or NULL on error.
+    static public function random() : ResourceID
     {
         try
         {
-            $id = new ResourceID($resourceType, "random");
+            $id = new static(static::RESOURCE_TYPE, "random");
         }
         catch (\Exception $e)
         {
@@ -67,17 +80,14 @@ class ResourceID
         return $id;
     }
 
-    // Create a resource ID object of the given type from the given ID string.
-    // The string can be of the form "yyyy.xxx-xxx-xxx" or "xxx-xxx-xxx", where
-    // "yyyy" is the type element and "xxx-xxx-xxx" the key element - if no type
-    // element is given, it will be appended to the ID based on the resource
-    // type specified by the 2nd parameter. If a type element is specified by
-    // the 1st parameter, it must match that named by the 2nd parameter (so
-    // "track.xxx-xxx-xxx" must be accompanied by ResourceType::TRACK).
+    // Create a resource ID object from the given ID string. The string can be
+    // of the form "yyyy.xxx-xxx-xxx" or "xxx-xxx-xxx", where "yyyy" is the type
+    // element and "xxx-xxx-xxx" the key element. If no type element is given,
+    // one will be appended.
     //
-    // On error, returns NULL.
+    // Returns the created resource ID object; or NULL on error.
     //
-    public function from_string(string $resourceIDString, string /*of ResourceType*/ $resourceType)
+    static public function from_string(string $resourceIDString)
     {
         try
         {
@@ -85,14 +95,14 @@ class ResourceID
             // we'll insert it manually.
             if (stripos($resourceIDString, self::RESOURCE_TYPE_SEPARATOR) === FALSE)
             {
-                $id = new ResourceID($resourceType, $resourceIDString);
+                $id = new static(static::RESOURCE_TYPE, $resourceIDString);
             }
             else
             {
-                $id = new ResourceID($resourceIDString);
+                $id = new static($resourceIDString);
             }
 
-            if (($id->resource_type() !== $resourceType) ||
+            if (($id->resource_type() !== static::RESOURCE_TYPE) ||
                 !$id->resource_key())
             {
                 throw new \Exception("Invalid resource ID string.");
@@ -106,13 +116,13 @@ class ResourceID
         return $id;
     }
 
-    // Create a resource ID object from the given type and key. On error, returns
-    // NULL.
-    public function from_type_and_key(string /*of ResourceType*/ $resourceType, string $resourceKey)
+    // Create a resource ID object from the given type and key. Returns the
+    // created resource ID object; or NULL on error.
+    static public function from_type_and_key(string /*of ResourceType*/ $resourceType, string $resourceKey)
     {
         try
         {
-            $id = new ResourceID($resourceType, $resourceKey);
+            $id = new static($resourceType, $resourceKey);
         }
         catch (\Exception $e)
         {

@@ -29,7 +29,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         // provided, we assume the query relates to all tracks in the database.
         if ($_GET["id"] ?? false)
         {
-            $resourceID = ResourceID::from_string($_GET["id"], ResourceType::TRACK);
+            $resourceID = TrackResourceID::from_string($_GET["id"]);
             if (!$resourceID)
             {
                 exit(API\Response::code(400)->error_message("Invalid track resource ID."));

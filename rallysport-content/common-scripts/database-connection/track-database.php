@@ -39,7 +39,7 @@ class TrackDatabase extends DatabaseConnection
         return;
     }
 
-    private function increment_track_download_count(\RSC\ResourceID $resourceID) : bool 
+    private function increment_track_download_count(\RSC\TrackResourceID $resourceID) : bool 
     {
         if (!$this->is_connected())
         {
@@ -64,7 +64,7 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns the number of tracks uploaded by the given user that are marked
     // as being publically viewable.
-    public function num_public_tracks_by_user(\RSC\ResourceID $userResourceID)
+    public function num_public_tracks_by_user(\RSC\UserResourceID $userResourceID)
     {
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_tracks
@@ -85,8 +85,8 @@ class TrackDatabase extends DatabaseConnection
 
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
-    public function add_new_track(\RSC\ResourceID $resourceID,
-                                  \RSC\ResourceID $creatorID,
+    public function add_new_track(\RSC\TrackResourceID $resourceID,
+                                  \RSC\UserResourceID $creatorID,
                                   string $internalName,
                                   string $displayName,
                                   int $width,
@@ -141,7 +141,7 @@ class TrackDatabase extends DatabaseConnection
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On error, FALSE will be returned.
-    public function get_track_metadata(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_metadata(\RSC\TrackResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -214,7 +214,7 @@ class TrackDatabase extends DatabaseConnection
     //
     // On failure, FALSE is returned.
     //
-    public function get_track_data_as_zip_file(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_data_as_zip_file(\RSC\TrackResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {
@@ -278,7 +278,7 @@ class TrackDatabase extends DatabaseConnection
     // Returns the given track's data as a JSON string. The string will contain
     // all data needed to load the track into RallySportED-js for editing. On
     // failure, FALSE is returned.
-    public function get_track_data_as_json(\RSC\ResourceID $resourceID = NULL)
+    public function get_track_data_as_json(\RSC\TrackResourceID $resourceID = NULL)
     {
         if (!$this->is_connected())
         {

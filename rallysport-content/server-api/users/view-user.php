@@ -39,7 +39,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //  - On success, the response body will consist of the HTML page's source
 //    code as a string.
 //
-function view_user_metadata(\RSC\ResourceID $userResourceID = NULL) : void
+function view_user_metadata(\RSC\TrackResourceID $userResourceID = NULL) : void
 {
     $userInfo = (new DatabaseConnection\UserDatabase())->get_user_metadata($userResourceID);
     if (!$userInfo || !is_array($userInfo) || !count($userInfo))

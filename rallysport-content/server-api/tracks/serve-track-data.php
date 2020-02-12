@@ -30,7 +30,7 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //
 //  - On success, the response body will consist of the file's bytes.
 //
-function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL) : void
+function serve_track_data_as_zip_file(\RSC\TrackResourceID $trackResourceID = NULL) : void
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -88,7 +88,7 @@ function serve_track_data_as_zip_file(\RSC\ResourceID $trackResourceID = NULL) :
 //          }
 //      }
 //
-function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL) : void
+function serve_track_data_as_json(\RSC\TrackResourceID $trackResourceID = NULL) : void
 {
     // A NULL resource ID indicates that we should serve the data for all known
     // tracks. However, for now, we only support serving individual tracks' data.
@@ -117,7 +117,7 @@ function serve_track_data_as_json(\RSC\ResourceID $trackResourceID = NULL) : voi
 //
 // Returns: a response from the Response class (HTML status code + body).
 //
-function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL) : void
+function serve_track_metadata_as_json(\RSC\TrackResourceID $trackResourceID = NULL) : void
 {
     $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
@@ -130,7 +130,7 @@ function serve_track_metadata_as_json(\RSC\ResourceID $trackResourceID = NULL) :
     exit(API\Response::code(200)->json($trackInfo, 2592000));
 }
 
-function serve_track_kierros_svg(\RSC\ResourceID $trackResourceID = NULL) : void
+function serve_track_kierros_svg(\RSC\TrackResourceID $trackResourceID = NULL) : void
 {
     $kierrosSVG = (new DatabaseConnection\TrackDatabase())->get_track_kierros_svg($trackResourceID);
     if (!$kierrosSVG)

@@ -133,8 +133,8 @@ function add_new_track(array $parameters) : void
 
     // Add the new track into the database.
     {
-        $resourceID = \RSC\ResourceID::random(\RSC\ResourceType::TRACK);
-        $creatorID = \RSC\ResourceID::random(\RSC\ResourceType::USER); /// TODO: Use the actual creator ID.
+        $resourceID = \RSC\TrackResourceID::random();
+        $creatorID = \RSC\UserResourceID::random(); /// TODO: Use the actual creator ID.
 
         /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 

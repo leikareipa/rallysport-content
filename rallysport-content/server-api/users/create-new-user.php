@@ -34,7 +34,7 @@ function create_new_user(string $email, string $plaintextPassword) : void
 {
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
-    $userResourceID = \RSC\ResourceID::random(\RSC\ResourceType::USER);
+    $userResourceID = \RSC\UserResourceID::random();
 
     if (!$userResourceID ||
         !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $plaintextPassword, $email))
