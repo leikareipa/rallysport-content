@@ -53,11 +53,18 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
         $trackVisibilityLevel = ($trackMetadata["visibilityLevel"]   ?? "0");
 
+        $titleIcon = ($trackVisibilityLevel == \RSC\ResourceVisibility::UNLISTED)
+                     ? "<span class='tag'><i class='fas fa-fw fa-sm fa-user-friends'></i> ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>"
+                     : (($trackVisibilityLevel == \RSC\ResourceVisibility::PRIVATE)
+                     ? "<span class='tag'><i class='fas fa-fw fa-sm fa-user'></i> ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>"
+                     : "");
+
         return "
         <div class='track-metadata'>
 
             <div class='title'>
                 {$trackDisplayName}
+                {$titleIcon}
                 <span class='tag'><i class='fas fa-fw fa-sm fa-tag'></i> {$trackID}</span>
                 <span class='tag'><i class='fas fa-fw fa-sm fa-folder'></i> {$trackInternalName}</span>
             </div>
@@ -80,9 +87,9 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                         <span class='value'>{$trackWidth} x {$trackHeight}</span>
                     </div>
 
-                    <div class='value-field' id='upload-date' title='Last modified: ".date("j.n.Y H:i", $trackTimestamp)."'>
+                    <div class='value-field' id='upload-date' title='Uploaded on ".date("j.n.Y", $trackTimestamp)."'>
                         <i class='fas fa-fw fa-sm fa-user-clock'></i>
-                        <span class='value'>".date("j M Y", $trackTimestamp)."</span>
+                        <span class='value'>".date("j.n.Y", $trackTimestamp)."</span>
                     </div>
 
                     <div class='value-field' id='uploader' title='Uploaded by: {$trackUploaderID}'>
@@ -90,11 +97,6 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                         <span class='value'>
                             <a href='/rallysport-content/users/?id={$trackUploaderID}'>{$trackUploaderID}</a>
                         </span>
-                    </div>
-
-                    <div class='value-field' id='visibility' title='Visibility: ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."'>
-                        <i class='fas fa-fw fa-sm fa-users'></i>
-                        <span class='value'>".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>
                     </div>
 
                     <div class='actions'>
