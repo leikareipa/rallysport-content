@@ -86,6 +86,7 @@ class TrackDatabase extends DatabaseConnection
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
     public function add_new_track(\RSC\TrackResourceID $resourceID,
+                                  int /*\RSC\ResourceVisibility*/ $resourceVisibility,
                                   \RSC\UserResourceID $creatorID,
                                   string $internalName,
                                   string $displayName,
@@ -124,7 +125,7 @@ class TrackDatabase extends DatabaseConnection
                                    creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
-                                   \RSC\ResourceVisibility::PUBLIC,
+                                   $resourceVisibility,
                                    $internalName,
                                    $displayName,
                                    $width,

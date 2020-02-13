@@ -17,6 +17,9 @@ require_once __DIR__."/../server-api/tracks/view-track.php";
 require_once __DIR__."/../server-api/tracks/serve-track-data.php";
 require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/resource/resource-visibility.php";
+require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
+require_once __DIR__."/../common-scripts/rallysported-track-data.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
@@ -54,8 +57,20 @@ switch ($_SERVER["REQUEST_METHOD"])
     }
     case "POST":
     {
-        API\Tracks\add_new_track(json_decode(file_get_contents("php://input"), true));
+        if (!($uploadedFileInfo = ($_FILES["rallysported_track_file"] ?? NULL)) ||
+            !\RSC\is_valid_uploaded_file($uploadedFileInfo, RallySportEDTrackData::MAX_BYTE_SIZE) ||
+            !($trackData = RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"] ?? NULL)))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track file"));
+        }
 
+        if (!$trackData->set_display_name($_POST["track_display_name"] ?? NULL))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track name"));
+        }
+
+        API\Tracks\add_new_track($trackData, ($_POST["track_visibility"] ?? \RSC\ResourceVisibility::PRIVATE));
+        
         break;
     }
     default: exit(API\Response::code(405)->allowed("GET, HEAD, POST"));

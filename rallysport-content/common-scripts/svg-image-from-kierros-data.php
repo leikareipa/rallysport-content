@@ -19,7 +19,7 @@ function svg_image_from_kierros_data(string $trackDataContainer) : string
     // The string returned if we fail to generate a valid SVG.
     $nullImage = "
     <svg width='100%' height='100%' viewBox='0 0 100 100'>
-        <text font-size='7' text-anchor='middle' x='50%' y='50%'>Image unavailable</text>
+        <text font-size='7' text-anchor='middle' x='50%' y='50%'>No preview image available</text>
     </svg>";
 
     $containerByteOffset = 0;

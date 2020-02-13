@@ -26,10 +26,10 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
 
             <header>".AddTrack::title()."</header>
 
-            <form class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
+            <form enctype='multipart/form-data' class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
 
                 <label for='track-title'>Track name</label>
-                <input type='text' id='track-title' name='track_title' required>
+                <input type='text' id='track-title' name='track_display_name' required>
 
                 <label for='track-visibility'>Initial visibility</label>
                 <select id='track-visibility' name='track_visibility' required>
@@ -39,7 +39,8 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
                 </select>
 
                 <label for='track_file'>File</label>
-                <input type='file' accept='.zip' id='track-file' name='track_file' required>
+                <input type='hidden' name='MAX_FILE_SIZE' value='102400'>
+                <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
                 <button type='submit'>Upload to Rally-Sport Content</button>
 

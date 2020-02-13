@@ -10,7 +10,7 @@ body
 {
     font-weight: bold;
     color: red;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-error-string::before

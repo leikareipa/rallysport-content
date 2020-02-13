@@ -403,7 +403,8 @@ class RallySportEDTrackData
             return false;
         }
         $textDataLen = unpack("V1", $containerData, $dataByteOffset)[1];
-        if ($textDataLen != 32768)
+        if (($textDataLen < 32768) ||
+            ($textDataLen > 33792))
         {
             return false;
         }
@@ -480,7 +481,7 @@ class RallySportEDTrackData
             $parameters = explode(" ", $line);
             $command = array_shift($parameters);
 
-            $commandsInManifesto[$command] = true;
+            $commandsInManifesto[(int)$command] = true;
 
             // Verify that each command has the correct number of parameters.
             switch ($command)

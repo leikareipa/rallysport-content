@@ -46,7 +46,7 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         $trackInternalName    = strtolower($trackMetadata["internalName"] ?? "unknown");
         $trackWidth           = ($trackMetadata["width"]             ?? "0");
         $trackHeight          = ($trackMetadata["height"]            ?? "0");
-        $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "Image unavailable");
+        $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "No preview image");
         $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
         $trackTimestamp       = ($trackMetadata["creationTimestamp"] ?? "0");
