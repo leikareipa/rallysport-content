@@ -1,6 +1,6 @@
 .users-container
 {
-    width: 500px;
+    width: 340px;
     display: table;
     border-collapse: collapse;
     margin-left: auto;
@@ -18,7 +18,7 @@
     font-weight: normal;
     text-align: left;
     margin: 0;
-    padding: 10px;
+    padding: 10px 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 

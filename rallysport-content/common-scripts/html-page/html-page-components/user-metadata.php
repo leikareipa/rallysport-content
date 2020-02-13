@@ -37,7 +37,6 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
     static public function html(array $userMetadata)
     {
         $userResourceID        = ($userMetadata["resourceID"]        ?? "unknown");
-        $userCreationTimestamp = ($userMetadata["creationTimestamp"] ?? "unknown");
         $userNumPublicTracks   = (new \RSC\DatabaseConnection\TrackDatabase())
                                  ->num_public_tracks_by_user(\RSC\UserResourceID::from_string($userResourceID));
 
@@ -45,7 +44,6 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
         <tr>
             <td style='font-weight: ".((($_SESSION["user_resource_id"] ?? false) == $userResourceID)? "bold" : "normal").";'>{$userResourceID}</td>
             <td style='text-align: right'><a href='/rallysport-content/tracks/?by={$userResourceID}'>{$userNumPublicTracks}</a></td>
-            <td style='text-align: right'>".date("j.n.Y", $userCreationTimestamp)."</td>
         </tr>
         ";
     }

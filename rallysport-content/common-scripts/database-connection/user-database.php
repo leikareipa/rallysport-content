@@ -113,8 +113,7 @@ class UserDatabase extends DatabaseConnection
         }
 
         $userInfo = $this->issue_db_query(
-                        "SELECT resource_id,
-                                creation_timestamp
+                        "SELECT resource_id
                          FROM rsc_users
                          WHERE resource_visibility = ?
                          AND resource_id LIKE ?",
@@ -132,8 +131,7 @@ class UserDatabase extends DatabaseConnection
         {
             $returnObject[] =
             [
-                "resourceID"        => $user["resource_id"],
-                "creationTimestamp" => (floor($user["creation_timestamp"] / 10000) * 10000), // For privacy concerns, we'll reduce the timestamp accuracy.
+                "resourceID" => $user["resource_id"],
             ];
         }
 

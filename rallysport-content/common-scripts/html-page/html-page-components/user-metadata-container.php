@@ -43,7 +43,6 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
             <tr>
                 <th>User ID</th>
                 <th style='text-align: right'>Tracks</th>
-                <th style='text-align: right'>Registered</th>
             <tr>
         ";
     }
