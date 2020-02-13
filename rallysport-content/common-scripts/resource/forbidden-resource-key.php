@@ -77,7 +77,7 @@ abstract class ForbiddenResourceKey
         "[a4]nu[s5]",
         "[a4]n[a4][l1]",
         "[a4]n[l1]",
-        "[s5]u[ckg9]",
+        "[s5][ua4][ckg9]",
         "tup",
         "[ck]um",
         "[b68][i1][t7]ch",
