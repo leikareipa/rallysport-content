@@ -13,6 +13,8 @@ session_start();
 
 require_once __DIR__."/server-api/form-dispatch/dispatch-form.php";
 require_once __DIR__."/server-api/response.php";
+require_once __DIR__."/server-api/root/view-control-panel.php";
+require_once __DIR__."/server-api/session.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
@@ -22,7 +24,19 @@ switch ($_SERVER["REQUEST_METHOD"])
         switch ($_GET["form"] ?? "unknown-form-identifier")
         {
             case "login": API\dispatch_form(API\Form\UserLogin::class); break;
-            default:      API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+            default:
+            {
+                if (!API\Session\is_current_user_logged_in())
+                {
+                    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login"));
+                }
+                else
+                {
+                    API\Root\view_control_panel();
+                }
+                
+                break;
+            }
         }
 
         break;

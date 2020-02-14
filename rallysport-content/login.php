@@ -11,6 +11,7 @@
 session_start();
 
 require_once __DIR__."/server-api/response.php";
+require_once __DIR__."/server-api/session.php";
 require_once __DIR__."/common-scripts/resource/resource-id.php";
 require_once __DIR__."/common-scripts/resource/resource-type.php";
 require_once __DIR__."/common-scripts/database-connection/user-database.php";
@@ -38,7 +39,7 @@ if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResource
 }
 else // Successful login.
 {
-    $_SESSION["user_resource_id"] = $userResourceID->string();
+    API\Session\log_user_in($userResourceID);
 
     exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
 }
