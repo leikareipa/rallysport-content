@@ -15,8 +15,6 @@ require_once __DIR__."/../../server-api/response.php";
 require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
-require_once __DIR__."/../../common-scripts/validate-track-container-data.php";
-require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 
 // Attempts to add to the Rally-Sport Content database a new track, whose data
 // are specified by the function call parameters.
@@ -28,7 +26,7 @@ require_once __DIR__."/../../common-scripts/validate-track-manifesto-data.php";
 // Note: The function should always return using exit() together with a Response
 // object.
 //
-function add_new_track(\RSC\RallySportEDTrackData $trackData,
+function add_new_track(\RSC\RallySportEDTrack $trackData,
                        int /*\RSC\ResourceVisibility*/ $resourceVisibility) : void
 {
     $resourceID = \RSC\TrackResourceID::random();
