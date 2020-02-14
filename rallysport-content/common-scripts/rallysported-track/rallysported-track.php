@@ -20,8 +20,7 @@ class RallySportEDTrack
 
     private $internalName;
     private $displayName;
-    private $width;
-    private $height;
+    private $sideLength; // Width & height (tracks are expected to be square).
     private $manifesto;
     private $container;
 
@@ -31,18 +30,16 @@ class RallySportEDTrack
         $this->displayName = new RallySportEDTrack_DisplayName;
         $this->manifesto = new RallySportEDTrack_Manifesto;
         $this->container = new RallySportEDTrack_Container;
-        $this->width = 0;
-        $this->height = 0;
+        $this->sideLength = 0;
         
         return;
     }
 
-    public function manifesto()     : string { return $this->manifesto->data(); }
-    public function container()     : string { return $this->container->data(); }
-    public function display_name()  : string { return $this->displayName->string(); }
-    public function internal_name() : string { return $this->internalName->string(); }
-    public function width()         : int    { return $this->width; }
-    public function height()        : int    { return $this->height; }
+    public function manifesto()                           : string { return $this->manifesto->data(); }
+    public function container(string $segmentName = NULL) : string { return $this->container->data($segmentName); }
+    public function display_name()                        : string { return $this->displayName->string(); }
+    public function internal_name()                       : string { return $this->internalName->string(); }
+    public function side_length()                         : int    { return $this->sideLength; }
 
     // Note: Setters return true if the data were successfully set; false
     // otherwise.
@@ -51,27 +48,12 @@ class RallySportEDTrack
     public function set_display_name(string $newDisplayName)   : bool { return $this->displayName->set_name($newDisplayName); }
     public function set_internal_name(string $newInternalName) : bool { return $this->internalName->set_name($newInternalName); }
 
-    public function set_width(int $newWidth) : bool
+    public function set_side_length(int $newSideLength) : bool
     {
         // Tracks can be either 64 or 128 tiles wide.
-        if (self::is_valid_track_side_length($newWidth))
+        if (self::is_valid_track_side_length($newSideLength))
         {
-            $this->width = $newWidth;
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public function set_height(int $newHeight) : bool
-    {
-        // Tracks can be either 64 or 128 tiles tall.
-        if (self::is_valid_track_side_length($newHeight))
-        {
-            $this->height = $newHeight;
+            $this->sideLength = $newSideLength;
 
             return true;
         }
@@ -176,8 +158,7 @@ class RallySportEDTrack
         {
             $maastoDataLen = unpack("V1", $dataObject->container(), 0)[1];
 
-            if (!$dataObject->set_width(sqrt($maastoDataLen / 2)) ||
-                !$dataObject->set_height(sqrt($maastoDataLen / 2)))
+            if (!$dataObject->set_side_length(sqrt($maastoDataLen / 2)))
             {
                 return false;
             }

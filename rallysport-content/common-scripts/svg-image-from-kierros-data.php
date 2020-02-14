@@ -7,14 +7,10 @@
  * 
  */
 
-// Generates and returns an SVG image (as a string) in which the KIERROS data
-// of the given container is indicated with a line. If fails to create such
-// an image, returns an placeholder SVG which prints out an error message.
-//
-// Assumes tha the container is valid; i.e. that we don't need to check for
-// overflow while reading, etc.
-//
-function svg_image_from_kierros_data(string $trackDataContainer) : string
+// Generates and returns an SVG image (as a string) in which the given KIERROS
+// data is represented by a line. If the function fails to create the image,
+// a placeholder SVG which spells out an error message is returned.
+function svg_image_from_kierros_data(string $kierrosData, int $trackSideLength) : string
 {
     // The string returned if we fail to generate a valid SVG.
     $nullImage = "
@@ -25,41 +21,9 @@ function svg_image_from_kierros_data(string $trackDataContainer) : string
         </text>
     </svg>";
 
-    $containerByteOffset = 0;
-
-    // Seek to the beginning of the KIERROS data.
-    {
-        $maastoByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-        $containerByteOffset += (4 + $maastoByteLength);
-
-        $varimaaByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-        $containerByteOffset += (4 + $varimaaByteLength);
-
-        $palatByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-        $containerByteOffset += (4 + $palatByteLength);
-
-        $animsByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-        $containerByteOffset += (4 + $animsByteLength);
-
-        $textByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-        $containerByteOffset += (4 + $textByteLength);
-    }
-
-    $kierrosByteLength = unpack("V1", $trackDataContainer, $containerByteOffset)[1];
-    $containerByteOffset += 4;
-
-    $trackSideLength = sqrt($varimaaByteLength);
-
-    // Tracks can only be 64 or 128 units per side in size.
-    if (($trackSideLength != 64) &&
-        ($trackSideLength != 128))
-    {
-        return $nullImage;
-    }
-
     // Each checkpoint is 8 bytes. We assume that the last checkpoint is just
     // 8 bytes of 0xff and can be ignored.
-    $numCheckpoints = (($kierrosByteLength / 8) - 1);
+    $numCheckpoints = ((strlen($kierrosData) / 8) - 1);
 
     if (($numCheckpoints <= 1) ||
         ($numCheckpoints > 512))
@@ -89,10 +53,11 @@ function svg_image_from_kierros_data(string $trackDataContainer) : string
 
         // Add the <polyline> points. Each point receives a checkpoint's X,Y
         // coordinates.
+        $offset = 0;
         for ($i = 0; $i < $numCheckpoints; $i++)
         {
-            $checkpointData = unpack("v4", $trackDataContainer, $containerByteOffset);
-            $containerByteOffset += 8;
+            $checkpointData = unpack("v4", $kierrosData, $offset);
+            $offset += 8;
 
             $checkpointX = (int)floor($checkpointData[1] * $svgCoordinateScale);
             $checkpointY = (int)floor($checkpointData[2] * $svgCoordinateScale);

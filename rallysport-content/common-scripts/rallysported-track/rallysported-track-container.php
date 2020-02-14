@@ -23,9 +23,42 @@ class RallySportEDTrack_Container
         return;
     }
 
-    public function data() : string
+    // Returns the container's data as a binary string. If no segment name (e.g.
+    // "kierros") is given, the entire container is returned; otherwise, returns
+    // only the given segment's data. If a segment name is specified but not
+    // found, an empty string is returned.
+    public function data(string $segmentName = NULL) : string
     {
-        return $this->container;
+        if (!$segmentName)
+        {
+            return $this->container;
+        }
+
+        $segmentName = strtolower($segmentName);
+
+        // Step through the container data segment by segment until we find the
+        // requested segment, then return that segment's data.
+        $offset = 0;
+        foreach (["maasto","varimaa","palat","anims","text","kierros"] as $segment)
+        {
+            $segmentLength = unpack("V1", $this->container, $offset)[1];
+            $offset += 4;
+
+            if (($offset + $segmentLength) > strlen($this->container))
+            {
+                break;
+            }
+
+            if ($segment == $segmentName)
+            {
+                return substr($this->container, $offset, $segmentLength);
+            }
+
+            $offset += $segmentLength;
+        }
+
+        // If we couldn't find the requested segment.
+        return "";
     }
 
     public function set_data($newContainerData) : bool

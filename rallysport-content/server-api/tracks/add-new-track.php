@@ -40,11 +40,12 @@ function add_new_track(\RSC\RallySportEDTrack $trackData,
                                                     $creatorID,
                                                     $trackData->internal_name(),
                                                     $trackData->display_name(),
-                                                    $trackData->width(),
-                                                    $trackData->height(),
+                                                    $trackData->side_length(),
+                                                    $trackData->side_length(),
                                                     $trackData->container(),
                                                     $trackData->manifesto(),
-                                                    \RSC\svg_image_from_kierros_data($trackData->container())))
+                                                    \RSC\svg_image_from_kierros_data($trackData->container("kierros"),
+                                                                                     $trackData->side_length())))
     {
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
     }
