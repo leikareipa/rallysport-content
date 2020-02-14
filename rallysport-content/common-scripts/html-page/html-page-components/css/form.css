@@ -48,7 +48,7 @@
 
 .html-page-form-container > form > input[type="file"]
 {
-    padding: 7px;
+    padding: 10px 7px;
 }
 
 .html-page-form-container > form > button[type="submit"]

@@ -12,7 +12,7 @@
  * 
  */
 
-function is_current_user_logged_in() : bool
+function is_client_logged_in() : bool
 {
     return isset($_SESSION["user_resource_id"]);
 }
@@ -21,7 +21,7 @@ function is_current_user_logged_in() : bool
 // NULL if no user is logged in.
 function logged_in_user_id()
 {
-    if (!is_current_user_logged_in())
+    if (!is_client_logged_in())
     {
         return NULL;
     }
@@ -31,14 +31,14 @@ function logged_in_user_id()
 
 // Note: This should be called only after you've verified that the given user
 // has provided valid credentials for logging in.
-function log_user_in(\RSC\UserResourceID $userResourceID) : void
+function log_client_in(\RSC\UserResourceID $userResourceID) : void
 {
     $_SESSION["user_resource_id"] = $userResourceID->string();
 
     return;
 }
 
-function log_user_out() : void
+function log_client_out() : void
 {
     $_SESSION["user_resource_id"] = NULL;
 

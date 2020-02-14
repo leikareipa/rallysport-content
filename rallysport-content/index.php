@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             case "login": API\dispatch_form(API\Form\UserLogin::class); break;
             default:
             {
-                if (!API\Session\is_current_user_logged_in())
+                if (!API\Session\is_client_logged_in())
                 {
                     exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login"));
                 }

@@ -31,7 +31,7 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
                 <label for='track-title'>Track title</label>
                 <input type='text' id='track-title' name='track_display_name' required>
 
-                <label for='track_file'>RallySportED ZIP file</label>
+                <label for='track_file'>RallySportED-js ZIP file</label>
                 <input type='hidden' name='MAX_FILE_SIZE' value='102400'>
                 <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 

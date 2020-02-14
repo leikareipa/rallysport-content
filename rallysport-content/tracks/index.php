@@ -44,8 +44,20 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"])
             {
-                case "add": API\dispatch_form(API\Form\AddTrack::class); break;
-                default:    API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+                case "add":
+                {
+                    if (!API\Session\is_client_logged_in())
+                    {
+                        API\Response::code(303)->redirect_to("/rallysport-content/?form=login");
+                    }
+                    else
+                    {
+                        API\dispatch_form(API\Form\AddTrack::class);
+                    }
+
+                    break;
+                }
+                default: API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
         else if ($_GET["zip"] ?? false)      API\Tracks\serve_track_data_as_zip_file($resourceID);
@@ -57,6 +69,11 @@ switch ($_SERVER["REQUEST_METHOD"])
     }
     case "POST":
     {
+        if (!API\Session\is_client_logged_in())
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Must be logged in to add a track"));
+        }
+
         if (!($uploadedFileInfo = ($_FILES["rallysported_track_file"] ?? NULL)) ||
             !\RSC\is_valid_uploaded_file($uploadedFileInfo, RallySportEDTrack::MAX_BYTE_SIZE) ||
             !($trackData = RallySportEDTrack::from_zip_file($uploadedFileInfo["tmp_name"] ?? NULL)))

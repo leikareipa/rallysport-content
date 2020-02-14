@@ -15,6 +15,7 @@ require_once __DIR__."/../../server-api/response.php";
 require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
+require_once __DIR__."/../../server-api/session.php";
 
 // Attempts to add to the Rally-Sport Content database a new track, whose data
 // are specified by the function call parameters.
@@ -30,7 +31,12 @@ function add_new_track(\RSC\RallySportEDTrack $trackData,
                        int /*\RSC\ResourceVisibility*/ $resourceVisibility) : void
 {
     $resourceID = \RSC\TrackResourceID::random();
-    $creatorID = \RSC\UserResourceID::random(); /// TODO: Use the actual creator ID.
+    $creatorID = API\Session\logged_in_user_id();
+
+    if (!$creatorID)
+    {
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid user ID"));
+    }
 
     /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 

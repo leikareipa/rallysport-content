@@ -12,6 +12,6 @@ session_start();
 require_once __DIR__."/server-api/response.php";
 require_once __DIR__."/server-api/session.php";
 
-API\Session\log_user_out();
+API\Session\log_client_out();
 
 exit(API\Response::code(303)->redirect_to("/rallysport-content/"));

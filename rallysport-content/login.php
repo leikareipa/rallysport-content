@@ -39,7 +39,7 @@ if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResource
 }
 else // Successful login.
 {
-    API\Session\log_user_in($userResourceID);
+    API\Session\log_client_in($userResourceID);
 
     exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
 }
