@@ -69,7 +69,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track name"));
         }
 
-        API\Tracks\add_new_track($trackData, ($_POST["track_visibility"] ?? \RSC\ResourceVisibility::PRIVATE));
+        API\Tracks\add_new_track($trackData, \RSC\ResourceVisibility::PUBLIC);
         
         break;
     }
