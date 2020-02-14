@@ -18,13 +18,12 @@
     font-weight: normal;
     text-align: left;
     margin: 0;
-    padding: 10px 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px;
 }
 
-.users-container tr:nth-child(2n)
+.users-container th
 {
-    background-color: rgba(0, 0, 0, 0.01);
+    border-bottom: 1px solid lightgray;
 }
 
 .users-container-title

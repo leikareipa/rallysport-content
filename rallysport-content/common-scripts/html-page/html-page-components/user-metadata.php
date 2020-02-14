@@ -43,7 +43,7 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
         return "
         <tr>
             <td style='font-weight: ".((($_SESSION["user_resource_id"] ?? false) == $userResourceID)? "bold" : "normal").";'>{$userResourceID}</td>
-            <td style='text-align: right'><a href='/rallysport-content/tracks/?by={$userResourceID}'>{$userNumPublicTracks}</a></td>
+            <td style='text-align: center'><a href='/rallysport-content/tracks/?by={$userResourceID}'>{$userNumPublicTracks}</a></td>
         </tr>
         ";
     }

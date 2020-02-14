@@ -7,111 +7,31 @@
     text-align: left;
     display: inline-block;
     background-color: white;
-    min-width: 520px;
 }
 
-.track-metadata > .title
-{
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 120%;
-}
-
-.track-metadata > .title >.tag
-{
-    margin-left: 8px;
-    font-size: 80%;
-    font-weight: normal;
-    color: dimgray;
-}
-
-.track-metadata > .title >.tag:hover
-{
-    color: black;
-}
-
-.track-metadata > .form
+.track-metadata > .card
 {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 7px;
 }
 
-.track-metadata > .form > .media
+.track-metadata > .card > .info-box
+{
+    padding: 10px;
+    text-align: center;
+}
+
+.track-metadata > .card > .media
 {
     width: 338px;
     height: 210px;
     border-radius: 0;
 }
 
-.track-metadata > .form > .media > svg > polygon
+.track-metadata > .card > .media svg > polygon
 {
     stroke: dimgray;
     stroke-width: 1;
     fill: none;
-}
-
-.track-metadata > .form > .fields
-{
-    margin-left: 21px;
-}
-
-.track-metadata > .form > .fields > .actions
-{
-    border-left: 6px solid rgb(48, 105, 230);
-    background-color: rgb(244, 248, 255);
-    border-radius: 3px;
-    padding: 11px;
-    margin-top: 18px;
-    margin-left: -20px;
-    box-shadow: -4px 4px 2px rgba(0, 0, 0, 0.1);
-    position: absolute;
-}
-
-.track-metadata > .form > .fields > .value-field .fas
-{
-    margin-right: 1px;
-}
-
-.track-metadata > .form > .fields > .actions .fas
-{
-    color: rgb(48, 105, 230);
-}
-
-.track-metadata > .form > .fields > .value-field
-{
-    padding-bottom: 1px;
-    color: dimgray;
-}
-
-.track-metadata > .form > .fields > .value-field:hover
-{
-    color: black;
-}
-
-.track-metadata > .form > .fields a
-{
-    text-decoration: none;
-    color: inherit;
-}
-
-.track-metadata > .form > .fields > .actions  a
-{
-    text-decoration: none;
-    color: rgb(14, 82, 230);
-}
-
-.track-metadata > .form > .fields > .actions a:hover
-{
-    text-decoration: underline;
-}
-
-.track-metadata > .form > .fields > div + div
-{
-    padding-top: 6px;
-}
-
-.track-metadata > .form > .fields > .actions > div + div
-{
-    padding-top: 8px;
 }

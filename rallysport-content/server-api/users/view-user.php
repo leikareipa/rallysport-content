@@ -56,7 +56,7 @@ function view_user_metadata(\RSC\UserResourceID $userResourceID = NULL) : void
         $view->use_component(HTMLPage\Component\UserMetadataContainer::class);
         $view->use_component(HTMLPage\Component\UserMetadata::class);
 
-        $view->head->title = "Registered users on Rally-Sport Content";
+        $view->head->title = "Registered users";
         
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $view->body->add_element(HTMLPage\Component\UserMetadataContainer::open());

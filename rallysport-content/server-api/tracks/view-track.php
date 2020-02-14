@@ -56,7 +56,7 @@ function view_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL) : voi
         $view->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $view->use_component(HTMLPage\Component\TrackMetadata::class);
 
-        $view->head->title = "Custom tracks for Rally-Sport";
+        $view->head->title = "Tracks uploaded by users";
         
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());

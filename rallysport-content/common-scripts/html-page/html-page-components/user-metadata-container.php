@@ -38,11 +38,13 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
     static public function open()
     {
         return "
+        <div class='users-container-title'>Registered users</div>
+
         <table class='users-container'>
 
             <tr>
                 <th>User ID</th>
-                <th style='text-align: right'>Tracks</th>
+                <th style='text-align: center'>Tracks</th>
             <tr>
         ";
     }

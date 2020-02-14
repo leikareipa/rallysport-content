@@ -47,7 +47,7 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         $trackWidth           = ($trackMetadata["width"]             ?? "0");
         $trackHeight          = ($trackMetadata["height"]            ?? "0");
         $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "No preview image");
-        $trackID              = ($trackMetadata["resourceID"]        ?? "unknown");
+        $trackResourceID      = ($trackMetadata["resourceID"]        ?? "unknown");
         $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
         $trackTimestamp       = ($trackMetadata["creationTimestamp"] ?? "0");
         $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
@@ -62,61 +62,14 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         return "
         <div class='track-metadata'>
 
-            <div class='title'>
-                {$trackDisplayName}
-                {$titleIcon}
-                <span class='tag'><i class='fas fa-fw fa-sm fa-tag'></i> {$trackID}</span>
-                <span class='tag'><i class='fas fa-fw fa-sm fa-folder'></i> {$trackInternalName}</span>
-            </div>
-            
-            <div class='form'>
+            <div class='card'>
 
                 <div class='media'>
-                    {$kierrosSVG}
+                    <a href='/rallysported/?track={$trackResourceID}'>{$kierrosSVG}</a>
                 </div>
 
-                <div class='fields'>
-
-                    <div class='value-field' id='view-count' title='Viewed {$trackDownloadCount} times'>
-                        <i class='fas fa-fw fa-sm fa-eye'></i>
-                        <span class='value'>{$trackDownloadCount}</span>
-                    </div>
-
-                    <div class='value-field' id='dimensions' title='Dimensions: {$trackWidth} x {$trackHeight} tiles'>
-                        <i class='fas fa-fw fa-sm fa-arrows-alt'></i>
-                        <span class='value'>{$trackWidth} x {$trackHeight}</span>
-                    </div>
-
-                    <div class='value-field' id='upload-date' title='Uploaded on ".date("j.n.Y", $trackTimestamp)."'>
-                        <i class='fas fa-fw fa-sm fa-user-clock'></i>
-                        <span class='value'>".date("j.n.Y", $trackTimestamp)."</span>
-                    </div>
-
-                    <div class='value-field' id='uploader' title='Uploaded by: {$trackUploaderID}'>
-                        <i class='fas fa-fw fa-sm fa-user-tag'></i>
-                        <span class='value'>
-                            <a href='/rallysport-content/users/?id={$trackUploaderID}'>{$trackUploaderID}</a>
-                        </span>
-                    </div>
-
-                    <div class='actions'>
-
-                        <div class='value-field' id='edit-copy'>
-                            <span class='value'>
-                                <i class='fas fa-fw fa-tools'></i>
-                                <a href='/rallysported/?track={$trackID}'>Open a copy in RallySportED</a>
-                            </span>
-                        </div>
-
-                        <div class='value-field' id='download'>
-                            <span class='value'>
-                                <i class='fas fa-fw fa-database'></i>
-                                <a download href='/rallysport-content/tracks/?id={$trackID}&zip=1'>Download as a ZIP</a>
-                            </span>
-                        </div>
-
-                    </div>
-
+                <div class='info-box'>
+                    {$trackDisplayName}
                 </div>
 
             </div>
