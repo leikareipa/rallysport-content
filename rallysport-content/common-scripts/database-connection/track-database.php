@@ -139,6 +139,43 @@ class TrackDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
+    // Returns public information about all tracks uploaded by the given user;
+    // or FALSE on failure.
+    public function get_user_tracks_metadata(\RSC\UserResourceID $userResourceID = NULL)
+    {
+        if (!$this->is_connected() ||
+            !$userResourceID)
+        {
+            return false;
+        }
+
+        $trackIDList = $this->issue_db_query("SELECT resource_id
+                                              FROM rsc_tracks
+                                              WHERE creator_resource_id = ?",
+                                             [$userResourceID->string()]);
+
+        /// TODO: Don't make multiple queries to the database - fetch all data at the same time.
+        $tracksMetadata = [];
+        foreach ($trackIDList as $trackID)
+        {
+            $trackResourceID = \RSC\TrackResourceID::from_string($trackID["resource_id"]);
+            if (!$trackResourceID)
+            {
+                continue;
+            }
+            
+            $metadata = $this->get_track_metadata($trackResourceID);
+            if (!$metadata || !is_array($metadata) || !count($metadata))
+            {
+                continue;
+            }
+
+            $tracksMetadata[] = $metadata[0];
+        }
+
+        return (empty($tracksMetadata)? false : $tracksMetadata);
+    }
+
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
     // On error, FALSE will be returned.
@@ -153,20 +190,19 @@ class TrackDatabase extends DatabaseConnection
         // in the database.
         $rowSelector = ($resourceID? "WHERE resource_id = ?" : "");
 
-        $trackInfo = $this->issue_db_query(
-                        "SELECT resource_id,
-                                resource_visibility,
-                                creator_resource_id,
-                                creation_timestamp,
-                                download_count,
-                                track_name_internal,
-                                track_name_display,
-                                track_width,
-                                track_height,
-                                kierros_svg_gzip
-                         FROM rsc_tracks
-                         {$rowSelector}",
-                         ($resourceID? [$resourceID->string()] : NULL));
+        $trackInfo = $this->issue_db_query("SELECT resource_id,
+                                                   resource_visibility,
+                                                   creator_resource_id,
+                                                   creation_timestamp,
+                                                   download_count,
+                                                   track_name_internal,
+                                                   track_name_display,
+                                                   track_width,
+                                                   track_height,
+                                                   kierros_svg_gzip
+                                            FROM rsc_tracks
+                                           {$rowSelector}",
+                                           ($resourceID? [$resourceID->string()] : NULL));
 
         if (!is_array($trackInfo) || !count($trackInfo))
         {

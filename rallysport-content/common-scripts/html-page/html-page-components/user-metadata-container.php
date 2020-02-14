@@ -30,17 +30,12 @@ require_once __DIR__."/../html-page-component.php";
 //
 abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
 {
-    static public function css() : string
-    {
-        return file_get_contents(__DIR__."/css/users-container.css");
-    }
-
     static public function open()
     {
         return "
-        <div class='users-container-title'>Registered users</div>
+        <div class='rsc-table-title'>Registered users</div>
 
-        <table class='users-container'>
+        <table class='rsc-table'>
 
             <tr>
                 <th>User ID</th>
