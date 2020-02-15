@@ -1,20 +1,24 @@
 .html-page-form-container
 {
+    position: relative;
     width: 420px;
     height: auto;
     display: inline-block;
     margin: 20px;
-    padding: 20px;
+    padding: 35px;
     padding-top: 0;
+    margin-top: 0;
     background-color: white;
-    border-radius: 3px;
+    border-radius: 6px;
     box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.1);
+    border: 1px solid lightgray;
+    padding-bottom: 65px;
 }
 
 .html-page-form-container > header
 {
-    font-weight: bold;
-    margin: 20px;
+    margin: 35px;
+    margin-bottom: 31px;
     padding: 0;
 }
 
@@ -27,16 +31,17 @@
 {
     display: block;
     text-align: left;
+    margin: 5px 0;
 }
 
 .html-page-form-container > form > input, select
 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     background-color: white;
     width: 100%;
     border-radius: 3px;
     border: none;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid lightgray;
 }
 
@@ -53,16 +58,22 @@
 
 .html-page-form-container > form > button[type="submit"]
 {
-    margin-top: 18px;
-    margin-bottom: 5px;
-    padding: 10px;
-    width: 80%;
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+    position: absolute;
+    right: -28px;
+    bottom: -28px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
 }
 
 .html-page-form-container > form > .footnote
 {
-    margin-top: 5px;
-    text-align: right;
+    margin-top: 10px;
+    text-align: left;
     font-size: 90%;
     color: gray;
     padding: 5px;

@@ -39,7 +39,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <div class='footnote'>* For automated verification, please provide a track you've
                 recently created in RallySportED-js.</div>
 
-                <button type='submit'>Register on Rally-Sport Content</button>
+                <button type='submit' title='Submit the form'><i class='fas fa-check'></i></button>
 
             </form>
 

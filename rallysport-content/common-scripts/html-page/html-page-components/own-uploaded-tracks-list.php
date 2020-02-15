@@ -41,23 +41,30 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
         }
 
         return "
-        <div class='rsc-table-title'>Tracks you've uploaded</div>
+        <div class='rsc-table-container'>
+        
+            <div class='rsc-table-title'>Tracks you've uploaded</div>
 
-        <table class='rsc-table' style='width: 375px;'>
+            <a href='/rallysport-content/tracks/?form=add' title='Upload a new track'>
+                <div class='upload-new-track-button'>
+                    <i class='fas fa-upload'></i>
+                </div>
+            </a>
 
-            <tr>
+            <table class='rsc-table' style='width: 375px;'>
 
-                <th style='width: 40%;'>Name</th>
+                <tr>
 
-                <th style='text-align: center'>Views</th>
+                    <th style='width: 40%;'>Name</th>
+                    <th style='text-align: center'>Views</th>
+                    <th style='text-align: right'>Actions</th>
+                    
+                </tr>
 
-                <th style='text-align: right'>Actions</th>
-                
-            </tr>
+                ".implode("\n", $tableRows)."
 
-            ".implode("\n", $tableRows)."
-
-        </table>
+            </table>
+        </div>
         ";
     }
 }

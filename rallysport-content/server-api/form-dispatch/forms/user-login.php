@@ -32,7 +32,7 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                 <label for='password'>Password</label>
                 <input type='password' id='password' name='password' required>
 
-                <button type='submit'>Log in to Rally-Sport Content</button>
+                <button type='submit' title='Submit the form'><i class='fas fa-check'></i></button>
 
             </form>
 
