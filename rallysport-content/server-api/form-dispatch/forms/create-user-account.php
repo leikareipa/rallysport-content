@@ -7,6 +7,7 @@
  * 
  */
 
+require_once __DIR__."/../../../common-scripts/rallysported-track/rallysported-track.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 require_once __DIR__."/../../../common-scripts/resource/resource-visibility.php";
 
@@ -25,7 +26,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
 
             <header>".CreateUserAccount::title()."</header>
 
-            <form class='html-page-form' method='POST' action='/rallysport-content/users/'>
+            <form enctype='multipart/form-data' class='html-page-form' method='POST' action='/rallysport-content/users/'>
 
                 <label for='user-id'>Email</label>
                 <input type='email' id='user-id' name='email' required>
@@ -34,9 +35,10 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <input type='text' id='password' name='password' required>
 
                 <label for='track_file'>Sample track*</label>
+                <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrack::MAX_BYTE_SIZE."'>
                 <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
 
-                <div class='footnote'>* For verification, please provide a track you've
+                <div class='footnote'>* For verification, please provide a track you've recently
                 created using RallySportED-js.</div>
 
                 <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
