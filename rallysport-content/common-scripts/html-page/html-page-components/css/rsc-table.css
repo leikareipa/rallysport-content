@@ -42,7 +42,7 @@
     border-bottom: 1px solid lightgray;
 }
 
-.rsc-table tr:hover
+.rsc-table > tbody > tr:hover
 {
     background-color: rgba(0, 0, 0, 0.025);
 }

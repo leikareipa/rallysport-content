@@ -22,7 +22,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
     static public function html() : string
     {
         return "
-        <div class='html-page-form-error-string'>Currently not accepting new registrations</div>
+        <div class='html-page-form-error-string'>Registration is temporarily unavailable</div>
 
         <div class='html-page-form-container'>
 

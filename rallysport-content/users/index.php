@@ -54,7 +54,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "POST": // Create a new user account.
     {
         // NOTE: Creating user accounts is disabled for now.
-        exit(API\Response::code(404)->error_message("Currently not accepting new registrations."));
+        exit(API\Response::code(404)->error_message("Registration is temporarily unavailable."));
 
 
 

@@ -30,7 +30,7 @@ require_once __DIR__."/../../server-api/session.php";
 function add_new_track(\RSC\RallySportEDTrack $trackData,
                        int /*\RSC\ResourceVisibility*/ $resourceVisibility) : void
 {
-    $resourceID = \RSC\TrackResourceID::random();
+    $trackResourceID = \RSC\TrackResourceID::random();
     $creatorID = API\Session\logged_in_user_id();
 
     if (!$creatorID)
@@ -41,7 +41,7 @@ function add_new_track(\RSC\RallySportEDTrack $trackData,
     /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
     if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
-                                                    $resourceID,
+                                                    $trackResourceID,
                                                     $resourceVisibility,
                                                     $creatorID,
                                                     $trackData->internal_name(),
@@ -56,5 +56,5 @@ function add_new_track(\RSC\RallySportEDTrack $trackData,
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
     }
 
-    exit(API\Response::code(201)->empty_body());
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?highlight={$trackResourceID->string()}"));
 }

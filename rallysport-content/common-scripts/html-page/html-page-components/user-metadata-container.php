@@ -54,16 +54,21 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
 
             <table class='rsc-table' style='width: 395px;'>
 
-                <tr>
-                    <th>User ID</th>
-                    <th style='text-align: center'>Tracks</th>
-                <tr>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th style='text-align: center'>Tracks</th>
+                    <tr>
+                </thead>
+
+                <tbody>
         ";
     }
 
     static public function close()
     {
         return "
+                </tbody>
             </table>
         </div>
         ";

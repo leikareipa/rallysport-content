@@ -59,15 +59,17 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 
             <table class='rsc-table' style='width: 395px;'>
 
-                <tr>
+                <thead>
+                    <tr>
+                        <th style='width: 50%;'>Name</th>
+                        <th style='text-align: center'>Views</th>
+                        <th style='text-align: right'>Actions</th>
+                    </tr>
+                </thead>
 
-                    <th style='width: 50%;'>Name</th>
-                    <th style='text-align: center'>Views</th>
-                    <th style='text-align: right'>Actions</th>
-                    
-                </tr>
-
-                ".implode("\n", $tableRows)."
+                <tbody>
+                    ".implode("\n", $tableRows)."
+                </tbody>
 
             </table>
         </div>
