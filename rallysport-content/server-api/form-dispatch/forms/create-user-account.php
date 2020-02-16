@@ -22,6 +22,8 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
     static public function html() : string
     {
         return "
+        <div class='html-page-form-error-string'>Currently not accepting new registrations</div>
+
         <div class='html-page-form-container'>
 
             <header>".CreateUserAccount::title()."</header>
@@ -41,7 +43,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <div class='footnote'>* For verification, please provide a track you've recently
                 created using RallySportED-js.</div>
 
-                <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button disabled type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
 
             </form>
 

@@ -7,6 +7,15 @@
     border: 1px solid gray;
     border-radius: 50%;
     background-color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.round-button:disabled
+{
+    color: lightgrey;
+    border: 1px dashed lightgray;
+    cursor: not-allowed;
 }
 
 .round-button.bottom-right

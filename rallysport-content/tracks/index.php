@@ -67,7 +67,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
-    case "POST":
+    case "POST": // Upload a new track.
     {
         if (!API\Session\is_client_logged_in())
         {
