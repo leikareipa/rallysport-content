@@ -93,6 +93,14 @@ class RallySportEDTrack_Manifesto
             }
 
             // TODO: Verify that each command's parameters are within their valid ranges.
+
+            // We require the manifesto to be compatible with RallySportED
+            // Loader v.5 or later.
+            if (($command == 0) &&
+                (($parameters[2] ?? -1) < 5))
+            {
+                return false;   
+            }
         }
 
         // A manifesto file needs to have at least these two commands.

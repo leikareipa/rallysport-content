@@ -78,7 +78,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             !\RSC\is_valid_uploaded_file($uploadedFileInfo, RallySportEDTrack::MAX_BYTE_SIZE) ||
             !($trackData = RallySportEDTrack::from_zip_file($uploadedFileInfo["tmp_name"] ?? NULL)))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track file"));
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Incompatible track file"));
         }
 
         if (!$trackData->set_display_name($_POST["track_display_name"] ?? NULL))
