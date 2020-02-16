@@ -68,10 +68,10 @@
 .html-page-form-error-string
 {
     font-weight: bold;
-    color: red;
-    padding: 15px;
+    color: rgb(223, 0, 0);
+    padding: 20px;
     margin-bottom: 35px;
-    background-color: rgba(255, 0, 0, 0.05);
+    background-color: rgba(255, 0, 0, 0.055);
 }
 
 .html-page-form-error-string::before
