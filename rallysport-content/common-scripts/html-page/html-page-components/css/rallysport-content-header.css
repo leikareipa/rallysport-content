@@ -1,5 +1,20 @@
 #rallysport-content-header
 {
     font-size: 300%;
-    margin: 30px 0 60px 0;
+    padding: 25px 0 10px 0;
+    margin: 0 0 60px 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#rallysport-content-header a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+#rallysport-content-header .login-widget
+{
+    font-size: initial;
+    display: block;
+    margin: 20px;
 }

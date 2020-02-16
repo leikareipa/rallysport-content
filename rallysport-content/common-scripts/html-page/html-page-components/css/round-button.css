@@ -11,6 +11,13 @@
     outline: none;
 }
 
+
+/* Prevent the button's text from moving when pressed in Firefox.*/
+.round-button:active
+{
+    padding: 0px;
+}
+
 .round-button:disabled
 {
     color: lightgrey;

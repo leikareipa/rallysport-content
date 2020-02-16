@@ -34,7 +34,7 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
         return "
         <header id='rallysport-content-header'>
 
-            Rally-Sport Content
+            <a href='/rallysport-content/'>Rally-Sport Content</a>
 
             ".LoginWidget::html()."
 

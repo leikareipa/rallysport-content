@@ -1,10 +1,7 @@
 .login-widget
 {
     font-size: initial;
-    position: absolute;
-    right: 15%;
-    top: 50px;
-    display: flex;
+    display: block;
 }
 
 .login-widget > .separator

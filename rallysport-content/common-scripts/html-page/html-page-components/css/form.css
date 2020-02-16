@@ -10,7 +10,7 @@
     margin-top: 0;
     background-color: white;
     border-radius: 6px;
-    box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid lightgray;
     padding-bottom: 65px;
 }
@@ -69,8 +69,9 @@
 {
     font-weight: bold;
     color: rgb(223, 0, 0);
-    padding: 20px;
+    padding: 25px;
     margin-bottom: 35px;
+    margin-top: -60px;
     background-color: rgba(255, 0, 0, 0.055);
 }
 

@@ -38,7 +38,7 @@ abstract class TrackMetadataContainer extends HTMLPage\HTMLPageComponent
     static public function open()
     {
         return "
-        <div class='users-container-title'>Tracks uploaded by users (click to open a copy in RallySportED-js)</div>
+        <div class='users-container-title'>Tracks uploaded by our users</div>
 
         <div class='tracks-container'>
         ";
