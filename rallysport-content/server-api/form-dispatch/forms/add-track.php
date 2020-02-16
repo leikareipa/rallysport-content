@@ -35,10 +35,10 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
                 <input type='hidden' name='MAX_FILE_SIZE' value='102400'>
                 <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
-                <div class='footnote'>* Select a ZIP file exported from RallySportED-js containing
-                the track's data.</div>
+                <div class='footnote'>* Select a ZIP file containing the track's data as exported
+                from RallySportED-js.</div>
 
-                <button type='submit' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
 
             </form>
 

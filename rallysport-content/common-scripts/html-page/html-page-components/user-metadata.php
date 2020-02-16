@@ -29,11 +29,6 @@ require_once __DIR__."/../../database-connection/track-database.php";
 //
 abstract class UserMetadata extends HTMLPage\HTMLPageComponent
 {
-    static public function css() : string
-    {
-        return file_get_contents(__DIR__."/css/user-metadata.css");
-    }
-
     static public function html(array $userMetadata)
     {
         $userResourceID        = ($userMetadata["resourceID"]        ?? "unknown");

@@ -56,20 +56,6 @@
     padding: 10px 7px;
 }
 
-.html-page-form-container > form > button[type="submit"]
-{
-    width: 75px;
-    height: 75px;
-    line-height: 75px;
-    position: absolute;
-    right: -28px;
-    bottom: -28px;
-    border: 1px solid gray;
-    border-radius: 50%;
-    background-color: white;
-    cursor: pointer;
-}
-
 .html-page-form-container > form > .footnote
 {
     margin-top: 10px;
@@ -77,4 +63,24 @@
     font-size: 90%;
     color: gray;
     padding: 5px;
+}
+
+.html-page-form-error-string
+{
+    font-weight: bold;
+    color: red;
+    margin-bottom: 20px;
+}
+
+.html-page-form-error-string::before
+{
+    font-family: "Font Awesome 5 Free";
+    padding-right: 5px;
+    font-weight: bold;
+    content: "\f06a";
+}
+
+.html-page-form-error-string::after
+{
+    content: ".";
 }

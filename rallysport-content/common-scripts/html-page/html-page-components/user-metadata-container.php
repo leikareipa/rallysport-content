@@ -9,6 +9,7 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
+require_once __DIR__."/../../../server-api/session.php";
 
 // Represents a HTML container for UserMetadata elements in a HTMLPage object.
 //
@@ -30,24 +31,41 @@ require_once __DIR__."/../html-page-component.php";
 //
 abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
 {
+    static public function css() : string
+    {
+        return file_get_contents(__DIR__."/css/round-button.css").
+               file_get_contents(__DIR__."/css/rsc-table.css");
+    }
+
     static public function open()
     {
         return "
-        <div class='rsc-table-title'>Registered users</div>
+        <div class='rsc-table-container'>
 
-        <table class='rsc-table'>
+            <div class='rsc-table-title'>".(($_GET["id"] ?? false)? "User ID search results" : "Registered users")."</div>
 
-            <tr>
-                <th>User ID</th>
-                <th style='text-align: center'>Tracks</th>
-            <tr>
+            ".(\RSC\API\Session\is_client_logged_in()?
+               "" :
+               "<a href='/rallysport-content/users/?form=add' title='Register on Rally-Sport Content'>
+                   <div class='round-button top-right'>
+                       <i class='fas fa-user-plus'></i>
+                   </div>
+               </a>")."
+
+            <table class='rsc-table' style='width: 395px;'>
+
+                <tr>
+                    <th>User ID</th>
+                    <th style='text-align: center'>Tracks</th>
+                <tr>
         ";
     }
 
     static public function close()
     {
         return "
-        </table>
+            </table>
+        </div>
         ";
     }
 }

@@ -41,7 +41,7 @@ function dispatch_form(string $formClassName) : void
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         if (isset($_GET["error"]))
         {
-            $view->body->add_element("<div class='form-error-string'>".htmlspecialchars($_GET["error"])."</div>");
+            $view->body->add_element("<div class='html-page-form-error-string'>".htmlspecialchars($_GET["error"])."</div>");
         }
         $view->body->add_element($formClassName::html());
         $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

@@ -36,10 +36,10 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <label for='track_file'>Sample track*</label>
                 <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
 
-                <div class='footnote'>* For automated verification, please provide a track you've
-                recently created in RallySportED-js.</div>
+                <div class='footnote'>* For verification, please provide a track you've
+                created using RallySportED-js.</div>
 
-                <button type='submit' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
 
             </form>
 

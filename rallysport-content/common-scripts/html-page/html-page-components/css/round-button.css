@@ -1,0 +1,22 @@
+.round-button
+{
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+    position: absolute;
+    border: 1px solid gray;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.round-button.bottom-right
+{
+    right: -28px;
+    bottom: -28px;
+}
+
+.round-button.top-right
+{
+    right: -28px;
+    top: -28px;
+}

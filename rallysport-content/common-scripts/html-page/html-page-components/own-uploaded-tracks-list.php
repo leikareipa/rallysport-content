@@ -15,6 +15,12 @@ require_once __DIR__."/../html-page-component.php";
 // given tracks.
 abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 {
+    static public function css() : string
+    {
+        return file_get_contents(__DIR__."/css/round-button.css").
+               file_get_contents(__DIR__."/css/rsc-table.css");
+    }
+
     static public function html(array $trackList)
     {
         $tableRows = [];
@@ -46,16 +52,16 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
             <div class='rsc-table-title'>Tracks you've uploaded</div>
 
             <a href='/rallysport-content/tracks/?form=add' title='Upload a new track'>
-                <div class='upload-new-track-button'>
+                <div class='round-button top-right'>
                     <i class='fas fa-upload'></i>
                 </div>
             </a>
 
-            <table class='rsc-table' style='width: 375px;'>
+            <table class='rsc-table' style='width: 395px;'>
 
                 <tr>
 
-                    <th style='width: 40%;'>Name</th>
+                    <th style='width: 50%;'>Name</th>
                     <th style='text-align: center'>Views</th>
                     <th style='text-align: right'>Actions</th>
                     
