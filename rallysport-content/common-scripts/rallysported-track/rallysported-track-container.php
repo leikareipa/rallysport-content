@@ -195,13 +195,14 @@ class RallySportEDTrack_Container
 
         // The next 4 bytes in the container should be the length of the KIERROS
         // data. Each element in these data is 8 bytes, and there can be at most
-        // about 512 elements.
+        // about 512 elements. We require that all tracks have a non-empty KIERROS
+        // segment - about 20 elements is the minimum for a valid track.
         if (($dataByteOffset + 4) >= $containerDataLen)
         {
             return false;
         }
         $kierrosDataLen = unpack("V1", $containerData, $dataByteOffset)[1];
-        if (($kierrosDataLen < 8) || ($kierrosDataLen > 4096))
+        if (($kierrosDataLen < 160) || ($kierrosDataLen > 4096))
         {
             return false;
         }
