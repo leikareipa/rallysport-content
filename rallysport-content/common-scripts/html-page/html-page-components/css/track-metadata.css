@@ -31,7 +31,7 @@
 
 .track-metadata > .card > .media svg > polygon
 {
-    stroke: dimgray;
+    stroke: rgb(32, 32, 32);
     stroke-width: 1;
     fill: none;
 }

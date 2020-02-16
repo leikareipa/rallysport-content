@@ -18,17 +18,6 @@
     margin-right: auto;
 }
 
-.rsc-table-container a
-{
-    text-decoration: none;
-    color: inherit;
-}
-
-.rsc-table-container a:hover
-{
-    text-decoration: underline;
-}
-
 .rsc-table td, th
 {
     font-weight: normal;
