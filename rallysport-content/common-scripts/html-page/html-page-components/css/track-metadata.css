@@ -31,12 +31,7 @@
 
 .track-metadata > .card > .media svg > polygon
 {
-    stroke: rgb(32, 32, 32);
+    stroke: dimgray;
     stroke-width: 1;
     fill: none;
-}
-
-.track-metadata > .card > .media svg:hover
-{
-    transform: translateY(-3px);
 }

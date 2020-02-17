@@ -1,3 +1,19 @@
+@font-face
+{
+    font-family: "Comic Sans (server-side)";
+    src: url("/rallysport-content/fonts/comic-sans.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: "Comic Sans (server-side)";
+    src: url("/rallysport-content/fonts/comic-sans-bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 body
 {
     background-color: white;

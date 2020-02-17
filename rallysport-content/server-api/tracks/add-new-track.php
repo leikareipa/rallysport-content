@@ -56,5 +56,5 @@ function add_new_track(\RSC\RallySportEDTrack $trackData,
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
     }
 
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?highlight={$trackResourceID->string()}"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$trackResourceID->string()}"));
 }

@@ -36,7 +36,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <label for='password'>Password</label>
                 <input type='text' id='password' name='password' required>
 
-                <label for='track_file'>Sample track*</label>
+                <label for='track_file'>Track ZIP file*</label>
                 <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrack::MAX_BYTE_SIZE."'>
                 <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
 

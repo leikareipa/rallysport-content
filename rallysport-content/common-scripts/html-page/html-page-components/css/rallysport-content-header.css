@@ -1,15 +1,15 @@
 #rallysport-content-header
 {
-    font-size: 300%;
-    padding: 25px 0 10px 0;
+    padding: 20px 0 10px 0;
     margin: 0 0 60px 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-#rallysport-content-header a
+#rallysport-content-header > .title
 {
-    text-decoration: none;
-    color: inherit;
+    font-size: 275%;
+    font-family: "Comic Sans (server-side)", sans-serif;
+    font-weight: bold;
 }
 
 #rallysport-content-header .login-widget

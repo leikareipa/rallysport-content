@@ -61,7 +61,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 
                 <thead>
                     <tr>
-                        <th style='width: 50%;'>Name</th>
+                        <th >Name</th>
                         <th style='text-align: center'>Views</th>
                         <th style='text-align: right'>Actions</th>
                     </tr>
