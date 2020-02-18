@@ -41,7 +41,27 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //
 function view_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL) : void
 {
-    $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID);
+    // Used - optionally - to specify whether we should limit the tracks we
+    // show to only those whose uploader is identified by this user resource
+    // ID. Will be automatically assigned depending on whether the "by" URL
+    // parameter is present.
+    $uploaderResourceID = NULL;
+    
+    // The presence of the "by" parameter indicates that we should only display
+    // tracks that were uploaded by the user whose resource ID is provided as
+    // the parameter's value.
+    if ($_GET["by"])
+    {
+        $trackResourceID = NULL; // Indicate that we want all tracks by this user.
+        $uploaderResourceID = \RSC\UserResourceID::from_string($_GET["by"]);
+
+        if (!$uploaderResourceID)
+        {
+            exit(API\Response::code(404)->error_message("Invalid user ID."));
+        }
+    }
+
+    $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID, $uploaderResourceID);
     if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
     {
         exit(API\Response::code(404)->error_message("No matching track data found."));
@@ -56,10 +76,32 @@ function view_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL) : voi
         $view->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $view->use_component(HTMLPage\Component\TrackMetadata::class);
 
-        $view->head->title = "Tracks uploaded by users";
+        if (count($trackInfo) == 1)
+        {
+            $userId = ($trackInfo[0]["creatorID"] ?? "an unknown user");
+            
+            $plainTextTitle = "A track uploaded by {$userId}";
+            $htmlTitle = "A track uploaded by <a href='/rallysport-content/users/?id={$userId}'>{$userId}</a>";
+        }
+        else if ($_GET["by"])
+        {
+            $plainTextTitle = "All tracks uploaded by ".$uploaderResourceID->string();
+            $htmlTitle = "
+            All tracks uploaded by
+            <a href='/rallysport-content/users/?id={$uploaderResourceID->string()}'>
+                {$uploaderResourceID->string()}
+            </a>
+            ";
+        }
+        else
+        {
+            $plainTextTitle = $htmlTitle = "A random selection of tracks uploaded by users";
+        }
+
+        $view->head->title = $plainTextTitle;
         
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
-        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
         foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Component\TrackMetadata::html($track));
         $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
         $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

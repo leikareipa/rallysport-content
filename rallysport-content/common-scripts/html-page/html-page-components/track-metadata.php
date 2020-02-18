@@ -69,7 +69,7 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                 </div>
 
                 <div class='info-box'>
-                    {$trackDisplayName}
+                    &lsquo;{$trackDisplayName}&rsquo;
                 </div>
 
             </div>

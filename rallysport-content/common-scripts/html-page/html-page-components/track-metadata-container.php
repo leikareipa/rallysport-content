@@ -35,10 +35,10 @@ abstract class TrackMetadataContainer extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/tracks-container.css");
     }
 
-    static public function open()
+    static public function open(string $title)
     {
         return "
-        <div class='users-container-title'>Tracks uploaded by users</div>
+        <div class='tracks-container-title'>{$title}</div>
 
         <div class='tracks-container'>
         ";

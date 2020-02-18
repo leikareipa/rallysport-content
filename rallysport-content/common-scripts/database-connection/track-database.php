@@ -178,17 +178,29 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns public information about the given track. If a null resource ID
     // is given, the information of all tracks in the database will be returned.
-    // On error, FALSE will be returned.
-    public function get_track_metadata(\RSC\TrackResourceID $resourceID = NULL)
+    // If an uploader resource ID is given, will return all tracks uploaded by
+    // the user identified by the given resource ID (the track resource ID must
+    // be NULL if an uploader resource ID is specified). On error, FALSE will be
+    // returned.
+    public function get_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL,
+                                       \RSC\UserResourceID $uploaderResourceID = NULL)
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
+        // If a creator ID was supplied, the track resource ID should be NULL.
+        if ($uploaderResourceID && $trackResourceID)
+        {
+            return false;
+        }
+
         // If no resource ID is provided, we'll return info for all tracks
         // in the database.
-        $rowSelector = ($resourceID? "WHERE resource_id = ?" : "");
+        $rowSelector = ($trackResourceID? "WHERE resource_id = ?"
+                        : ($uploaderResourceID? "WHERE creator_resource_id = ?"
+                        : ""));
 
         $trackInfo = $this->issue_db_query("SELECT resource_id,
                                                    resource_visibility,
@@ -202,7 +214,9 @@ class TrackDatabase extends DatabaseConnection
                                                    kierros_svg_gzip
                                             FROM rsc_tracks
                                            {$rowSelector}",
-                                           ($resourceID? [$resourceID->string()] : NULL));
+                                           ($trackResourceID? [$trackResourceID->string()]
+                                            : ($uploaderResourceID? [$uploaderResourceID->string()]
+                                            : NULL)));
 
         if (!is_array($trackInfo) || !count($trackInfo))
         {
