@@ -7,7 +7,7 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/rallysported-track/rallysported-track.php";
+require_once __DIR__."/../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
 require_once __DIR__."/../../../common-scripts/resource/resource-visibility.php";
 
@@ -33,7 +33,7 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
                 <input type='text' id='track-title' name='track_display_name' required>
 
                 <label for='track_file'>Track ZIP file*</label>
-                <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrack::MAX_BYTE_SIZE."'>
+                <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
                 <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
                 <div class='footnote'>* Select a ZIP file containing the track's data as exported

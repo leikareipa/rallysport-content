@@ -7,10 +7,10 @@
  * 
  */
 
-require_once __DIR__."/rallysported-track.php";
+require_once __DIR__."/rallysported-track-data.php";
 
 // Represents the container data of a track created in RallySportED.
-class RallySportEDTrack_Container
+class RallySportEDTrackData_Container
 {
     public const MAX_BYTE_SIZE = 307200;
 
@@ -98,7 +98,7 @@ class RallySportEDTrack_Container
         $maastoDataLen = unpack("V1", $containerData, $dataByteOffset)[1];
         $trackSideLength = sqrt($maastoDataLen / 2);
         if ((($maastoDataLen % 2) != 0) ||
-            !RallySportEDTrack::is_valid_track_side_length($trackSideLength))
+            !RallySportEDTrackData::is_valid_track_side_length($trackSideLength))
         {
             return false;
         }

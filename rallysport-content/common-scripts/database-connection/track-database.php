@@ -23,7 +23,7 @@ require_once __DIR__."/database-connection.php";
 require_once __DIR__."/../resource/resource.php";
 require_once __DIR__."/../resource/resource-id.php";
 require_once __DIR__."/../resource/resource-visibility.php";
-require_once __DIR__."/../rallysported-track/rallysported-track.php";
+require_once __DIR__."/../rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../zip-file.php";
 
 class TrackDatabase extends DatabaseConnection
@@ -322,7 +322,7 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
-        $rsedTrack = new \RSC\RallySportEDTrack();
+        $rsedTrack = new \RSC\RallySportEDTrackData();
 
         if (!$rsedTrack->set_display_name($dbResponse[0]["track_name_display"]) ||
             !$rsedTrack->set_internal_name($dbResponse[0]["track_name_internal"]) ||

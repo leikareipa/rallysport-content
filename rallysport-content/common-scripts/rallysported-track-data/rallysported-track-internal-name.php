@@ -8,7 +8,7 @@
  */
 
  // Represents the internal name of a track created in RallySportED.
-class RallySportEDTrack_InternalName
+class RallySportEDTrackData_InternalName
 {
     // Minimum/maximum number of characters in a valid internal name.
     public const MIN_LENGTH = 1;

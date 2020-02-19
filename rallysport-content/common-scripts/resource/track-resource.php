@@ -32,7 +32,7 @@ class TrackResource extends Resource
 
     // Creates and returns an instance of this class with the given arguments
     // as its data. On error, returns NULL.
-    public static function with(\RSC\RallySportEDTrack $data = NULL,
+    public static function with(\RSC\RallySportEDTrackData $data = NULL,
                                 TrackResourceID $resourceID = NULL,
                                 UserResourceID $creatorID = NULL,
                                 int /*ResourceVisibility*/ $visibility = ResourceVisibility::PRIVATE)

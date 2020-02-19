@@ -13,10 +13,10 @@ require_once __DIR__."/rallysported-track-display-name.php";
 require_once __DIR__."/rallysported-track-internal-name.php";
 
 // Represents the data of a track created in RallySportED.
-class RallySportEDTrack
+class RallySportEDTrackData
 {
-    public const MAX_BYTE_SIZE = (RallySportEDTrack_Manifesto::MAX_BYTE_SIZE +
-                                  RallySportEDTrack_Container::MAX_BYTE_SIZE);
+    public const MAX_BYTE_SIZE = (RallySportEDTrackData_Manifesto::MAX_BYTE_SIZE +
+                                  RallySportEDTrackData_Container::MAX_BYTE_SIZE);
 
     private $internalName;
     private $displayName;
@@ -26,10 +26,10 @@ class RallySportEDTrack
 
     public function __construct()
     {
-        $this->internalName = new RallySportEDTrack_InternalName;
-        $this->displayName = new RallySportEDTrack_DisplayName;
-        $this->manifesto = new RallySportEDTrack_Manifesto;
-        $this->container = new RallySportEDTrack_Container;
+        $this->internalName = new RallySportEDTrackData_InternalName;
+        $this->displayName = new RallySportEDTrackData_DisplayName;
+        $this->manifesto = new RallySportEDTrackData_Manifesto;
+        $this->container = new RallySportEDTrackData_Container;
         $this->sideLength = 0;
         
         return;
@@ -67,7 +67,7 @@ class RallySportEDTrack
     {
         if (!$zipFilename ||
             !is_file($zipFilename) ||
-            (filesize($zipFilename) > RallySportEDTrack::MAX_BYTE_SIZE))
+            (filesize($zipFilename) > RallySportEDTrackData::MAX_BYTE_SIZE))
         {
             return NULL;
         }
@@ -122,7 +122,7 @@ class RallySportEDTrack
         {
             $internalName = (explode("/", $trackFilenames["container"])[0] ?? NULL);
 
-            if (!RallySportEDTrack_InternalName::is_valid_internal_name($internalName) ||
+            if (!RallySportEDTrackData_InternalName::is_valid_internal_name($internalName) ||
                 ((explode("/", $trackFilenames["hitable"])[0] ?? NULL) !== $internalName) ||
                 ((explode("/", $trackFilenames["manifesto"])[0] ?? NULL) !== $internalName))
             {
@@ -143,7 +143,7 @@ class RallySportEDTrack
             }
         }
 
-        $dataObject = new RallySportEDTrack();
+        $dataObject = new RallySportEDTrackData();
 
         if (!$dataObject->set_internal_name($internalName) ||
             !$dataObject->set_display_name($internalName) ||

@@ -8,7 +8,7 @@
  */
 
  // Represents the display name of a track created in RallySportED.
-class RallySportEDTrack_DisplayName
+class RallySportEDTrackData_DisplayName
 {
     // Minimum/maximum number of characters in a valid display name.
     public const MIN_LENGTH = 1;

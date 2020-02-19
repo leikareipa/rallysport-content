@@ -8,7 +8,7 @@
  */
 
  // Represents the manifesto data of a track created in RallySportED.
-class RallySportEDTrack_Manifesto
+class RallySportEDTrackData_Manifesto
 {
     public const MAX_BYTE_SIZE = 10240;
 
