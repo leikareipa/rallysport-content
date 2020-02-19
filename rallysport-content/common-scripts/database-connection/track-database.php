@@ -142,43 +142,6 @@ class TrackDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Returns public information about all tracks uploaded by the given user;
-    // or FALSE on failure.
-    public function get_user_tracks_metadata(Resource\UserResourceID $userResourceID = NULL)
-    {
-        if (!$this->is_connected() ||
-            !$userResourceID)
-        {
-            return false;
-        }
-
-        $trackIDList = $this->issue_db_query("SELECT resource_id
-                                              FROM rsc_tracks
-                                              WHERE creator_resource_id = ?",
-                                             [$userResourceID->string()]);
-
-        /// TODO: Don't make multiple queries to the database - fetch all data at the same time.
-        $tracksMetadata = [];
-        foreach ($trackIDList as $trackID)
-        {
-            $trackResourceID = Resource\TrackResourceID::from_string($trackID["resource_id"]);
-            if (!$trackResourceID)
-            {
-                continue;
-            }
-            
-            $metadata = $this->get_track_metadata($trackResourceID);
-            if (!$metadata || !is_array($metadata) || !count($metadata))
-            {
-                continue;
-            }
-
-            $tracksMetadata[] = $metadata[0];
-        }
-
-        return (empty($tracksMetadata)? false : $tracksMetadata);
-    }
-
     // Returns an SVG image (as a string) of the track's KIERROS data. On
     // error, returns false.
     public function get_track_svg(Resource\TrackResourceID $trackResourceID)
@@ -222,7 +185,8 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns as an array of TrackResource elements all public tracks uploaded
     // by the given user. On error, returns FALSE.
-    public function get_all_public_track_resources_uploaded_by_user(Resource\UserResourceID $userID)
+    public function get_all_public_track_resources_uploaded_by_user(Resource\UserResourceID $userID,
+                                                                    bool $metadataOnly = false)
     {
         $trackIDs = $this->get_ids_of_all_public_tracks_uploaded_by_user($userID);
 
@@ -232,9 +196,9 @@ class TrackDatabase extends DatabaseConnection
         }
 
         // Fetch the track data.
-        $tracks = array_reduce($trackIDs, function($acc, $trackIDString)
+        $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
         {
-            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString))))
+            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString), $metadataOnly)))
             {
                 $acc[] = $trackResource;
             }
@@ -287,7 +251,7 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns as an array of TrackResource elements all public tracks in the
     // database. On error, returns FALSE.
-    public function get_all_public_track_resources()
+    public function get_all_public_track_resources(bool $metadataOnly = false)
     {
         $trackIDs = $this->get_ids_of_all_public_tracks();
 
@@ -297,9 +261,9 @@ class TrackDatabase extends DatabaseConnection
         }
 
         // Fetch the track data.
-        $tracks = array_reduce($trackIDs, function($acc, $element)
+        $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
         {
-            if (($trackResource = Resource\TrackResource::from_database($element)))
+            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString), $metadataOnly)))
             {
                 $acc[] = $trackResource;
             }
@@ -374,6 +338,8 @@ class TrackDatabase extends DatabaseConnection
             {
                 return false;
             }
+
+            $this->increment_track_download_count($trackResourceID);
         }
 
         $trackResource = Resource\TrackResource::with($rsedTrack,

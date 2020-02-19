@@ -42,8 +42,8 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //
 function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
 {
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID)]
-                               : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources());
+    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID, true)]
+                               : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources(true));
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {
@@ -112,7 +112,7 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
 //
 function view_user_tracks(Resource\UserResourceID $userResourceID) : void
 {
-    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($userResourceID);
+    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($userResourceID, true);
 
     if (!is_array($tracks) || !count($tracks))
     {

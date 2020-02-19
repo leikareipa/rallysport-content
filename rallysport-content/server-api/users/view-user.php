@@ -52,24 +52,24 @@ function view_user_metadata(Resource\UserResourceID $userResourceID = NULL) : vo
 
     // Build a HTML page that displays the requested users' metadata.
     {
-        $view = new HTMLPage\HTMLPage();
+        $htmlPage = new HTMLPage\HTMLPage();
 
-        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
-        $view->use_component(HTMLPage\Component\UserMetadataContainer::class);
-        $view->use_component(HTMLPage\Component\UserMetadata::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\UserMetadataContainer::class);
+        $htmlPage->use_component(HTMLPage\Component\UserMetadata::class);
 
-        $view->head->title = "Registered users";
+        $htmlPage->head->title = "Registered users";
         
-        $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
-        $view->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
         foreach ($users as $userResource)
         {
-            $view->body->add_element($userResource->view("metadata-html"));
+            $htmlPage->body->add_element($userResource->view("metadata-html"));
         }
-        $view->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
-        $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
+        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($view->html()));
+    exit(API\Response::code(200)->html($htmlPage->html()));
 }

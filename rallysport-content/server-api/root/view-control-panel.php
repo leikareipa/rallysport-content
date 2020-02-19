@@ -49,7 +49,7 @@ function view_control_panel() : void
 
         // Build a table that displays the tracks the user has uploaded.
         {
-            $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($loggedInUserID);
+            $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($loggedInUserID, true);
 
             if (!is_array($tracks) || !count($tracks))
             {

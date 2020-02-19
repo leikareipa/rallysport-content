@@ -99,7 +99,11 @@ function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
         exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID)]
+    // If we were requested to serve metadata only, we can instruct the database
+    // to include only metadata in its response to us.
+    $metadataOnly = (strpos($viewType, "metadata") !== FALSE);
+
+    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID, $metadataOnly)]
                                : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources());
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
