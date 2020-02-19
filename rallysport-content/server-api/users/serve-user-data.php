@@ -25,7 +25,7 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 function serve_user_data_as_json(string /*ResourceViewType*/ $viewType,
-                                  Resource\TrackResourceID $userResourceID = NULL) : void
+                                  Resource\UserResourceID $userResourceID = NULL) : void
 {
     $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID)]
                                : (new DatabaseConnection\UserDatabase())->get_all_public_user_resources());

@@ -42,15 +42,16 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 //
 function view_user_metadata(Resource\UserResourceID $userResourceID = NULL) : void
 {
+    $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID)]
+                             : (new DatabaseConnection\UserDatabase())->get_all_public_user_resources());
+
+    if (!is_array($users) || !count($users))
+    {
+        exit(API\Response::code(404)->error_message("No matching users found."));
+    }
+
     // Build a HTML page that displays the requested users' metadata.
     {
-        $users = (new DatabaseConnection\UserDatabase())->get_all_public_user_resources();
-
-        if (!is_array($users) || !count($users))
-        {
-            exit(API\Response::code(404)->error_message("No matching users found."));
-        }
-
         $view = new HTMLPage\HTMLPage();
 
         $view->use_component(HTMLPage\Component\RallySportContentHeader::class);

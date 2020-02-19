@@ -30,6 +30,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         if ($_GET["id"] ?? false)
         {
             $resourceID = Resource\UserResourceID::from_string($_GET["id"]);
+            
             if (!$resourceID)
             {
                 exit(API\Response::code(400)->error_message("Invalid user resource ID."));
