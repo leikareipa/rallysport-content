@@ -30,6 +30,6 @@
 .track-metadata > .card > .media svg > polygon
 {
     stroke: dimgray;
-    stroke-width: 1;
+    stroke-width: 1.5;
     fill: none;
 }

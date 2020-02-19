@@ -1,6 +1,7 @@
 <?php namespace RSC\API\Users;
       use RSC\DatabaseConnection;
       use RSC\API;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -23,21 +24,26 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
-// Returns: a response from the Response class (HTML status code + body).
-//
-//  - On failure, the response body will be a JSON string whose 'errorMessage'
-//    attribute provides a brief description of the error.
-//
-//  - On success, the response body will be a JSON string that provides
-//    information about the user(s) queried.
-//
-function serve_user_metadata_as_json(\RSC\TrackResourceID $resourceID = NULL) : void
+function serve_user_data_as_json(string /*ResourceViewType*/ $viewType,
+                                  Resource\TrackResourceID $userResourceID = NULL) : void
 {
-    $userInfo = (new DatabaseConnection\UserDatabase())->get_user_metadata($resourceID);
-    if (!$userInfo || !is_array($userInfo) || !count($userInfo))
+    $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID)]
+                               : (new DatabaseConnection\UserDatabase())->get_all_public_user_resources());
+
+    if (!is_array($users) || !count($users) || !$users[0])
     {
-        exit(API\Response::code(404)->error_message("No matching user data found."));
+        exit(API\Response::code(404)->error_message("No matching users found."));
     }
 
-    exit(API\Response::code(200)->json($userInfo));
+    // Massage the data so it's output is in the desired format.
+    $usersMassaged = array_reduce($users, function($acc, $element) use ($viewType)
+    {
+        $acc[] = $element->view($viewType);
+        return $acc;
+    }, []);
+
+    // We ask the client to cache the response data only if they are for a
+    // single user - otherwise, when new users are added, they would not
+    // show up in the cached response.
+    exit(API\Response::code(200)->json($usersMassaged, ($userResourceID? 2592000 : 0)));
 }

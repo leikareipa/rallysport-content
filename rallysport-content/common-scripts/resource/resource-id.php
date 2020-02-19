@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -66,7 +66,7 @@ abstract class ResourceID
 
     // Create a resource ID object with a random key. Returns the created
     // resource ID object; or NULL on error.
-    static public function random() : ResourceID
+    static public function random()
     {
         try
         {

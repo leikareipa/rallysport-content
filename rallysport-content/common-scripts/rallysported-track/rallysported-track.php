@@ -69,14 +69,14 @@ class RallySportEDTrack
             !is_file($zipFilename) ||
             (filesize($zipFilename) > RallySportEDTrack::MAX_BYTE_SIZE))
         {
-            return false;
+            return NULL;
         }
 
         $zipFile = new \ZipArchive($zipFilename);
 
         if (!$zipFile->open($zipFilename, \ZipArchive::CHECKCONS))
         {
-            return false;
+            return NULL;
         }
 
         // Get the names of the track files inside the archive. We expect there
@@ -90,7 +90,7 @@ class RallySportEDTrack
             {
                 if ($filename === FALSE)
                 {
-                    return false;
+                    return NULL;
                 }
 
                 // Ignore directories.
@@ -104,7 +104,7 @@ class RallySportEDTrack
                     case ".TXT":  $trackFilenames["hitable"] = $filename; break;
                     case ".DTA":  $trackFilenames["container"] = $filename; break;
                     case ".\$FT": $trackFilenames["manifesto"] = $filename; break;
-                    default: return false;
+                    default: return NULL;
                 }
             }
 
@@ -112,7 +112,7 @@ class RallySportEDTrack
                 !($trackFilenames["container"] ?? false) ||
                 !($trackFilenames["manifesto"] ?? false))
             {
-                return false;
+                return NULL;
             }
         }
 
@@ -126,7 +126,7 @@ class RallySportEDTrack
                 ((explode("/", $trackFilenames["hitable"])[0] ?? NULL) !== $internalName) ||
                 ((explode("/", $trackFilenames["manifesto"])[0] ?? NULL) !== $internalName))
             {
-                return false;
+                return NULL;
             }
         }
 
@@ -139,17 +139,18 @@ class RallySportEDTrack
             if (!$trackData["container"] ||
                 !$trackData["manifesto"])
             {
-                return false;
+                return NULL;
             }
         }
 
         $dataObject = new RallySportEDTrack();
 
         if (!$dataObject->set_internal_name($internalName) ||
+            !$dataObject->set_display_name($internalName) ||
             !$dataObject->set_container($trackData["container"]) ||
             !$dataObject->set_manifesto($trackData["manifesto"]))
         {
-            return false;
+            return NULL;
         }
 
         // Figure out the track's dimensions from the container data. We assume
@@ -160,7 +161,7 @@ class RallySportEDTrack
 
             if (!$dataObject->set_side_length(sqrt($maastoDataLen / 2)))
             {
-                return false;
+                return NULL;
             }
         }
 

@@ -1,6 +1,6 @@
 #rallysport-content-header
 {
-    padding: 20px 0 10px 0;
+    padding: 21px 0 10px 0;
     margin: 0 0 60px 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
@@ -12,9 +12,14 @@
     font-weight: bold;
 }
 
+#rallysport-content-header > .title a
+{
+    text-decoration: none;
+}
+
 #rallysport-content-header .login-widget
 {
     font-size: initial;
     display: block;
-    margin: 20px;
+    margin: 16px 0 20px 0;
 }

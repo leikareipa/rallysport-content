@@ -2,6 +2,7 @@
       use RSC\HTMLPage;
       use RSC\DatabaseConnection;
       use RSC\API;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -39,73 +40,129 @@ require_once __DIR__."/../../common-scripts/database-connection/track-database.p
 //  - On success, the response body will consist of the HTML page's source
 //    code as a string.
 //
-function view_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL) : void
+function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
 {
-    // Used - optionally - to specify whether we should limit the tracks we
-    // show to only those whose uploader is identified by this user resource
-    // ID. Will be automatically assigned depending on whether the "by" URL
-    // parameter is present.
-    $uploaderResourceID = NULL;
-    
-    // The presence of the "by" parameter indicates that we should only display
-    // tracks that were uploaded by the user whose resource ID is provided as
-    // the parameter's value.
-    if ($_GET["by"])
-    {
-        $trackResourceID = NULL; // Indicate that we want all tracks by this user.
-        $uploaderResourceID = \RSC\UserResourceID::from_string($_GET["by"]);
+    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID)]
+                               : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources());
 
-        if (!$uploaderResourceID)
-        {
-            exit(API\Response::code(404)->error_message("Invalid user ID."));
-        }
-    }
-
-    $trackInfo = (new DatabaseConnection\TrackDatabase())->get_track_metadata($trackResourceID, $uploaderResourceID);
-    if (!$trackInfo || !is_array($trackInfo) || !count($trackInfo))
+    if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {
-        exit(API\Response::code(404)->error_message("No matching track data found."));
+        exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
 
     // Build a HTML page that displays the requested tracks' metadata.
     {
-        $view = new HTMLPage\HTMLPage();
+        $htmlPage = new HTMLPage\HTMLPage();
 
-        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
-        $view->use_component(HTMLPage\Component\TrackMetadataContainer::class);
-        $view->use_component(HTMLPage\Component\TrackMetadata::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
-        if (count($trackInfo) == 1)
+        if (count($tracks) == 1)
         {
-            $userId = ($trackInfo[0]["creatorID"] ?? "an unknown user");
-            
-            $plainTextTitle = "A track uploaded by {$userId}";
-            $htmlTitle = "A track uploaded by <a href='/rallysport-content/users/?id={$userId}'>{$userId}</a>";
-        }
-        else if ($_GET["by"])
-        {
-            $plainTextTitle = "All tracks uploaded by ".$uploaderResourceID->string();
+            $creatorID = $tracks[0]->creator_id()->string();
+            $plainTextTitle = "A track uploaded by {$creatorID}";
             $htmlTitle = "
-            All tracks uploaded by
-            <a href='/rallysport-content/users/?id={$uploaderResourceID->string()}'>
-                {$uploaderResourceID->string()}
-            </a>
-            ";
+            A track uploaded by
+            <a href='/rallysport-content/users/?id={$creatorID}'>
+                {$creatorID}
+            </a>";
         }
         else
         {
             $plainTextTitle = $htmlTitle = "A random selection of tracks uploaded by users";
         }
 
-        $view->head->title = $plainTextTitle;
+        $htmlPage->head->title = $plainTextTitle;
         
-        $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
-        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
-        foreach ($trackInfo as $track) $view->body->add_element(HTMLPage\Component\TrackMetadata::html($track));
-        $view->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
-        $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
+        foreach ($tracks as $trackResource)
+        {
+            if (!$trackResource)
+            {
+                exit(API\Response::code(404)->error_message("An error occurred while processing track data."));
+            }
+
+            $htmlPage->body->add_element($trackResource->view("metadata-html"));
+        }
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($view->html()));
+    exit(API\Response::code(200)->html($htmlPage->html()));
+}
+
+// Constructs a HTML page in memory, and sends it to the client for display.
+// The page provides metadata about all public tracks uploaded by the given
+// user.
+//
+// Note: The function should always return using exit() together with a
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
+//
+// Returns: a response from the Response class (HTML status code + body).
+//
+//  - On failure, the response body will be a JSON string whose 'errorMessage'
+//    attribute provides a brief description of the error. No track data will
+//    be returned in this case.
+//
+//  - On success, the response body will consist of the HTML page's source
+//    code as a string.
+//
+function view_user_tracks(Resource\UserResourceID $userResourceID) : void
+{
+    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($userResourceID);
+
+    if (!is_array($tracks) || !count($tracks))
+    {
+        exit(API\Response::code(404)->error_message("No matching tracks found."));
+    }
+
+    // Build a HTML page that displays the requested tracks' metadata.
+    {
+        $htmlPage = new HTMLPage\HTMLPage();
+
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
+
+        if (count($tracks) == 1)
+        {
+            $plainTextTitle = "A track uploaded by {$userResourceID->string()}";
+            $htmlTitle = "
+            A track uploaded by
+            <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
+                {$userResourceID->string()}
+            </a>";
+        }
+        else
+        {
+            $plainTextTitle = "Tracks uploaded by ".$userResourceID->string();
+            $htmlTitle = "
+            Tracks uploaded by
+            <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
+                {$userResourceID->string()}
+            </a>";
+        }
+
+        $htmlPage->head->title = $plainTextTitle;
+        
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
+        foreach ($tracks as $trackResource)
+        {
+            if (!$trackResource)
+            {
+                exit(API\Response::code(404)->error_message("An error occurred while fetching track data."));
+            }
+
+            $htmlPage->body->add_element($trackResource->view("metadata-html"));
+        }
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
+    }
+
+    exit(API\Response::code(200)->html($htmlPage->html()));
 }

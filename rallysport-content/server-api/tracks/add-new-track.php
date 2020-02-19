@@ -1,6 +1,7 @@
 <?php namespace RSC\API\Tracks;
       use RSC\DatabaseConnection;
       use RSC\API;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -27,34 +28,25 @@ require_once __DIR__."/../../server-api/session.php";
 // Note: The function should always return using exit() together with a Response
 // object.
 //
-function add_new_track(\RSC\RallySportEDTrack $trackData,
-                       int /*\RSC\ResourceVisibility*/ $resourceVisibility) : void
+function add_new_track(Resource\TrackResource $track) : void
 {
-    $trackResourceID = \RSC\TrackResourceID::random();
-    $creatorID = API\Session\logged_in_user_id();
-
-    if (!$creatorID)
-    {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid user ID"));
-    }
-
     /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
     if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
-                                                    $trackResourceID,
-                                                    $resourceVisibility,
-                                                    $creatorID,
-                                                    $trackData->internal_name(),
-                                                    $trackData->display_name(),
-                                                    $trackData->side_length(),
-                                                    $trackData->side_length(),
-                                                    $trackData->container(),
-                                                    $trackData->manifesto(),
-                                                    \RSC\svg_image_from_kierros_data($trackData->container("kierros"),
-                                                                                     $trackData->side_length())))
+                                                    $track->id(),
+                                                    $track->visibility(),
+                                                    $track->creator_id(),
+                                                    $track->data()->internal_name(),
+                                                    $track->data()->display_name(),
+                                                    $track->data()->side_length(),
+                                                    $track->data()->side_length(),
+                                                    $track->data()->container(),
+                                                    $track->data()->manifesto(),
+                                                    \RSC\svg_image_from_kierros_data($track->data()->container("kierros"),
+                                                                                     $track->data()->side_length())))
     {
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
     }
 
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$trackResourceID->string()}"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$track->id()->string()}"));
 }

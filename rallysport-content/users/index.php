@@ -29,7 +29,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         // provided, we assume the query relates to all users in the database.
         if ($_GET["id"] ?? false)
         {
-            $resourceID = UserResourceID::from_string($_GET["id"]);
+            $resourceID = Resource\UserResourceID::from_string($_GET["id"]);
             if (!$resourceID)
             {
                 exit(API\Response::code(400)->error_message("Invalid user resource ID."));
@@ -46,7 +46,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                 default:                    API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
-        else if ($_GET["metadata"] ?? false) API\Users\serve_user_metadata_as_json($resourceID);
+        else if ($_GET["metadata"] ?? false) API\Users\serve_user_data_as_json("metadata-array", $resourceID);
         else                                 API\Users\view_user_metadata($resourceID);
 
         break;

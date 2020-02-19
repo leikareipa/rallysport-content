@@ -1,4 +1,4 @@
-<?php namespace RSC;
+<?php namespace RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft

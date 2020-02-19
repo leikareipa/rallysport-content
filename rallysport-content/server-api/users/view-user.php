@@ -2,6 +2,7 @@
       use RSC\HTMLPage;
       use RSC\DatabaseConnection;
       use RSC\API;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -33,22 +34,23 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // Returns: a response from the Response class (HTML status code + body).
 //
 //  - On failure, the response body will be a JSON string whose 'errorMessage'
-//    attribute provides a brief description of the error. No track data will
+//    attribute provides a brief description of the error. No user data will
 //    be returned in this case.
 //
 //  - On success, the response body will consist of the HTML page's source
 //    code as a string.
 //
-function view_user_metadata(\RSC\UserResourceID $userResourceID = NULL) : void
+function view_user_metadata(Resource\UserResourceID $userResourceID = NULL) : void
 {
-    $userInfo = (new DatabaseConnection\UserDatabase())->get_user_metadata($userResourceID);
-    if (!$userInfo || !is_array($userInfo) || !count($userInfo))
+    // Build a HTML page that displays the requested users' metadata.
     {
-        exit(API\Response::code(404)->error_message("No matching user data found."));
-    }
+        $users = (new DatabaseConnection\UserDatabase())->get_all_public_user_resources();
 
-    // Build a HTML page that displays the requested tracks' metadata.
-    {
+        if (!is_array($users) || !count($users))
+        {
+            exit(API\Response::code(404)->error_message("No matching users found."));
+        }
+
         $view = new HTMLPage\HTMLPage();
 
         $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
@@ -60,9 +62,9 @@ function view_user_metadata(\RSC\UserResourceID $userResourceID = NULL) : void
         
         $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $view->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
-        foreach ($userInfo as $user)
+        foreach ($users as $userResource)
         {
-            $view->body->add_element(HTMLPage\Component\UserMetadata::html($user));
+            $view->body->add_element($userResource->view("metadata-html"));
         }
         $view->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
         $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

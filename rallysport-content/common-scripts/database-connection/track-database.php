@@ -1,4 +1,5 @@
 <?php namespace RSC\DatabaseConnection;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -19,8 +20,10 @@
  */
 
 require_once __DIR__."/database-connection.php";
+require_once __DIR__."/../resource/resource.php";
 require_once __DIR__."/../resource/resource-id.php";
 require_once __DIR__."/../resource/resource-visibility.php";
+require_once __DIR__."/../rallysported-track/rallysported-track.php";
 require_once __DIR__."/../zip-file.php";
 
 class TrackDatabase extends DatabaseConnection
@@ -39,7 +42,7 @@ class TrackDatabase extends DatabaseConnection
         return;
     }
 
-    private function increment_track_download_count(\RSC\TrackResourceID $resourceID) : bool 
+    private function increment_track_download_count(Resource\TrackResourceID $resourceID) : bool 
     {
         if (!$this->is_connected())
         {
@@ -64,14 +67,14 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns the number of tracks uploaded by the given user that are marked
     // as being publically viewable.
-    public function num_public_tracks_by_user(\RSC\UserResourceID $userResourceID)
+    public function num_public_tracks_by_user(Resource\UserResourceID $userResourceID)
     {
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_tracks
                                              WHERE creator_resource_id = ?
                                              AND resource_visibility = ?",
                                             [$userResourceID->string(),
-                                             \RSC\ResourceVisibility::PUBLIC]);
+                                             Resource\ResourceVisibility::PUBLIC]);
 
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
@@ -85,9 +88,9 @@ class TrackDatabase extends DatabaseConnection
 
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
-    public function add_new_track(\RSC\TrackResourceID $resourceID,
-                                  int /*\RSC\ResourceVisibility*/ $resourceVisibility,
-                                  \RSC\UserResourceID $creatorID,
+    public function add_new_track(Resource\TrackResourceID $resourceID,
+                                  int /*\ResourceVisibility*/ $resourceVisibility,
+                                  Resource\UserResourceID $creatorID,
                                   string $internalName,
                                   string $displayName,
                                   int $width,
@@ -141,7 +144,7 @@ class TrackDatabase extends DatabaseConnection
 
     // Returns public information about all tracks uploaded by the given user;
     // or FALSE on failure.
-    public function get_user_tracks_metadata(\RSC\UserResourceID $userResourceID = NULL)
+    public function get_user_tracks_metadata(Resource\UserResourceID $userResourceID = NULL)
     {
         if (!$this->is_connected() ||
             !$userResourceID)
@@ -158,7 +161,7 @@ class TrackDatabase extends DatabaseConnection
         $tracksMetadata = [];
         foreach ($trackIDList as $trackID)
         {
-            $trackResourceID = \RSC\TrackResourceID::from_string($trackID["resource_id"]);
+            $trackResourceID = Resource\TrackResourceID::from_string($trackID["resource_id"]);
             if (!$trackResourceID)
             {
                 continue;
@@ -176,206 +179,213 @@ class TrackDatabase extends DatabaseConnection
         return (empty($tracksMetadata)? false : $tracksMetadata);
     }
 
-    // Returns public information about the given track. If a null resource ID
-    // is given, the information of all tracks in the database will be returned.
-    // If an uploader resource ID is given, will return all tracks uploaded by
-    // the user identified by the given resource ID (the track resource ID must
-    // be NULL if an uploader resource ID is specified). On error, FALSE will be
-    // returned.
-    public function get_track_metadata(\RSC\TrackResourceID $trackResourceID = NULL,
-                                       \RSC\UserResourceID $uploaderResourceID = NULL)
+    // Returns an SVG image (as a string) of the track's KIERROS data. On
+    // error, returns false.
+    public function get_track_svg(Resource\TrackResourceID $trackResourceID)
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
-        // If a creator ID was supplied, the track resource ID should be NULL.
-        if ($uploaderResourceID && $trackResourceID)
+        $dbResponse = $this->issue_db_query("SELECT kierros_svg_gzip
+                                             FROM rsc_tracks
+                                             WHERE resource_id = ?",
+                                            [$trackResourceID->string()]);
+
+        if (!is_array($dbResponse) || !count($dbResponse))
         {
             return false;
         }
 
-        // If no resource ID is provided, we'll return info for all tracks
-        // in the database.
-        $rowSelector = ($trackResourceID? "WHERE resource_id = ?"
-                        : ($uploaderResourceID? "WHERE creator_resource_id = ?"
-                        : ""));
-
-        $trackInfo = $this->issue_db_query("SELECT resource_id,
-                                                   resource_visibility,
-                                                   creator_resource_id,
-                                                   creation_timestamp,
-                                                   download_count,
-                                                   track_name_internal,
-                                                   track_name_display,
-                                                   track_width,
-                                                   track_height,
-                                                   kierros_svg_gzip
-                                            FROM rsc_tracks
-                                           {$rowSelector}",
-                                           ($trackResourceID? [$trackResourceID->string()]
-                                            : ($uploaderResourceID? [$uploaderResourceID->string()]
-                                            : NULL)));
-
-        if (!is_array($trackInfo) || !count($trackInfo))
-        {
-            return false;
-        }
-
-        // Simplify some parameter names, etc.
-        $returnObject = [];
-        foreach ($trackInfo as $track)
-        {
-            $returnObject[] =
-            [
-                "resourceID"        => $track["resource_id"],
-                "creatorID"         => $track["creator_resource_id"],
-                "internalName"      => $track["track_name_internal"],
-                "displayName"       => $track["track_name_display"],
-                "width"             => $track["track_width"],
-                "height"            => $track["track_height"],
-                "creationTimestamp" => $track["creation_timestamp"],
-                "kierrosSVG"        => gzdecode($track["kierros_svg_gzip"]),
-                "downloadCount"     => $track["download_count"],
-                "visibilityLevel"   => $track["resource_visibility"],
-            ];
-        }
-
-        return $returnObject;
+        return gzdecode($dbResponse[0]["kierros_svg_gzip"]);
     }
 
-    // Returns the given track's data as a zip file. The zip file will include
-    // the track's container, manifesto, and HITABLE files; and is thus suitable
-    // for serving the track to end-users of the RallySportED Loader.
-    //
-    // On success, the return value will be an array of the following form:
-    //
-    //   [
-    //       "filename": string,
-    //       "data": string
-    //   ]
-    //
-    //   - The 'filename' parameter gives the filename associated with the data
-    //     (with the .zip extension). Generally, this will match the project's
-    //     internal name; e.g. a project called "Suorundi" would have the
-    //     filename "SUORUNDI.ZIP".
-    //
-    //   - The 'data' parameter contains as a string the zip file's raw bytes.
-    //
-    // On failure, FALSE is returned.
-    //
-    public function get_track_data_as_zip_file(\RSC\TrackResourceID $resourceID = NULL)
+    // Returns the number of times the given track has been downloaded; or FALSE
+    // on error.
+    public function get_track_download_count(Resource\TrackResourceID $trackID)
+    {
+        $queryResults = $this->issue_db_query("SELECT download_count
+                                               FROM rsc_tracks
+                                               WHERE resource_id = ?
+                                               AND resource_visibility = ?",
+                                              [$trackID->string(),
+                                               Resource\ResourceVisibility::PUBLIC]);
+
+        if (!is_array($queryResults) || count($queryResults) != 1)
+        {
+            return false;
+        }
+
+        return $queryResults[0]["download_count"];
+    }
+
+    // Returns as an array of TrackResource elements all public tracks uploaded
+    // by the given user. On error, returns FALSE.
+    public function get_all_public_track_resources_uploaded_by_user(Resource\UserResourceID $userID)
+    {
+        $trackIDs = $this->get_ids_of_all_public_tracks_uploaded_by_user($userID);
+
+        if (!is_array($trackIDs) || !count($trackIDs))
+        {
+            return false;
+        }
+
+        // Fetch the track data.
+        $tracks = array_reduce($trackIDs, function($acc, $trackIDString)
+        {
+            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString))))
+            {
+                $acc[] = $trackResource;
+            }
+
+            return $acc;
+        }, []);
+
+        if (count($tracks) !== count($trackIDs))
+        {
+            return false;
+        }
+
+        return $tracks;
+    }
+    
+    // Returns the resource IDs (as an array of strings) of all public tracks
+    // in the database. On error, returns FALSE.
+    public function get_ids_of_all_public_tracks()
+    {
+        return $this->get_ids_of_all_public_tracks_uploaded_by_user(NULL);
+    }
+
+    // Returns the resource IDs (as an array of strings) of all public tracks
+    // uploaded by the given user, or all users if NULL. On error, returns FALSE.
+    public function get_ids_of_all_public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID = NULL)
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
-        // For the moment, we can't return multiple tracks' data.
-        if (!$resourceID)
+        $queryResults = $this->issue_db_query("SELECT resource_id
+                                               FROM rsc_tracks
+                                               WHERE creator_resource_id LIKE ?
+                                               AND resource_visibility = ?",
+                                              [($userResourceID? $userResourceID->string() : "%"),
+                                               Resource\ResourceVisibility::PUBLIC]);
+
+        if (!is_array($queryResults) || !count($queryResults))
         {
             return false;
         }
 
-        $trackData = $this->issue_db_query(
-                            "SELECT track_container_gzip,
-                                    track_manifesto_gzip,
-                                    track_name_internal,
-                                    creation_timestamp
-                             FROM rsc_tracks
-                             WHERE resource_id = ?",
-                            [$resourceID->string()]);
+        return array_reduce($queryResults, function($acc, $element)
+        {
+            $acc[] = $element["resource_id"];
+            return $acc;
+        }, []);
+    }
 
-        // We should receive an array with exactly one element: the given
-        // track's data.
-        if (!is_array($trackData) || (count($trackData) != 1))
+    // Returns as an array of TrackResource elements all public tracks in the
+    // database. On error, returns FALSE.
+    public function get_all_public_track_resources()
+    {
+        $trackIDs = $this->get_ids_of_all_public_tracks();
+
+        if (!is_array($trackIDs) || !count($trackIDs))
         {
             return false;
         }
 
-        // Build a RallySportED Loader-compatible zip archive out of the track's
-        // data files.
-        $zipArchive = new \RSC\ZipFile();
+        // Fetch the track data.
+        $tracks = array_reduce($trackIDs, function($acc, $element)
         {
-            $internalTrackName = strtoupper($trackData[0]["track_name_internal"]);
-            $fileTimestamp = $trackData[0]["creation_timestamp"];
+            if (($trackResource = Resource\TrackResource::from_database($element)))
+            {
+                $acc[] = $trackResource;
+            }
 
-            // We'll include Rally-Sport's default HITABLE.TXT file.
-            if (!($hitableData = file_get_contents(__DIR__."/../../tracks/server-data/HITABLE.TXT")))
+            return $acc;
+        }, []);
+
+        if (count($tracks) !== count($trackIDs))
+        {
+            return false;
+        }
+
+        return $tracks;
+    }
+
+    // Returns the given track's data as a TrackResource object (if $metadataOnly
+    // is true, only metadata will be included; excluding things like the track's
+    // container). On error, returns FALSE.
+    public function get_track_resource(Resource\TrackResourceID $trackResourceID = NULL,
+                                       bool $metadataOnly = false)
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        if (!$trackResourceID)
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT resource_id,
+                                                    resource_visibility,
+                                                    creator_resource_id,
+                                                    track_name_internal,
+                                                    track_name_display,
+                                                    track_width,
+                                                    track_height".
+                                                    ($metadataOnly? "" : ", track_container_gzip,
+                                                                            track_manifesto_gzip")."
+                                             FROM rsc_tracks
+                                             WHERE resource_id = ?",
+                                            [$trackResourceID->string()]);
+
+        // Track resource IDs should be unique, so we should find no more than
+        // one element in the response array (or 0 elements if the ID doesn't
+        // exist).
+        if (!is_array($dbResponse) || count($dbResponse) != 1)
+        {
+            return false;
+        }
+
+        // We expect tracks to be square.
+        if ($dbResponse[0]["track_width"] !== $dbResponse[0]["track_height"])
+        {
+            return false;
+        }
+
+        $rsedTrack = new \RSC\RallySportEDTrack();
+
+        if (!$rsedTrack->set_display_name($dbResponse[0]["track_name_display"]) ||
+            !$rsedTrack->set_internal_name($dbResponse[0]["track_name_internal"]) ||
+            !$rsedTrack->set_side_length($dbResponse[0]["track_width"]))
+        {
+            return false;
+        }
+
+        if (!$metadataOnly)
+        {
+            if (!$rsedTrack->set_container(gzdecode($dbResponse[0]["track_container_gzip"])) ||
+                !$rsedTrack->set_manifesto(gzdecode($dbResponse[0]["track_manifesto_gzip"])))
             {
                 return false;
             }
-
-            $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.DTA",
-                                  gzdecode($trackData[0]["track_container_gzip"]),
-                                  $fileTimestamp);
-
-            $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.\$FT",
-                                  gzdecode($trackData[0]["track_manifesto_gzip"]),
-                                  $fileTimestamp);
-
-            $zipArchive->add_file("{$internalTrackName}/HITABLE.TXT",
-                                  $hitableData,
-                                  $fileTimestamp);
         }
 
-        $this->increment_track_download_count($resourceID);
+        $trackResource = Resource\TrackResource::with($rsedTrack,
+                                                      Resource\TrackResourceID::from_string($dbResponse[0]["resource_id"]),
+                                                      Resource\UserResourceID::from_string($dbResponse[0]["creator_resource_id"]),
+                                                      $dbResponse[0]["resource_visibility"]);
 
-        return ["filename" => "{$internalTrackName}.ZIP",
-                "data"     => $zipArchive->string()];
-    }
-
-    // Returns the given track's data as a JSON string. The string will contain
-    // all data needed to load the track into RallySportED-js for editing. On
-    // failure, FALSE is returned.
-    public function get_track_data_as_json(\RSC\TrackResourceID $resourceID = NULL)
-    {
-        if (!$this->is_connected())
+        if (!$trackResource)
         {
             return false;
         }
 
-        // For the moment, we can't return multiple tracks' data.
-        if (!$resourceID)
-        {
-            return false;
-        }
-
-        $trackData = $this->issue_db_query(
-                        "SELECT track_container_gzip,
-                                track_manifesto_gzip,
-                                track_name_internal,
-                                track_name_display,
-                                track_width,
-                                track_height,
-                                creator_resource_id
-                         FROM rsc_tracks
-                         WHERE resource_id = ?",
-                        [$resourceID->string()]);
-
-        // We should receive an array with exactly one element: the given
-        // track's data.
-        if (!is_array($trackData) || (count($trackData) != 1))
-        {
-            return false;
-        }
-
-        $trackDataJSON = json_encode([
-            "container" => base64_encode(gzdecode($trackData[0]["track_container_gzip"])),
-            "manifesto" => gzdecode($trackData[0]["track_manifesto_gzip"]),
-            "meta"      => [
-                "internalName" => $trackData[0]["track_name_internal"],
-                "displayName"  => $trackData[0]["track_name_display"],
-                "width"        => $trackData[0]["track_width"],
-                "height"       => $trackData[0]["track_height"],
-                "contentID"    => $resourceID->string(),
-                "creatorID"    => $trackData[0]["creator_resource_id"],
-            ],
-        ]);
-
-        $this->increment_track_download_count($resourceID);
-
-        return $trackDataJSON;
+        return $trackResource;
     }
 }

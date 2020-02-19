@@ -40,24 +40,9 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         ];
     }
 
-    static public function html(array $trackMetadata)
+    static public function html(\RSC\Resource\TrackResource $track)
     {
-        $trackDisplayName     = ($trackMetadata["displayName"]       ?? "unknown");
-        $trackInternalName    = strtolower($trackMetadata["internalName"] ?? "unknown");
-        $trackWidth           = ($trackMetadata["width"]             ?? "0");
-        $trackHeight          = ($trackMetadata["height"]            ?? "0");
-        $kierrosSVG           = ($trackMetadata["kierrosSVG"]        ?? "No preview image");
-        $trackResourceID      = ($trackMetadata["resourceID"]        ?? "unknown");
-        $trackUploaderID      = ($trackMetadata["creatorID"]         ?? "unknown");
-        $trackTimestamp       = ($trackMetadata["creationTimestamp"] ?? "0");
-        $trackDownloadCount   = ($trackMetadata["downloadCount"]     ?? "?");
-        $trackVisibilityLevel = ($trackMetadata["visibilityLevel"]   ?? "0");
-
-        $titleIcon = ($trackVisibilityLevel == \RSC\ResourceVisibility::UNLISTED)
-                     ? "<span class='tag'><i class='fas fa-fw fa-sm fa-user-friends'></i> ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>"
-                     : (($trackVisibilityLevel == \RSC\ResourceVisibility::PRIVATE)
-                     ? "<span class='tag'><i class='fas fa-fw fa-sm fa-user'></i> ".\RSC\ResourceVisibility::label((int)$trackVisibilityLevel)."</span>"
-                     : "");
+        $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
 
         return "
         <div class='track-metadata'>
@@ -65,11 +50,11 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
             <div class='card'>
 
                 <div class='media'>
-                    <a href='/rallysported/?track={$trackResourceID}'>{$kierrosSVG}</a>
+                    <a href='/rallysported/?track={$track->id()->string()}'>{$kierrosSVG}</a>
                 </div>
 
                 <div class='info-box'>
-                    &lsquo;{$trackDisplayName}&rsquo;
+                    &lsquo;{$track->data()->display_name()}&rsquo;
                 </div>
 
             </div>

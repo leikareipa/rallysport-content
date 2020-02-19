@@ -26,12 +26,12 @@ function logged_in_user_id()
         return NULL;
     }
 
-    return \RSC\UserResourceID::from_string($_SESSION["user_resource_id"]);
+    return \RSC\Resource\UserResourceID::from_string($_SESSION["user_resource_id"]);
 }
 
 // Note: This should be called only after you've verified that the given user
 // has provided valid credentials for logging in.
-function log_client_in(\RSC\UserResourceID $userResourceID) : void
+function log_client_in(\RSC\Resource\UserResourceID $userResourceID) : void
 {
     $_SESSION["user_resource_id"] = $userResourceID->string();
 

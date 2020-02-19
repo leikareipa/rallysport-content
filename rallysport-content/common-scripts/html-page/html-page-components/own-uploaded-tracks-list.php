@@ -1,5 +1,6 @@
 <?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
+      use RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -21,25 +22,29 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                file_get_contents(__DIR__."/css/rsc-table.css");
     }
 
-    static public function html(array $trackList)
+    static public function html(array /*elements = TrackResource*/ $tracks)
     {
         $tableRows = [];
 
-        foreach ($trackList as $trackMetadata)
+        foreach ($tracks as $track)
         {
-            $trackDisplayName   = ($trackMetadata["displayName"]   ?? "Unknown");
-            $trackResourceID    = ($trackMetadata["resourceID"]    ?? "unknown");
-            $trackDownloadCount = ($trackMetadata["downloadCount"] ?? "?");
+            $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
 
             $tableRows[] = "
             <tr>
 
-                <td><a href='/rallysport-content/tracks/?id={$trackResourceID}'>{$trackDisplayName}</a></td>
+                <td>
+                    <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
+                        {$track->data()->display_name()}
+                    </a>
+                </td>
 
                 <td style='text-align: center'>{$trackDownloadCount}</td>
                 
                 <td style='text-align: right'>
-                    <a href='/rallysport-content/tracks/?form=delete&id={$trackResourceID}'>delete</a>
+                    <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'>
+                        delete
+                    </a>
                 </td>
 
             </tr>

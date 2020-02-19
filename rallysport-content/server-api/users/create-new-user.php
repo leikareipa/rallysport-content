@@ -1,6 +1,7 @@
 <?php namespace RSC\API\Users;
       use RSC\DatabaseConnection;
       use RSC\API;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -34,7 +35,7 @@ function create_new_user(string $email, string $plaintextPassword) : void
 {
     /// TODO: Make sure the password and email are of the appropriate length, etc.
 
-    $userResourceID = \RSC\UserResourceID::random();
+    $userResourceID = Resource\UserResourceID::random();
 
     if (!$userResourceID ||
         !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $plaintextPassword, $email))

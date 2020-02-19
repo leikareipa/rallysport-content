@@ -1,4 +1,5 @@
 <?php namespace RSC\DatabaseConnection;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -11,7 +12,7 @@
  * 
  * Usage:
  * 
- *  1. Create a new UserDatabase instance: $trackDB = new DatabaseConnection\UserDatabase().
+ *  1. Create a new UserDatabase instance: $userDB = new DatabaseConnection\UserDatabase().
  * 
  *  2. Use the methods provided by the UserDatabase class for manipulating
  *     the contents of the user database.
@@ -38,7 +39,7 @@ class UserDatabase extends DatabaseConnection
 
     // Returns true if the given password is that of the given user; false
     // otherwise.
-    function validate_credentials(\RSC\UserResourceID $resourceID, string $plaintextPassword) : bool
+    function validate_credentials(Resource\UserResourceID $resourceID, string $plaintextPassword) : bool
     {
         if (!$this->is_connected() ||
             !$resourceID)
@@ -71,7 +72,7 @@ class UserDatabase extends DatabaseConnection
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(\RSC\UserResourceID $resourceID,
+    function create_new_user(Resource\UserResourceID $resourceID,
                              string $plaintextPassword,
                              string $plaintextEmail) : bool
     {
@@ -94,7 +95,7 @@ class UserDatabase extends DatabaseConnection
                                     creation_timestamp)
                                   VALUES (?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
-                                   \RSC\ResourceVisibility::PUBLIC,
+                                   Resource\ResourceVisibility::PUBLIC,
                                    $passwordHash,
                                    $emailHash,
                                    time()]);
@@ -102,39 +103,98 @@ class UserDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Returns public information about the given track. If a null resource ID
-    // is given, the information of all tracks in the database will be returned.
-    // On failure, FALSE is returned.
-    function get_user_metadata(\RSC\UserResourceID $resourceID = NULL)
+    // Returns the resource IDs (as an array of strings) of all public users.
+    // On error, returns FALSE.
+    public function get_ids_of_all_public_users()
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
-        $userInfo = $this->issue_db_query(
-                        "SELECT resource_id
-                         FROM rsc_users
-                         WHERE resource_visibility = ?
-                         AND resource_id LIKE ?",
-                        [\RSC\ResourceVisibility::PUBLIC,
-                         ($resourceID? $resourceID->string() : "%")]);
+        $queryResults = $this->issue_db_query("SELECT resource_id
+                                               FROM rsc_users
+                                               WHERE resource_visibility = ?",
+                                              [Resource\ResourceVisibility::PUBLIC]);
 
-        if (!is_array($userInfo) || !count($userInfo))
+        if (!is_array($queryResults) || !count($queryResults))
         {
             return false;
         }
 
-        // Simplify some parameter names, etc.
-        $returnObject = [];
-        foreach ($userInfo as $user)
+        return array_reduce($queryResults, function($acc, $element)
         {
-            $returnObject[] =
-            [
-                "resourceID" => $user["resource_id"],
-            ];
+            $acc[] = $element["resource_id"];
+            return $acc;
+        }, []);
+    }
+
+    // Returns as an array of UserResource elements all public users in the
+    // database. On error, returns FALSE.
+    public function get_all_public_user_resources()
+    {
+        $userIDs = $this->get_ids_of_all_public_users();
+
+        if (!is_array($userIDs) || !count($userIDs))
+        {
+            return false;
         }
 
-        return $returnObject;
+        // Fetch the user data.
+        $users = array_reduce($userIDs, function($acc, $element)
+        {
+            if (($userResource = Resource\UserResource::from_database($element)))
+            {
+                $acc[] = $userResource;
+            }
+
+            return $acc;
+        }, []);
+
+        if (count($users) !== count($userIDs))
+        {
+            return false;
+        }
+
+        return $users;
+    }
+
+    // Returns the given user's data as a UserResourceID object. On error,
+    // returns FALSE.
+    public function get_user_resource(Resource\UserResourceID $userResourceID = NULL)
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        if (!$userResourceID)
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT resource_id,
+                                                    resource_visibility
+                                             FROM rsc_users
+                                             WHERE resource_id = ?",
+                                            [$userResourceID->string()]);
+
+        // User resource IDs should be unique, so we should find no more than
+        // one element in the response array (or 0 elements if the ID doesn't
+        // exist).
+        if (!is_array($dbResponse) || count($dbResponse) != 1)
+        {
+            return false;
+        }
+
+        $userResource = \RSC\Resource\UserResource::with(Resource\UserResourceID::from_string($dbResponse[0]["resource_id"]),
+                                                         $dbResponse[0]["resource_visibility"]);
+
+        if (!$userResource)
+        {
+            return false;
+        }
+
+        return $userResource;
     }
 }

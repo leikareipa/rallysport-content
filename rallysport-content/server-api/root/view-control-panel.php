@@ -49,13 +49,14 @@ function view_control_panel() : void
 
         // Build a table that displays the tracks the user has uploaded.
         {
-            $tracksMetadata = (new DatabaseConnection\TrackDatabase())->get_user_tracks_metadata($loggedInUserID);
-            if (!$tracksMetadata || !is_array($tracksMetadata) || !count($tracksMetadata))
+            $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($loggedInUserID);
+
+            if (!is_array($tracks) || !count($tracks))
             {
-                $tracksMetadata = [];
+                exit(API\Response::code(404)->error_message("No matching tracks found."));
             }
 
-            $view->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracksMetadata));
+            $view->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracks));
         }
 
         $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
