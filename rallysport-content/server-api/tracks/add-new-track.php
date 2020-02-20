@@ -14,39 +14,64 @@
 
 require_once __DIR__."/../../server-api/response.php";
 require_once __DIR__."/../../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
 require_once __DIR__."/../../server-api/session.php";
 
-// Attempts to add to the Rally-Sport Content database a new track, whose data
-// are specified by the function call parameters.
+// Takes in a $_FILES[][...] array describing an uploaded file whose data should
+// be added into the database as a new track. We expect the file to be a RallySportED
+// track ZIP file, but will also attempt to verify its validity as such.
 //
-// Returns: a response from the Response class (HTML status code + body).
-//
-//  - On success, returns the HTML status code 201 without a body.
-//
-// Note: The function should always return using exit() together with a Response
+// Note: This function should always return using exit() together with a Response
 // object.
 //
-function add_new_track(Resource\TrackResource $track) : void
+function add_new_track(array $uploadedFileInfo) : void
 {
+    if (!API\Session\is_client_logged_in())
+    {
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Must be logged in to add a track"));
+    }
+
+    if (!$uploadedFileInfo ||
+        !\RSC\is_valid_uploaded_file($uploadedFileInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
+    {
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track file"));
+    }
+
+    $newTrack = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
+                                             Resource\TrackResourceID::random(),
+                                             API\Session\logged_in_user_id(),
+                                             Resource\ResourceVisibility::PUBLIC);
+
+    if (!$newTrack)
+    {
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Incompatible track data"));
+    }
+
+    if (!$newTrack->data()->set_display_name($_POST["track_display_name"] ?? NULL))
+    {
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track title"));
+    }
+
     /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
     if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
-                                                    $track->id(),
-                                                    $track->visibility(),
-                                                    $track->creator_id(),
-                                                    $track->data()->internal_name(),
-                                                    $track->data()->display_name(),
-                                                    $track->data()->side_length(),
-                                                    $track->data()->side_length(),
-                                                    $track->data()->container(),
-                                                    $track->data()->manifesto(),
-                                                    \RSC\svg_image_from_kierros_data($track->data()->container("kierros"),
-                                                                                     $track->data()->side_length())))
+                                                    $newTrack->id(),
+                                                    $newTrack->visibility(),
+                                                    $newTrack->creator_id(),
+                                                    $newTrack->data()->internal_name(),
+                                                    $newTrack->data()->display_name(),
+                                                    $newTrack->data()->side_length(),
+                                                    $newTrack->data()->side_length(),
+                                                    $newTrack->data()->container(),
+                                                    $newTrack->data()->manifesto(),
+                                                    \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
+                                                                                     $newTrack->data()->side_length())))
     {
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
     }
 
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$track->id()->string()}"));
+    // Successfully added.
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$newTrack->id()->string()}"));
 }

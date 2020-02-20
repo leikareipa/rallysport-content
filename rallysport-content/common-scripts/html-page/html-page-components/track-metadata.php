@@ -33,13 +33,6 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/track-metadata.css");
     }
 
-    static public function scripts() : array
-    {
-        return [
-            file_get_contents(__DIR__."/js/track-metadata/request-track-deletion.js"),
-        ];
-    }
-
     static public function html(\RSC\Resource\TrackResource $track)
     {
         $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());

@@ -14,7 +14,7 @@ abstract class ResourceVisibility
     // Note: These values may be stored separate from their labels, so their
     // meaning should never change (0 should always equal the intent of NONE,
     // etc.).
-    public const NONE     = 0; // Nobody can publically access this resource (e.g. because it has been deleted).
+    public const DELETED  = 0; // Nobody can publically access this resource, because it has been deleted.
     public const UNLISTED = 1; // The resource will not be shown in listing of its resource type, but can be accessed publically through its resource ID.
     public const PRIVATE  = 2; // The resource can be accessed publically only by the user account that uploaded this resource.
     public const PUBLIC   = 3; // The visibility of this resource is not limited.
@@ -23,7 +23,7 @@ abstract class ResourceVisibility
     {
         switch ($visibilityLevel)
         {
-            case self::NONE:     return "None";
+            case self::DELETED:  return "Deleted";
             case self::UNLISTED: return "Unlisted";
             case self::PRIVATE:  return "Private";
             case self::PUBLIC:   return "Public";

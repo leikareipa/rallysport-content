@@ -65,26 +65,11 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
         $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
-        if (count($tracks) == 1)
-        {
-            $creatorID = $tracks[0]->creator_id()->string();
-
-            $htmlTitle = "
-            A track uploaded by
-            <a href='/rallysport-content/users/?id={$creatorID}'>
-                {$creatorID}
-            </a>";
-        }
-        else
-        {
-            $htmlTitle = "A random selection of tracks uploaded by users";
-        }
-
         $htmlPage->head->title = "Tracks";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open("A random selection of tracks uploaded by users"));
         foreach ($tracks as $trackResource)
         {
             if (!$trackResource)

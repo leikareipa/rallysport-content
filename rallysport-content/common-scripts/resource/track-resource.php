@@ -14,11 +14,13 @@ class TrackResource extends Resource
     public const RESOURCE_TYPE = ResourceType::TRACK;
 
     // Fetches and returns as a TrackResource object a track resource of the
-    // given ID from the database. On error, returns NULL.
-    public static function from_database(string $resourceIDString)
+    // given ID from the database. If $metadataOnly is true, only metadata will
+    // be fetched (the actual track data, like its manifesto and container,
+    // will not). On error, returns NULL.
+    public static function from_database(string $resourceIDString, bool $metadataOnly = false)
     {
         $resourceID = TrackResourceID::from_string($resourceIDString);
-        $trackResource = (new DatabaseConnection\TrackDatabase())->get_track_resource($resourceID);
+        $trackResource = (new DatabaseConnection\TrackDatabase())->get_track_resource($resourceID, $metadataOnly);
 
         if (!$trackResource)
         {

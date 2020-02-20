@@ -86,6 +86,33 @@ class TrackDatabase extends DatabaseConnection
         return $dbResponse[0]["COUNT(*)"];
     }
 
+    // Mark the track identified by the given resource ID as being deleted.
+    // Note that the track's entry in the database will not be removed, so as
+    // to reserve its resource ID. The track will, however, no longer be shown
+    // on public track listings.
+    public function delete_track(Resource\TrackResourceID $resourceID)
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_command("UPDATE rsc_tracks
+                                               SET resource_visibility = ?,
+                                                   track_width = NULL,
+                                                   track_height = NULL,
+                                                   track_name_internal = NULL,
+                                                   track_name_display = NULL,
+                                                   track_container_gzip = NULL,
+                                                   track_manifesto_gzip = NULL,
+                                                   kierros_svg_gzip = NULL
+                                               WHERE resource_id = ?",
+                                              [Resource\ResourceVisibility::DELETED,
+                                               $resourceID->string()]);
+
+        return (($dbResponse == 0)? true : false);
+    }
+
     // Adds into the TRACKS table a new track with the given parameters. Returns
     // TRUE on success; FALSE otherwise.
     public function add_new_track(Resource\TrackResourceID $resourceID,
