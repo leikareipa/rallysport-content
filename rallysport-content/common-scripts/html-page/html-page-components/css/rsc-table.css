@@ -9,6 +9,13 @@
     border-radius: 6px;
 }
 
+.rsc-table-container.plain
+{
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+
 .rsc-table
 {
     width: 100%;

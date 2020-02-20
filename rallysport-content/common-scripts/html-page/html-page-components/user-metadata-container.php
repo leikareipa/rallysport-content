@@ -40,17 +40,9 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
     static public function open()
     {
         return "
-        <div class='rsc-table-container'>
+        <div class='rsc-table-container plain'>
 
             <div class='rsc-table-title'>".(($_GET["id"] ?? false)? "User ID search results" : "Registered users")."</div>
-
-            ".(\RSC\API\Session\is_client_logged_in()?
-               "" :
-               "<a href='/rallysport-content/users/?form=add' title='Register on Rally-Sport Content'>
-                   <div class='round-button top-right'>
-                       <i class='fas fa-user-plus'></i>
-                   </div>
-               </a>")."
 
             <table class='rsc-table' style='width: 395px;'>
 
