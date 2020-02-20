@@ -52,16 +52,17 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
             <header>".static::title()."*</header>
 
             <form class='html-page-form'
-                  onsubmit='request_track_deletion(\"".$trackResource->id()->string()."\"); return false;'>
+                  onsubmit='submit_button.disabled = true; request_track_deletion(\"".$trackResource->id()->string()."\"); return false;'>
 
                 <div>".$trackResource->view("metadata-html")."</div>
 
                 <div class='footnote'>* The above track will be deleted from Rally-Sport Content
                 if you confirm. Note that track deletion cannot be undone.</div>
 
-                <button type='submit'
+                <button name='submit_button'
+                        type='submit'
                         class='round-button bottom-right'
-                        title='Submit the form'>
+                        title='Confirm deletion'>
                     <i class='fas fa-check'></i>
                 </button>
 

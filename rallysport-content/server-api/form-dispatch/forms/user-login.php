@@ -24,7 +24,8 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
 
             <header>".static::title()."</header>
 
-            <form class='html-page-form' method='POST' action='/rallysport-content/login.php'>
+            <form onsubmit='submit_button.disabled = true'
+                  class='html-page-form' method='POST' action='/rallysport-content/login.php'>
 
                 <label for='user-id'>User ID</label>
                 <input type='text' id='user-id' name='user_id' placeholder='E.g. user.xxx-xxx-xxx' required>
@@ -32,7 +33,12 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                 <label for='password'>Password</label>
                 <input type='password' id='password' name='password' required>
 
-                <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button name='submit_button'
+                        type='submit'
+                        class='round-button bottom-right'
+                        title='Submit the form'>
+                    <i class='fas fa-check'></i>
+                </button>
 
             </form>
 

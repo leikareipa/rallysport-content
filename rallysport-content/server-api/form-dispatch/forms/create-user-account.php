@@ -28,7 +28,11 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
 
             <header>".static::title()."</header>
 
-            <form enctype='multipart/form-data' class='html-page-form' method='POST' action='/rallysport-content/users/'>
+            <form onsubmit='submit_button.disabled = true'
+                  enctype='multipart/form-data'
+                  class='html-page-form'
+                  method='POST'
+                  action='/rallysport-content/users/'>
 
                 <label for='user-id'>Email</label>
                 <input type='email' id='user-id' name='email' required>
@@ -43,7 +47,13 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <div class='footnote'>* For verification, please provide a track you've recently
                 created using RallySportED-js.</div>
 
-                <button disabled type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button disabled
+                        name='submit-button'
+                        type='submit'
+                        class='round-button bottom-right'
+                        title='Submit the form'>
+                    <i class='fas fa-check'></i>
+                </button>
 
             </form>
 

@@ -27,7 +27,11 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
 
             <header>".static::title()."</header>
 
-            <form enctype='multipart/form-data' class='html-page-form' method='POST' action='/rallysport-content/tracks/'>
+            <form onsubmit='submit_button.disabled = true'
+                  enctype='multipart/form-data'
+                  class='html-page-form'
+                  method='POST'
+                  action='/rallysport-content/tracks/'>
 
                 <label for='track-title'>Track title</label>
                 <input type='text' id='track-title' name='track_display_name' required>
@@ -39,7 +43,12 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
                 <div class='footnote'>* Select a ZIP file containing the track's data as exported
                 from RallySportED-js.</div>
 
-                <button type='submit' class='round-button bottom-right' title='Submit the form'><i class='fas fa-check'></i></button>
+                <button name='submit_button'
+                        type='submit'
+                        class='round-button bottom-right'
+                        title='Submit the form'>
+                    <i class='fas fa-check'></i>
+                </button>
 
             </form>
 
