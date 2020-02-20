@@ -1,11 +1,14 @@
 .track-metadata
 {
-    padding: 5px;
-    margin: 5px;
+    padding: 15px;
+    margin: 10px;
     border-radius: 0;
     text-align: left;
     display: inline-block;
     background-color: white;
+    box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.2);
+    border: 1px solid lightgray;
+    border-radius: 12px;
 }
 
 .track-metadata > .card

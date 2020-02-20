@@ -37,7 +37,6 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                         type='submit'
                         class='round-button bottom-right'
                         title='Submit the form'>
-                    <i class='fas fa-check'></i>
                 </button>
 
             </form>

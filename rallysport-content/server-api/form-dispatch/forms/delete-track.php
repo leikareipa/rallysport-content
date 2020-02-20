@@ -57,13 +57,12 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
                 <div>".$trackResource->view("metadata-html")."</div>
 
                 <div class='footnote'>* The above track will be deleted from Rally-Sport Content
-                if you confirm. Note that track deletion cannot be undone.</div>
+                if you confirm. Track deletion cannot be undone.</div>
 
                 <button name='submit_button'
                         type='submit'
                         class='round-button bottom-right'
                         title='Confirm deletion'>
-                    <i class='fas fa-check'></i>
                 </button>
 
             </form>

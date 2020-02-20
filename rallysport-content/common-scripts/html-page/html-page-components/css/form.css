@@ -67,9 +67,40 @@
 
 .html-page-form-container .track-metadata
 {
-    border: 1px dashed lightgray;
     margin-bottom: 14px;
-    border-radius: 18px;
+}
+
+.html-page-form-container .round-button::after
+{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    content: "\f00c";
+    display: inline-block;
+    animation: none;
+
+    /* Center the icon - without this, spin rotation will appear off-center.*/
+    padding-left: 1px;
+    padding-bottom: 1px;
+}
+
+/* We assume that the button is disabled due to being clicked - so we'll display
+ * a loading animation while the button's action proceeds.*/
+.html-page-form-container .round-button:disabled::after
+{
+    animation: fa-spin 1.5s infinite linear;
+}
+
+.html-page-form-container .round-button.blocked::after
+{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    content: "\f00d";
+    display: inline-block;
+    animation: none;
+
+    /* Center the icon - without this, spin rotation will appear off-center.*/
+    padding-left: 1px;
+    padding-bottom: 1px;
 }
 
 .html-page-form-error-string

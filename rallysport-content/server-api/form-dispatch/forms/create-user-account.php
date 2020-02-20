@@ -50,9 +50,8 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                 <button disabled
                         name='submit-button'
                         type='submit'
-                        class='round-button bottom-right'
+                        class='round-button bottom-right blocked'
                         title='Submit the form'>
-                    <i class='fas fa-check'></i>
                 </button>
 
             </form>

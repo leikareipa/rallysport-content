@@ -51,9 +51,11 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
 
-    // We'll display at most 30 tracks, in random order.
+    $totalTrackCount = count($tracks);
+
+    // We'll display at most 20 tracks, in random order.
     shuffle($tracks);
-    $tracks = array_slice($tracks, 0, 30);
+    $tracks = array_slice($tracks, 0, 20);
 
     // Build a HTML page that displays the requested tracks' metadata.
     {
@@ -72,12 +74,12 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
             $htmlTitle = "
             A track uploaded by
             <a href='/rallysport-content/users/?id={$creatorID}'>
-                {$creatorID}
+                <i class='fas fa-fw fa-sm fa-user'></i>{$creatorID}
             </a>";
         }
         else
         {
-            $htmlTitle = "A random selection of tracks uploaded by users";
+            $htmlTitle = "A random selection of the {$totalTrackCount} tracks uploaded by users";
         }
 
         $htmlPage->head->title = "Tracks";
@@ -145,7 +147,7 @@ function view_user_tracks(Resource\UserResourceID $userResourceID) : void
             $htmlTitle = "
             A track uploaded by
             <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
-                {$userResourceID->string()}
+                <i class='fas fa-fw fa-sm fa-user'></i>{$userResourceID->string()}
             </a>";
         }
         else
@@ -154,7 +156,7 @@ function view_user_tracks(Resource\UserResourceID $userResourceID) : void
             $htmlTitle = "
             Tracks uploaded by
             <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
-                {$userResourceID->string()}
+                <i class='fas fa-fw fa-sm fa-user'></i>{$userResourceID->string()}
             </a>";
         }
 
