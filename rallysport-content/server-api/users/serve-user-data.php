@@ -35,6 +35,9 @@ function serve_user_data_as_json(string /*ResourceViewType*/ $viewType,
         exit(API\Response::code(404)->error_message("No matching users found."));
     }
 
+    // We'll print out the user data in random order.
+    shuffle($users);
+
     // Massage the data so it's output is in the desired format.
     $usersMassaged = array_reduce($users, function($acc, $element) use ($viewType)
     {

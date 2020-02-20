@@ -51,6 +51,9 @@ function view_user_metadata(Resource\UserResourceID $userResourceID = NULL) : vo
         exit(API\Response::code(404)->error_message("No matching users found."));
     }
 
+    // We'll display the users in random order.
+    shuffle($users);
+
     // Build a HTML page that displays the requested users' metadata.
     {
         $htmlPage = new HTMLPage\HTMLPage();

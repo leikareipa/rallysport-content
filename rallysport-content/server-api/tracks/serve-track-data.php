@@ -49,6 +49,9 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
 
+    // We'll provide the track data in random order.
+    shuffle($tracks);
+
     // Build a RallySportED Loader-compatible zip archive out of the track's
     // data.
     $zipArchive = new \RSC\ZipFile();
@@ -110,6 +113,9 @@ function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
     {
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
+
+    // We'll provide the track data in random order.
+    shuffle($tracks);
 
     // Massage the data so it's output is in the desired format.
     $tracksMassaged = array_reduce($tracks, function($acc, $element) use ($viewType)
