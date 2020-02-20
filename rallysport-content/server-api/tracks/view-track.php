@@ -51,6 +51,10 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
 
+    // We'll display at most 30 tracks, in random order.
+    shuffle($tracks);
+    $tracks = array_slice($tracks, 0, 30);
+
     // Build a HTML page that displays the requested tracks' metadata.
     {
         $htmlPage = new HTMLPage\HTMLPage();
@@ -121,6 +125,9 @@ function view_user_tracks(Resource\UserResourceID $userResourceID) : void
     {
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
+
+    // We'll display the tracks in random order.
+    shuffle($tracks);
 
     // Build a HTML page that displays the requested tracks' metadata.
     {
