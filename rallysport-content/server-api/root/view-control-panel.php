@@ -17,6 +17,7 @@ require_once __DIR__."/../../common-scripts/html-page/html-page-components/track
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/track-metadata-container.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/own-uploaded-tracks-list.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
@@ -37,15 +38,17 @@ function view_control_panel() : void
 
     // Build a HTML page that displays the control panel.
     {
-        $view = new HTMLPage\HTMLPage();
+        $htmlPage = new HTMLPage\HTMLPage();
 
-        $view->use_component(HTMLPage\Component\RallySportContentHeader::class);
-        $view->use_component(HTMLPage\Component\RallySportContentFooter::class);
-        $view->use_component(HTMLPage\Component\OwnUploadedTracksList::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
+        $htmlPage->use_component(HTMLPage\Component\OwnUploadedTracksList::class);
 
-        $view->head->title = "Control panel";
+        $htmlPage->head->title = "Home";
         
-        $view->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
 
         // Build a table that displays the tracks the user has uploaded.
         {
@@ -56,11 +59,11 @@ function view_control_panel() : void
                 exit(API\Response::code(404)->error_message("No matching tracks found."));
             }
 
-            $view->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracks));
+            $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracks));
         }
 
-        $view->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($view->html()));
+    exit(API\Response::code(200)->html($htmlPage->html()));
 }

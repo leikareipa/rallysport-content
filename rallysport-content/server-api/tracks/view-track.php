@@ -21,6 +21,7 @@ require_once __DIR__."/../../common-scripts/html-page/html-page-components/track
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/track-metadata-container.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
@@ -56,13 +57,14 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
 
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
         if (count($tracks) == 1)
         {
             $creatorID = $tracks[0]->creator_id()->string();
-            $plainTextTitle = "A track uploaded by {$creatorID}";
+
             $htmlTitle = "
             A track uploaded by
             <a href='/rallysport-content/users/?id={$creatorID}'>
@@ -71,12 +73,13 @@ function view_track(Resource\TrackResourceID $trackResourceID = NULL) : void
         }
         else
         {
-            $plainTextTitle = $htmlTitle = "A random selection of tracks uploaded by users";
+            $htmlTitle = "A random selection of tracks uploaded by users";
         }
 
-        $htmlPage->head->title = $plainTextTitle;
+        $htmlPage->head->title = "Tracks";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
         foreach ($tracks as $trackResource)
         {
@@ -125,6 +128,7 @@ function view_user_tracks(Resource\UserResourceID $userResourceID) : void
 
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
@@ -150,6 +154,7 @@ function view_user_tracks(Resource\UserResourceID $userResourceID) : void
         $htmlPage->head->title = $plainTextTitle;
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($htmlTitle));
         foreach ($tracks as $trackResource)
         {

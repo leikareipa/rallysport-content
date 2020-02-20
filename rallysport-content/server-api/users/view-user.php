@@ -21,6 +21,7 @@ require_once __DIR__."/../../common-scripts/html-page/html-page-components/user-
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/user-metadata-container.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
@@ -56,12 +57,14 @@ function view_user_metadata(Resource\UserResourceID $userResourceID = NULL) : vo
 
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
+        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\UserMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\UserMetadata::class);
 
-        $htmlPage->head->title = "Registered users";
+        $htmlPage->head->title = "Users";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
         foreach ($users as $userResource)
         {

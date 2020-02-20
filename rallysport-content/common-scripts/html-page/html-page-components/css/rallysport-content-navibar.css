@@ -1,0 +1,25 @@
+#rallysport-content-navibar
+{
+    position: fixed;
+    bottom: 50%;
+    right: 0;
+    transform: translateY(50%);
+    padding: 12px 5px;
+    border-radius: 6px 0 0 6px;
+    background-color: black;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#rallysport-content-navibar .fas
+{
+    font-size: 135%;
+    padding: 12px;
+}
+
+#rallysport-content-navibar .fas:hover
+{
+    color: lightgray;
+}
