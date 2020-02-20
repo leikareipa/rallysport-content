@@ -22,7 +22,7 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
         return "
         <div class='html-page-form-container'>
 
-            <header>".UserLogin::title()."</header>
+            <header>".static::title()."</header>
 
             <form class='html-page-form' method='POST' action='/rallysport-content/login.php'>
 

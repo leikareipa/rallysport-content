@@ -22,7 +22,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
         return "
         <div class='html-page-form-container'>
 
-            <header>".NewUserAccountCreated::title()."</header>
+            <header>".static::title()."</header>
 
             <form class='html-page-form' method='GET' action='/rallysport-content/'>
 

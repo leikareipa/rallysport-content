@@ -26,7 +26,7 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
 
         <div class='html-page-form-container'>
 
-            <header>".CreateUserAccount::title()."</header>
+            <header>".static::title()."</header>
 
             <form enctype='multipart/form-data' class='html-page-form' method='POST' action='/rallysport-content/users/'>
 
