@@ -2,6 +2,7 @@
 {
     font-size: initial;
     display: block;
+    padding-top: 2px;
 }
 
 .login-widget > .separator
