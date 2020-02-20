@@ -4,10 +4,10 @@
     bottom: 50%;
     right: 0;
     transform: translateY(50%);
-    padding: 12px 5px;
+    padding: 12px 3px;
     border-radius: 6px 0 0 6px;
     background-color: black;
-    color: white;
+    color: lightgray;
 
     display: flex;
     flex-direction: column;
@@ -19,7 +19,13 @@
     padding: 12px;
 }
 
-#rallysport-content-navibar .fas:hover
+#rallysport-content-navibar .button:hover
 {
-    color: lightgray;
+    color: white;
+}
+
+#rallysport-content-navibar > .button.current-page
+{
+    color: white;
+    transform: scale(1.07);
 }
