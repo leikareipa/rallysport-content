@@ -24,7 +24,8 @@ abstract class RallySportContentFooter extends HTMLPage\HTMLPageComponent
     {
         return "
         <footer id='rallysport-content-footer'>
-            Rally-Sport Content &copy; 2020 Tarpeeksi Hyvae Soft.
+            <a href='/rallysport-content/'>Rally-Sport Content</a>
+            &copy; 2020 <a href='https://www.tarpeeksihyvaesoft.com/'>Tarpeeksi Hyvae Soft</a>.
             <a href='https://www.github.com/leikareipa/rallysport-content/'>Find this on GitHub.</a>
         </footer>
         ";
