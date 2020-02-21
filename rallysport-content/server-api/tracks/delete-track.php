@@ -19,7 +19,6 @@ require_once __DIR__."/../../server-api/session.php";
 
 function delete_track(Resource\TrackResourceID $resourceID) : void
 {
-    sleep(5);
     if (!$resourceID)
     {
         exit(API\Response::code(303)->redirect_to(

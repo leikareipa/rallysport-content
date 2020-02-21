@@ -21,6 +21,34 @@
 {
     padding: 10px;
     text-align: center;
+    position: relative;
+}
+
+.track-metadata > .card > .info-box > .track-title
+{
+    text-align: center;
+    display: inline-block;
+}
+
+.track-metadata > .card > .info-box > .icon-row
+{
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    display: inline-block;
+    color: lightgray;
+}
+
+.track-metadata > .card > .info-box > .icon-row > a
+{
+    text-decoration: none;
+}
+
+.track-metadata > .card > .info-box > .icon-row > a:hover
+{
+    text-decoration: none;
+    color: black;
 }
 
 .track-metadata > .card > .media
