@@ -10,13 +10,13 @@
  * 
  */
 
-require_once __DIR__."/../../../../api/response.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/track-metadata.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/track-metadata-container.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
-require_once __DIR__."/../../../../common-scripts/database-connection/track-database.php";
+require_once __DIR__."/../../../response.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata-container.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
+require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
 // The page provides a listing of all the public tracks in the database.

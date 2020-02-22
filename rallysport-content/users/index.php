@@ -17,7 +17,7 @@ require_once __DIR__."/../api/page-dispatch/pages/users/specific-public-user.php
 require_once __DIR__."/../api/users/create-new-user.php";
 require_once __DIR__."/../api/users/serve-user-data.php";
 require_once __DIR__."/../api/response.php";
-require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

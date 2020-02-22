@@ -8,9 +8,9 @@
  * 
  */
 
+require_once __DIR__."/login-widget.php";
 require_once __DIR__."/../html-page-component.php";
 require_once __DIR__."/../../resource/resource-visibility.php";
-require_once __DIR__."/login-widget.php";
 require_once __DIR__."/../../resource/resource-id.php";
 
 // A basic header element intended to be displayed on Rally-Sport Content's

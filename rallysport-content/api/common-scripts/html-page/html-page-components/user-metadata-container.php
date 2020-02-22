@@ -9,7 +9,7 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
-require_once __DIR__."/../../../api/session.php";
+require_once __DIR__."/../../../session.php";
 
 // Represents a HTML container for UserMetadata elements in a HTMLPage object.
 //

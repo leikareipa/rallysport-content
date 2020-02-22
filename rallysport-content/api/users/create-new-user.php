@@ -13,9 +13,9 @@
  * 
  */
 
-require_once __DIR__."/../../api/response.php";
-require_once __DIR__."/../../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
+require_once __DIR__."/../response.php";
+require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/database-connection/user-database.php";
 
 // Attempts to add to the Rally-Sport Content database a new user, whose
 // password is specified by the function call parameters.

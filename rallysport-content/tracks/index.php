@@ -19,9 +19,9 @@ require_once __DIR__."/../api/tracks/add-new-track.php";
 require_once __DIR__."/../api/tracks/delete-track.php";
 require_once __DIR__."/../api/tracks/serve-track-data.php";
 require_once __DIR__."/../api/response.php";
-require_once __DIR__."/../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../common-scripts/resource/resource-visibility.php";
-require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
+require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
+require_once __DIR__."/../api/common-scripts/resource/resource-visibility.php";
+require_once __DIR__."/../api/common-scripts/is-valid-uploaded-file.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

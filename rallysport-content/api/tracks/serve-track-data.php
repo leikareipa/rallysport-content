@@ -13,10 +13,10 @@
  * 
  */
 
-require_once __DIR__."/../../api/response.php";
-require_once __DIR__."/../../common-scripts/resource/resource.php";
-require_once __DIR__."/../../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
+require_once __DIR__."/../response.php";
+require_once __DIR__."/../common-scripts/resource/resource.php";
+require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/database-connection/track-database.php";
 
 // Sends the track's data (container and manifesto files) as a zip file to
 // the client.

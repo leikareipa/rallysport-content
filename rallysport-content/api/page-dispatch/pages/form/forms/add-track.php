@@ -7,9 +7,9 @@
  * 
  */
 
-require_once __DIR__."/../../../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
-require_once __DIR__."/../../../../../common-scripts/html-page/html-page-components/form.php";
-require_once __DIR__."/../../../../../common-scripts/resource/resource-visibility.php";
+require_once __DIR__."/../../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
+require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
+require_once __DIR__."/../../../../common-scripts/resource/resource-visibility.php";
 
 // Represents a HTML form with which the user can upload a new track resource
 // onto the server.

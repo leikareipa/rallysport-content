@@ -9,10 +9,10 @@
  * 
  */
 
-require_once __DIR__."/../../../../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
 require_once __DIR__."/forms/new-user-account-created.php";
 require_once __DIR__."/forms/unknown-form-identifier.php";

@@ -13,9 +13,9 @@
  * 
  */
 
-require_once __DIR__."/../../api/response.php";
-require_once __DIR__."/../../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../../common-scripts/database-connection/user-database.php";
+require_once __DIR__."/../response.php";
+require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/database-connection/user-database.php";
 
 // Prints into the PHP output stream a stringified JSON object containing
 // public information about the given user, or of all users in the database if
