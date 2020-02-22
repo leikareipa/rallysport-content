@@ -54,7 +54,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\Page\form(API\Form\AddTrack::class);
+                        API\PageDisplay\form(API\Form\AddTrack::class);
                     }
 
                     break;
@@ -67,12 +67,12 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\Page\form(API\Form\DeleteTrack::class);
+                        API\PageDisplay\form(API\Form\DeleteTrack::class);
                     }
 
                     break;
                 }
-                default: API\Page\form(API\Form\UnknownFormIdentifier::class); break;
+                default: API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
         else if ($_GET["zip"] ?? false)      API\Tracks\serve_track_data_as_zip_file($resourceID);
@@ -80,9 +80,9 @@ switch ($_SERVER["REQUEST_METHOD"])
         else if ($_GET["metadata"] ?? false) API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);
         else // Provide a HTML view into the track data.
         {
-            if (isset($_GET["by"]))      API\Page\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string($_GET["by"]));
-            else if (isset($_GET["id"])) API\Page\Tracks\specific_public_track(Resource\TrackResourceID::from_string($_GET["id"]));
-            else                         API\Page\Tracks\all_public_tracks();
+            if (isset($_GET["by"]))      API\PageDisplay\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string($_GET["by"]));
+            else if (isset($_GET["id"])) API\PageDisplay\Tracks\specific_public_track(Resource\TrackResourceID::from_string($_GET["id"]));
+            else                         API\PageDisplay\Tracks\all_public_tracks();
         }
 
         break;

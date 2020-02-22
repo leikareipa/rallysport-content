@@ -1,4 +1,4 @@
-<?php namespace RSC\API\Page;
+<?php namespace RSC\API\PageDisplay;
       use RSC\HTMLPage;
       use RSC\API;
 

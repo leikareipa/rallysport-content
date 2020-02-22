@@ -1,4 +1,4 @@
-<?php namespace RSC\API\Page\Tracks;
+<?php namespace RSC\API\PageDisplay\Tracks;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;

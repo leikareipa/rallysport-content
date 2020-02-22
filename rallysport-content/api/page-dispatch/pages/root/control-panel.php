@@ -1,4 +1,4 @@
-<?php namespace RSC\API\Page\Root;
+<?php namespace RSC\API\PageDisplay\Root;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;

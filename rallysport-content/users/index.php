@@ -29,16 +29,16 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"])
             {
-                case "add":                 API\Page\form(API\Form\CreateUserAccount::class); break;
-                case "new-account-created": API\Page\form(API\Form\NewUserAccountCreated::class); break;
-                default:                    API\Page\form(API\Form\UnknownFormIdentifier::class); break;
+                case "add":                 API\PageDisplay\form(API\Form\CreateUserAccount::class); break;
+                case "new-account-created": API\PageDisplay\form(API\Form\NewUserAccountCreated::class); break;
+                default:                    API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
         else if ($_GET["metadata"] ?? false) API\Users\serve_user_data_as_json("metadata-array", Resource\UserResourceID::from_string($_GET["id"]));
         else // Provide a HTML view into the user data.
         {
-            if (isset($_GET["id"])) API\Page\Users\specific_public_user(Resource\UserResourceID::from_string($_GET["id"]));
-            else                    API\Page\Users\all_public_users();
+            if (isset($_GET["id"])) API\PageDisplay\Users\specific_public_user(Resource\UserResourceID::from_string($_GET["id"]));
+            else                    API\PageDisplay\Users\all_public_users();
         }
 
         break;

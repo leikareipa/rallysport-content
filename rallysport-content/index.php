@@ -23,7 +23,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         switch ($_GET["form"] ?? "unknown-form-identifier")
         {
-            case "login": API\Page\form(API\Form\UserLogin::class); break;
+            case "login": API\PageDisplay\form(API\Form\UserLogin::class); break;
             default:
             {
                 if (!API\Session\is_client_logged_in())
@@ -32,7 +32,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                 }
                 else
                 {
-                    API\Page\Root\control_panel();
+                    API\PageDisplay\Root\control_panel();
                 }
                 
                 break;
