@@ -11,10 +11,12 @@ session_start();
  * 
  */
 
+require_once __DIR__."/../server-api/page-dispatch/pages/form/form.php";
+require_once __DIR__."/../server-api/page-dispatch/pages/tracks/all-public-tracks.php";
+require_once __DIR__."/../server-api/page-dispatch/pages/tracks/specific-public-track.php";
+require_once __DIR__."/../server-api/page-dispatch/pages/tracks/public-tracks-uploaded-by-user.php";
 require_once __DIR__."/../server-api/tracks/add-new-track.php";
 require_once __DIR__."/../server-api/tracks/delete-track.php";
-require_once __DIR__."/../server-api/form-dispatch/dispatch-form.php";
-require_once __DIR__."/../server-api/tracks/view-track.php";
 require_once __DIR__."/../server-api/tracks/serve-track-data.php";
 require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
@@ -52,7 +54,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\dispatch_form(API\Form\AddTrack::class);
+                        API\Page\form(API\Form\AddTrack::class);
                     }
 
                     break;
@@ -65,12 +67,12 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\dispatch_form(API\Form\DeleteTrack::class);
+                        API\Page\form(API\Form\DeleteTrack::class);
                     }
 
                     break;
                 }
-                default: API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+                default: API\Page\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
         else if ($_GET["zip"] ?? false)      API\Tracks\serve_track_data_as_zip_file($resourceID);
@@ -78,21 +80,9 @@ switch ($_SERVER["REQUEST_METHOD"])
         else if ($_GET["metadata"] ?? false) API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);
         else // Provide a HTML view into the track data.
         {
-            if (isset($_GET["by"]))
-            {
-                $userID = Resource\UserResourceID::from_string($_GET["by"]);
-
-                if (!$userID)
-                {
-                    exit(API\Response::code(404)->error_message("Invalid user ID."));
-                }
-
-                API\Tracks\view_user_tracks($userID);
-            }
-            else
-            {
-                API\Tracks\view_track($resourceID);
-            }
+            if (isset($_GET["by"]))      API\Page\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string($_GET["by"]));
+            else if (isset($_GET["id"])) API\Page\Tracks\specific_public_track(Resource\TrackResourceID::from_string($_GET["id"]));
+            else                         API\Page\Tracks\all_public_tracks();
         }
 
         break;

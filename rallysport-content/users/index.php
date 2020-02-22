@@ -11,10 +11,11 @@ session_start();
  * 
  */
 
+require_once __DIR__."/../server-api/page-dispatch/pages/form/form.php";
+require_once __DIR__."/../server-api/page-dispatch/pages/users/all-public-users.php";
+require_once __DIR__."/../server-api/page-dispatch/pages/users/specific-public-user.php";
 require_once __DIR__."/../server-api/users/create-new-user.php";
 require_once __DIR__."/../server-api/users/serve-user-data.php";
-require_once __DIR__."/../server-api/users/view-user.php";
-require_once __DIR__."/../server-api/form-dispatch/dispatch-form.php";
 require_once __DIR__."/../server-api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 
@@ -23,40 +24,31 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
-        $resourceID = NULL;
-
-        // Find which user we're requested to operate on. If no user ID is
-        // provided, we assume the query relates to all users in the database.
-        if ($_GET["id"] ?? false)
-        {
-            $resourceID = Resource\UserResourceID::from_string($_GET["id"]);
-            
-            if (!$resourceID)
-            {
-                exit(API\Response::code(400)->error_message("Invalid user resource ID."));
-            }
-        }
-
         // Satisfy the GET request by outputting the relevant data.
         if ($_GET["form"] ?? false)
         {
             switch ($_GET["form"])
             {
-                case "add":                 API\dispatch_form(API\Form\CreateUserAccount::class); break;
-                case "new-account-created": API\dispatch_form(API\Form\NewUserAccountCreated::class); break;
-                default:                    API\dispatch_form(API\Form\UnknownFormIdentifier::class); break;
+                case "add":                 API\Page\form(API\Form\CreateUserAccount::class); break;
+                case "new-account-created": API\Page\form(API\Form\NewUserAccountCreated::class); break;
+                default:                    API\Page\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
-        else if ($_GET["metadata"] ?? false) API\Users\serve_user_data_as_json("metadata-array", $resourceID);
-        else                                 API\Users\view_user_metadata($resourceID);
+        else if ($_GET["metadata"] ?? false) API\Users\serve_user_data_as_json("metadata-array", Resource\UserResourceID::from_string($_GET["id"]));
+        else // Provide a HTML view into the user data.
+        {
+            if (isset($_GET["id"])) API\Page\Users\specific_public_user(Resource\UserResourceID::from_string($_GET["id"]));
+            else                    API\Page\Users\all_public_users();
+        }
 
         break;
     }
     case "POST": // Create a new user account.
     {
-        // NOTE: Creating user accounts is disabled for now.
+        // NOTE: Creating user accounts is temporarily disabled.
         exit(API\Response::code(404)->error_message("Registration is temporarily unavailable."));
-
+        //////////////////////
+        //////////////////////
 
 
 

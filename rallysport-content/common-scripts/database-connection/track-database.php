@@ -225,7 +225,9 @@ class TrackDatabase extends DatabaseConnection
         // Fetch the track data.
         $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
         {
-            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString), $metadataOnly)))
+            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString),
+                                                            Resource\ResourceVisibility::PUBLIC,
+                                                            $metadataOnly)))
             {
                 $acc[] = $trackResource;
             }
@@ -290,7 +292,9 @@ class TrackDatabase extends DatabaseConnection
         // Fetch the track data.
         $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
         {
-            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString), $metadataOnly)))
+            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString),
+                                                            Resource\ResourceVisibility::PUBLIC,
+                                                            $metadataOnly)))
             {
                 $acc[] = $trackResource;
             }
@@ -306,10 +310,13 @@ class TrackDatabase extends DatabaseConnection
         return $tracks;
     }
 
-    // Returns the given track's data as a TrackResource object (if $metadataOnly
-    // is true, only metadata will be included; excluding things like the track's
-    // container). On error, returns FALSE.
+    // Returns the given track's data as a TrackResource object. The given
+    // visibility level must match the actual visibility level of the track in
+    // the database; or an error will be returned. If $metadataOnly is true, only
+    // metadata will be included in the return object; excluding things like
+    // the track's container. On error, returns FALSE.
     public function get_track_resource(Resource\TrackResourceID $trackResourceID = NULL,
+                                       int /*Resource\ResourceVisibility*/ $expectedVisibility = Resource\ResourceVisibility::PUBLIC,
                                        bool $metadataOnly = false)
     {
         if (!$this->is_connected())
@@ -332,8 +339,10 @@ class TrackDatabase extends DatabaseConnection
                                                     ($metadataOnly? "" : ", track_container_gzip,
                                                                             track_manifesto_gzip")."
                                              FROM rsc_tracks
-                                             WHERE resource_id = ?",
-                                            [$trackResourceID->string()]);
+                                             WHERE resource_id = ?
+                                             AND resource_visibility = ?",
+                                            [$trackResourceID->string(),
+                                             $expectedVisibility]);
 
         // Track resource IDs should be unique, so we should find no more than
         // one element in the response array (or 0 elements if the ID doesn't

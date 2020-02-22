@@ -25,9 +25,14 @@ require_once __DIR__."/../../common-scripts/database-connection/user-database.ph
 // Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
 function serve_user_data_as_json(string /*ResourceViewType*/ $viewType,
-                                  Resource\UserResourceID $userResourceID = NULL) : void
+                                 Resource\UserResourceID $userResourceID = NULL) : void
 {
-    $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID)]
+    if (!$userResourceID)
+    {
+        exit(API\Response::code(400)->error_message("Invalid user ID."));
+    }
+
+    $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID, Resource\ResourceVisibility::PUBLIC)]
                                : (new DatabaseConnection\UserDatabase())->get_all_public_user_resources());
 
     if (!is_array($users) || !count($users) || !$users[0])

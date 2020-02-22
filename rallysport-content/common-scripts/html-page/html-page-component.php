@@ -7,18 +7,17 @@
  * 
  */
 
-// Represents an abstract element or set of elements on a HTMLPage. You would
-// use fragments to build reusable components, for instance.
+// A reusable element or set of elements an on a HTMLPage.
 abstract class HTMLPageComponent
 {
-    // Returns as a string any CSS styling this fragment makes use of.
+    // Returns as a string any CSS styling this component makes use of.
     public static function css() : string
     {
         return "";
     }
     
     // Returns as an array of strings the individual JavaScript scripts this
-    // fragment makes use of. Each string will be embedded in <script></script>
+    // component makes use of. Each string will be embedded in <script></script>
     // tags when inserted into the HTMLPage.
     static public function scripts() : array
     {

@@ -14,11 +14,14 @@ class UserResource extends Resource
     public const RESOURCE_TYPE = ResourceType::USER;
 
     // Fetches and returns as a UserResource object a user resource of the
-    // given ID from the database. On error, returns NULL.
-    public static function from_database(string $resourceIDString)
+    // given ID from the database. You must explicitly state the expected resource
+    // visibility level - an error results if it does not match the resource's
+    // visibility level in the database. On error, returns NULL.
+    public static function from_database(string $resourceIDString,
+                                         int /*ResourceVisibility*/ $visibility = ResourceVisibility::PUBLIC)
     {
         $resourceID = UserResourceID::from_string($resourceIDString);
-        $userResource = (new DatabaseConnection\UserDatabase())->get_user_resource($resourceID);
+        $userResource = (new DatabaseConnection\UserDatabase())->get_user_resource($resourceID, $visibility);
 
         if (!$userResource)
         {

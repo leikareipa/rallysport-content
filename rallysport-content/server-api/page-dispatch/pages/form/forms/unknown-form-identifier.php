@@ -7,7 +7,7 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
+require_once __DIR__."/../../../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form conveying a generic error message about the given
 // form identifier (the "?form=" URL parameter) having an unrecognized value.

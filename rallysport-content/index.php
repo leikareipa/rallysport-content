@@ -11,7 +11,7 @@ session_start();
  * 
  */
 
-require_once __DIR__."/server-api/form-dispatch/dispatch-form.php";
+require_once __DIR__."/server-api/page-dispatch/pages/form/form.php";
 require_once __DIR__."/server-api/response.php";
 require_once __DIR__."/server-api/root/view-control-panel.php";
 require_once __DIR__."/server-api/session.php";
@@ -23,7 +23,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         switch ($_GET["form"] ?? "unknown-form-identifier")
         {
-            case "login": API\dispatch_form(API\Form\UserLogin::class); break;
+            case "login": API\Page\form(API\Form\UserLogin::class); break;
             default:
             {
                 if (!API\Session\is_client_logged_in())

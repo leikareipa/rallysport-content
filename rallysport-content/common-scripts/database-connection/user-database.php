@@ -159,9 +159,11 @@ class UserDatabase extends DatabaseConnection
         return $users;
     }
 
-    // Returns the given user's data as a UserResourceID object. On error,
-    // returns FALSE.
-    public function get_user_resource(Resource\UserResourceID $userResourceID = NULL)
+    // Returns the given user's data as a UserResourceID object. The given
+    // visibility level must match the actual visibility level of the user
+    // in the database; or an error will be returned.On error, returns FALSE.
+    public function get_user_resource(Resource\UserResourceID $userResourceID = NULL,
+                                      int /*Resource\ResourceVisibility*/ $expectedVisibility = Resource\ResourceVisibility::PUBLIC)
     {
         if (!$this->is_connected())
         {
@@ -176,8 +178,10 @@ class UserDatabase extends DatabaseConnection
         $dbResponse = $this->issue_db_query("SELECT resource_id,
                                                     resource_visibility
                                              FROM rsc_users
-                                             WHERE resource_id = ?",
-                                            [$userResourceID->string()]);
+                                             WHERE resource_id = ?
+                                             AND resource_visibility = ?",
+                                            [$userResourceID->string(),
+                                             $expectedVisibility]);
 
         // User resource IDs should be unique, so we should find no more than
         // one element in the response array (or 0 elements if the ID doesn't

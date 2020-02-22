@@ -1,4 +1,5 @@
 <?php namespace RSC\API\Form;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -7,9 +8,8 @@
  * 
  */
 
-require_once __DIR__."/../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/form.php";
-require_once __DIR__."/../../../common-scripts/resource/resource-visibility.php";
+require_once __DIR__."/../../../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
+require_once __DIR__."/../../../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form with which the user can delete a track they've
 // uploaded.
@@ -22,12 +22,12 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
 
     static public function inner_css() : string
     {
-        return file_get_contents(__DIR__."/../../../common-scripts/html-page/html-page-components/css/track-metadata.css");
+        return file_get_contents(__DIR__."/../../../../../common-scripts/html-page/html-page-components/css/track-metadata.css");
     }
 
     static public function inner_scripts() : array
     {
-        return [file_get_contents(__DIR__."/../../../common-scripts/html-page/html-page-components/js/request-track-deletion.js")];
+        return [file_get_contents(__DIR__."/../../../../../common-scripts/html-page/html-page-components/js/request-track-deletion.js")];
     }
 
     static public function inner_html() : string

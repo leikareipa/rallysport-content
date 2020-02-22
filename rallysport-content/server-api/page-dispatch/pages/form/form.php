@@ -1,4 +1,4 @@
-<?php namespace RSC\API;
+<?php namespace RSC\API\Page;
       use RSC\HTMLPage;
       use RSC\API;
 
@@ -9,10 +9,10 @@
  * 
  */
 
-require_once __DIR__."/../../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
+require_once __DIR__."/../../../../common-scripts/html-page/html-page.php";
+require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
+require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
 require_once __DIR__."/forms/new-user-account-created.php";
 require_once __DIR__."/forms/unknown-form-identifier.php";
@@ -25,11 +25,11 @@ require_once __DIR__."/forms/delete-track.php";
 //
 // Sample usage:
 //
-//   dispatch_form(API\Form\CreateUserAccount::class);
+//   form(API\Form\CreateUserAccount::class);
 //
 //   The above will display to the client a form defined by the CreateUserAccount class.
 //
-function dispatch_form(string $formClassName) : void
+function form(string $formClassName) : void
 {
     $generate_form = function(string $formClassName) : HTMLPage\HTMLPage
     {
