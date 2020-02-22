@@ -29,7 +29,18 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"])
             {
-                case "add":                 API\PageDisplay\form(API\Form\CreateUserAccount::class); break;
+                case "add":
+                {
+                    // We're not allowing new user registrations right now, so we'll
+                    // force an informational error message to that effect. The
+                    // CreateUserAccount form will pick up this message and display
+                    // it to the user.
+                    $_GET["error"] = "Registration is temporarily unavailable";
+
+                    API\PageDisplay\form(API\Form\CreateUserAccount::class);
+
+                    break;
+                }
                 case "new-account-created": API\PageDisplay\form(API\Form\NewUserAccountCreated::class); break;
                 default:                    API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
