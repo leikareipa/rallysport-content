@@ -58,7 +58,7 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         "
         A track uploaded by
         <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'>
-            <i class='fas fa-fw fa-sm fa-user'></i>{$track->creator_id()->string()}
+            <i class='far fa-fw fa-sm fa-user'></i>{$track->creator_id()->string()}
         </a>
         ";
         

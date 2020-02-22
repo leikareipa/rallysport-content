@@ -25,7 +25,7 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
         <tr>
 
             <td style='font-weight: ".(($sessionUserID == $user->id()->string())? "bold" : "normal").";'>
-                {$user->id()->string()}
+                <i class='far fa-fw fa-sm fa-user'></i>{$user->id()->string()}
             </td>
 
             <td style='text-align: center'>
