@@ -30,7 +30,7 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
         return [file_get_contents(__DIR__."/../../../common-scripts/html-page/html-page-components/js/request-track-deletion.js")];
     }
 
-    static public function html() : string
+    static public function inner_html() : string
     {
         $trackResourceIDString = ($_GET["id"] ?? NULL);
 
@@ -47,27 +47,21 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
         }
 
         return "
-        <div class='html-page-form-container'>
+        <form class='html-page-form'
+              onsubmit='submit_button.disabled = true; request_track_deletion(\"".$trackResource->id()->string()."\"); return false;'>
 
-            <header>".static::title()."*</header>
+            <div>".$trackResource->view("metadata-html")."</div>
 
-            <form class='html-page-form'
-                  onsubmit='submit_button.disabled = true; request_track_deletion(\"".$trackResource->id()->string()."\"); return false;'>
+            <div class='footnote'>* The above track will be deleted from Rally-Sport Content
+            if you confirm. Note: track deletion cannot be undone!</div>
 
-                <div>".$trackResource->view("metadata-html")."</div>
+            <button name='submit_button'
+                    type='submit'
+                    class='round-button bottom-right'
+                    title='Confirm track deletion'>
+            </button>
 
-                <div class='footnote'>* The above track will be deleted from Rally-Sport Content
-                if you confirm. Note: Track deletion cannot be undone.</div>
-
-                <button name='submit_button'
-                        type='submit'
-                        class='round-button bottom-right'
-                        title='Confirm track deletion'>
-                </button>
-
-            </form>
-
-        </div>
+        </form>
         ";
     }
 }

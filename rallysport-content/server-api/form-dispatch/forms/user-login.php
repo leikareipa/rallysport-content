@@ -17,31 +17,25 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
         return "User login";
     }
 
-    static public function html() : string
+    static public function inner_html() : string
     {
         return "
-        <div class='html-page-form-container'>
+        <form onsubmit='submit_button.disabled = true'
+                class='html-page-form' method='POST' action='/rallysport-content/login.php'>
 
-            <header>".static::title()."</header>
+            <label for='user-id'>User ID</label>
+            <input type='text' id='user-id' name='user_id' placeholder='E.g. user.xxx-xxx-xxx' required>
 
-            <form onsubmit='submit_button.disabled = true'
-                  class='html-page-form' method='POST' action='/rallysport-content/login.php'>
+            <label for='password'>Password</label>
+            <input type='password' id='password' name='password' required>
 
-                <label for='user-id'>User ID</label>
-                <input type='text' id='user-id' name='user_id' placeholder='E.g. user.xxx-xxx-xxx' required>
+            <button name='submit_button'
+                    type='submit'
+                    class='round-button bottom-right'
+                    title='Submit the form'>
+            </button>
 
-                <label for='password'>Password</label>
-                <input type='password' id='password' name='password' required>
-
-                <button name='submit_button'
-                        type='submit'
-                        class='round-button bottom-right'
-                        title='Submit the form'>
-                </button>
-
-            </form>
-
-        </div>
+        </form>
         ";
     }
 }

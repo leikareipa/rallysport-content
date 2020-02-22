@@ -20,38 +20,32 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
         return "Upload a track";
     }
 
-    static public function html() : string
+    static public function inner_html() : string
     {
         return "
-        <div class='html-page-form-container'>
+        <form onsubmit='submit_button.disabled = true'
+              enctype='multipart/form-data'
+              class='html-page-form'
+              method='POST'
+              action='/rallysport-content/tracks/'>
 
-            <header>".static::title()."</header>
+            <label for='track-title'>Track title</label>
+            <input type='text' id='track-title' name='track_display_name' required>
 
-            <form onsubmit='submit_button.disabled = true'
-                  enctype='multipart/form-data'
-                  class='html-page-form'
-                  method='POST'
-                  action='/rallysport-content/tracks/'>
+            <label for='track_file'>Track ZIP file*</label>
+            <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
+            <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
-                <label for='track-title'>Track title</label>
-                <input type='text' id='track-title' name='track_display_name' required>
+            <div class='footnote'>* Select a ZIP file containing the track's data as exported
+            from RallySportED-js.</div>
 
-                <label for='track_file'>Track ZIP file*</label>
-                <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
-                <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
+            <button name='submit_button'
+                    type='submit'
+                    class='round-button bottom-right'
+                    title='Submit the form'>
+            </button>
 
-                <div class='footnote'>* Select a ZIP file containing the track's data as exported
-                from RallySportED-js.</div>
-
-                <button name='submit_button'
-                        type='submit'
-                        class='round-button bottom-right'
-                        title='Submit the form'>
-                </button>
-
-            </form>
-
-        </div>
+        </form>
         ";
     }
 }

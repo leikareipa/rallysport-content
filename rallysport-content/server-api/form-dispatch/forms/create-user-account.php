@@ -19,44 +19,36 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
         return "New user registration";
     }
 
-    static public function html() : string
+    static public function inner_html() : string
     {
         return "
-        <div class='html-page-form-error-string'>Registration is temporarily unavailable</div>
+        <form onsubmit='submit_button.disabled = true'
+              enctype='multipart/form-data'
+              class='html-page-form'
+              method='POST'
+              action='/rallysport-content/users/'>
 
-        <div class='html-page-form-container'>
+            <label for='user-id'>Email</label>
+            <input type='email' id='user-id' name='email' required>
 
-            <header>".static::title()."</header>
+            <label for='password'>Password</label>
+            <input type='text' id='password' name='password' required>
 
-            <form onsubmit='submit_button.disabled = true'
-                  enctype='multipart/form-data'
-                  class='html-page-form'
-                  method='POST'
-                  action='/rallysport-content/users/'>
+            <label for='track_file'>Track ZIP file*</label>
+            <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
+            <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
 
-                <label for='user-id'>Email</label>
-                <input type='email' id='user-id' name='email' required>
+            <div class='footnote'>* For verification, please provide a track you've recently
+            created using RallySportED-js.</div>
 
-                <label for='password'>Password</label>
-                <input type='text' id='password' name='password' required>
+            <button disabled
+                    name='submit-button'
+                    type='submit'
+                    class='round-button bottom-right blocked'
+                    title='Submit the form'>
+            </button>
 
-                <label for='track_file'>Track ZIP file*</label>
-                <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
-                <input type='file' accept='.zip' id='sample-track-file' name='sample_track_file' required>
-
-                <div class='footnote'>* For verification, please provide a track you've recently
-                created using RallySportED-js.</div>
-
-                <button disabled
-                        name='submit-button'
-                        type='submit'
-                        class='round-button bottom-right blocked'
-                        title='Submit the form'>
-                </button>
-
-            </form>
-
-        </div>
+        </form>
         ";
     }
 }

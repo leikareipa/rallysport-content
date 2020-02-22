@@ -17,23 +17,19 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
         return "New account created!";
     }
 
-    static public function html() : string
+    static public function inner_html() : string
     {
         return "
-        <div class='html-page-form-container'>
+        <form class='html-page-form'
+              method='GET'
+              action='/rallysport-content/'>
 
-            <header>".static::title()."</header>
+            <label for='user-id'>Your user ID*</label>
+            <input type='text' id='user-id' name='email' value=".($_GET["user-id"] ?? "Unknown")." readonly>
 
-            <form class='html-page-form' method='GET' action='/rallysport-content/'>
+            <div class='footnote'>* Don't lose this ID! You'll need it to log in.</div>
 
-                <label for='user-id'>Your user ID*</label>
-                <input type='text' id='user-id' name='email' value=".($_GET["user-id"] ?? "Unknown")." readonly>
-
-                <div class='footnote'>* Don't lose this ID! You'll need it to log in.</div>
-
-            </form>
-
-        </div>
+        </form>
         ";
     }
 }
