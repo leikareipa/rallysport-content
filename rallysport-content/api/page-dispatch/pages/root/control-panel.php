@@ -1,6 +1,7 @@
-<?php namespace RSC\API\Root;
-      use RSC\HTMLPage;
+<?php namespace RSC\API\Page\Root;
       use RSC\DatabaseConnection;
+      use RSC\HTMLPage;
+      use RSC\Resource;
       use RSC\API;
 
 /*
@@ -10,26 +11,22 @@
  * 
  */
 
-require_once __DIR__."/../response.php";
-require_once __DIR__."/../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../common-scripts/html-page/html-page.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/track-metadata.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/track-metadata-container.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/rallysport-content-header.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
-require_once __DIR__."/../common-scripts/html-page/html-page-components/own-uploaded-tracks-list.php";
-require_once __DIR__."/../common-scripts/database-connection/track-database.php";
+require_once __DIR__."/../../../response.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/own-uploaded-tracks-list.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
+require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
 // The page provides a control panel with which the (logged-in) user can access
-// restricted features of Rally-Sport Content, like uploading a new track or
-// modifying an existing resource they've uploaded.
+// restricted features of Rally-Sport Content, like creating and modifying
+// resources.
 //
 // Note: This function should always return using exit() together with a
 // Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
-function view_control_panel() : void
+function control_panel() : void
 {
     if (!($loggedInUserID = API\Session\logged_in_user_id()))
     {
