@@ -14,8 +14,8 @@ session_start();
 require_once __DIR__."/../api/page-dispatch/pages/form/form.php";
 require_once __DIR__."/../api/page-dispatch/pages/users/all-public-users.php";
 require_once __DIR__."/../api/page-dispatch/pages/users/specific-public-user.php";
-require_once __DIR__."/../api/users/create-new-user.php";
-require_once __DIR__."/../api/users/serve-user-data.php";
+require_once __DIR__."/../api/user-actions/create-new-user.php";
+require_once __DIR__."/../api/user-actions/serve-user-data.php";
 require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 
