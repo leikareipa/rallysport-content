@@ -10,8 +10,8 @@
 
 session_start();
 
-require_once __DIR__."/server-api/response.php";
-require_once __DIR__."/server-api/session.php";
+require_once __DIR__."/api/response.php";
+require_once __DIR__."/api/session.php";
 require_once __DIR__."/common-scripts/resource/resource-id.php";
 require_once __DIR__."/common-scripts/resource/resource-type.php";
 require_once __DIR__."/common-scripts/database-connection/user-database.php";

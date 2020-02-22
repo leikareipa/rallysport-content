@@ -11,14 +11,14 @@ session_start();
  * 
  */
 
-require_once __DIR__."/../server-api/page-dispatch/pages/form/form.php";
-require_once __DIR__."/../server-api/page-dispatch/pages/tracks/all-public-tracks.php";
-require_once __DIR__."/../server-api/page-dispatch/pages/tracks/specific-public-track.php";
-require_once __DIR__."/../server-api/page-dispatch/pages/tracks/public-tracks-uploaded-by-user.php";
-require_once __DIR__."/../server-api/tracks/add-new-track.php";
-require_once __DIR__."/../server-api/tracks/delete-track.php";
-require_once __DIR__."/../server-api/tracks/serve-track-data.php";
-require_once __DIR__."/../server-api/response.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/form.php";
+require_once __DIR__."/../api/page-dispatch/pages/tracks/all-public-tracks.php";
+require_once __DIR__."/../api/page-dispatch/pages/tracks/specific-public-track.php";
+require_once __DIR__."/../api/page-dispatch/pages/tracks/public-tracks-uploaded-by-user.php";
+require_once __DIR__."/../api/tracks/add-new-track.php";
+require_once __DIR__."/../api/tracks/delete-track.php";
+require_once __DIR__."/../api/tracks/serve-track-data.php";
+require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../common-scripts/resource/resource-visibility.php";
 require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";

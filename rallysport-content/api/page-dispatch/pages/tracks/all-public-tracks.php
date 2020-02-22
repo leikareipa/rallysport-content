@@ -1,7 +1,6 @@
 <?php namespace RSC\API\Page\Tracks;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
-      use RSC\Resource;
       use RSC\API;
 
 /*
@@ -11,7 +10,7 @@
  * 
  */
 
-require_once __DIR__."/../../../../server-api/response.php";
+require_once __DIR__."/../../../../api/response.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/track-metadata.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/track-metadata-container.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
@@ -20,22 +19,16 @@ require_once __DIR__."/../../../../common-scripts/html-page/html-page-components
 require_once __DIR__."/../../../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory, and sends it to the client for display.
-// The page provides a listing of all the public tracks in the database uploaded
-// by a given user.
+// The page provides a listing of all the public tracks in the database.
 //
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(Response::code(200)->html(...).
 //
-function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID) : void
+function all_public_tracks() : void
 {
-    if (!$userResourceID)
-    {
-        exit(API\Response::code(404)->error_message("Invalid user ID."));
-    }
-
     // Note: The page only displays track metadata, so we request that the
     // database sends metadata only.
-    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($userResourceID, true);
+    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources(true);
 
     if (!is_array($tracks) || !count($tracks))
     {
@@ -59,13 +52,7 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $containerTitle =
-        "
-        Tracks uploaded by
-        <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
-            <i class='fas fa-fw fa-sm fa-user'></i>{$userResourceID->string()}
-        </a>
-        ";
+        $containerTitle = "A random selection from among the {$totalTrackCount} tracks uploaded by users";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());

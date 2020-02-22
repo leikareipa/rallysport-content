@@ -11,10 +11,10 @@ session_start();
  * 
  */
 
-require_once __DIR__."/server-api/page-dispatch/pages/form/form.php";
-require_once __DIR__."/server-api/response.php";
-require_once __DIR__."/server-api/root/view-control-panel.php";
-require_once __DIR__."/server-api/session.php";
+require_once __DIR__."/api/page-dispatch/pages/form/form.php";
+require_once __DIR__."/api/response.php";
+require_once __DIR__."/api/root/view-control-panel.php";
+require_once __DIR__."/api/session.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

@@ -12,12 +12,12 @@
  * 
  */
 
-require_once __DIR__."/../../server-api/response.php";
+require_once __DIR__."/../../api/response.php";
 require_once __DIR__."/../../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../../common-scripts/svg-image-from-kierros-data.php";
-require_once __DIR__."/../../server-api/session.php";
+require_once __DIR__."/../../api/session.php";
 
 // Takes in a $_FILES[][...] array describing an uploaded file whose data should
 // be added into the database as a new track. We expect the file to be a RallySportED
