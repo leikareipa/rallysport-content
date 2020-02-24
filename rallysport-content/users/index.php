@@ -31,7 +31,21 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"])
             {
-                case "add":                 API\PageDisplay\form(API\Form\CreateUserAccount::class); break;
+                case "add":
+                {
+                    // We don't allow logged-in users to register a new account,
+                    // so let's not even show the form for doing so.
+                    if (API\Session\is_client_logged_in())
+                    {
+                        exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
+                    }
+                    else
+                    {
+                        API\PageDisplay\form(API\Form\CreateUserAccount::class);
+                    }
+                
+                    break;
+                }
                 case "new-account-created": API\PageDisplay\form(API\Form\NewUserAccountCreated::class); break;
                 default:                    API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
