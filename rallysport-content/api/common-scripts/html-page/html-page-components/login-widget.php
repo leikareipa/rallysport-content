@@ -1,5 +1,6 @@
 <?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -11,6 +12,7 @@
 require_once __DIR__."/../html-page-component.php";
 require_once __DIR__."/../../resource/resource-visibility.php";
 require_once __DIR__."/../../resource/resource-id.php";
+require_once __DIR__."/../../../session.php";
 
 // Displays a widget with two possible states:
 //
@@ -32,11 +34,11 @@ abstract class LoginWidget extends HTMLPage\HTMLPageComponent
         return "
         <div class='login-widget'>
 
-            ".(isset($_SESSION["user_resource_id"])
+            ".(API\Session\is_client_logged_in()
             ? "
             <span>
                  <a href='/rallysport-content/'>
-                     <i class='far fa-fw fa-sm fa-user'></i>{$_SESSION["user_resource_id"]}
+                     <i class='far fa-fw fa-sm fa-user'></i>".API\Session\logged_in_user_id()->string()."
                  </a>
             </span>
             <span class='separator'>|</span>
