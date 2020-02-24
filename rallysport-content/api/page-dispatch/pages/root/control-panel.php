@@ -50,13 +50,7 @@ function control_panel() : void
         // Build a table that displays the tracks the user has uploaded.
         {
             $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($loggedInUserID, true);
-
-            if (!is_array($tracks) || !count($tracks))
-            {
-                exit(API\Response::code(404)->error_message("No matching tracks found."));
-            }
-
-            $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracks));
+            $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html(is_array($tracks)? $tracks : []));
         }
 
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

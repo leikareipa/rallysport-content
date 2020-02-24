@@ -34,11 +34,6 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
 
     $user = (new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID, Resource\ResourceVisibility::PUBLIC);
 
-    if (!$user)
-    {
-        exit(API\Response::code(404)->error_message("No matching users found."));
-    }
-
     // Build a HTML page that displays the requested users' metadata.
     {
         $htmlPage = new HTMLPage\HTMLPage();
@@ -53,9 +48,16 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
-        $htmlPage->body->add_element($user->view("metadata-html"));
-        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
+        if (!$user)
+        {
+            $htmlPage->body->add_element("<div>No such user found</div>");
+        }
+        else
+        {
+            $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
+            $htmlPage->body->add_element($user->view("metadata-html"));
+            $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
+        }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 

@@ -38,11 +38,6 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
                                                                           Resource\ResourceVisibility::PUBLIC,
                                                                           true);
 
-    if (!$track)
-    {
-        exit(API\Response::code(404)->error_message("No such track found."));
-    }
-
     // Build a HTML page that displays the requested track.
     {
         $htmlPage = new HTMLPage\HTMLPage();
@@ -52,22 +47,29 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
-
-        $htmlPage->head->title = "Tracks";
-        $inPageTitle =
-        "
-        A track uploaded by
-        <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'>
-            <i class='far fa-fw fa-sm fa-user'></i>{$track->creator_id()->string()}
-        </a>
-        ";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
-        $htmlPage->body->add_element($track->view("metadata-html"));
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        if (!$track)
+        {
+            $htmlPage->body->add_element("<div>No such track found</div>");
+        }
+        else
+        {
+            $htmlPage->head->title = "Tracks";
+            $inPageTitle =
+            "
+            A track uploaded by
+            <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'>
+                <i class='far fa-fw fa-sm fa-user'></i>{$track->creator_id()->string()}
+            </a>
+            ";
+
+            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+            $htmlPage->body->add_element($track->view("metadata-html"));
+            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 

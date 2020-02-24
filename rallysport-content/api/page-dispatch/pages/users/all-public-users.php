@@ -28,9 +28,10 @@ function all_public_users() : void
 {
     $users = (new DatabaseConnection\UserDatabase())->get_all_public_user_resources();
 
-    if (!is_array($users) || !count($users))
+    // If we either failed to fetch user data, or there was none to fetch.
+    if (!is_array($users))
     {
-        exit(API\Response::code(404)->error_message("No matching users found."));
+        $users = [];
     }
 
     // We'll display the users in random order.
@@ -50,12 +51,19 @@ function all_public_users() : void
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
-        foreach ($users as $userResource)
+        if (empty($users))
         {
-            $htmlPage->body->add_element($userResource->view("metadata-html"));
+            $htmlPage->body->add_element("<div>No users found</div>");
         }
-        $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
+        else
+        {
+            $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::open());
+            foreach ($users as $userResource)
+            {
+                $htmlPage->body->add_element($userResource->view("metadata-html"));
+            }
+            $htmlPage->body->add_element(HTMLPage\Component\UserMetadataContainer::close());
+        }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 

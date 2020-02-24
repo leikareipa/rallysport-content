@@ -37,9 +37,10 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
     // database sends metadata only.
     $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($userResourceID, true);
 
-    if (!is_array($tracks) || !count($tracks))
+    // If we either failed to fetch track data, or there was none to fetch.
+    if (!is_array($tracks))
     {
-        exit(API\Response::code(404)->error_message("No matching tracks found."));
+        $tracks = [];
     }
 
     $totalTrackCount = count($tracks);
@@ -85,20 +86,27 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
-        $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
-        foreach ($tracks as $trackResource)
+        if (empty($tracks))
         {
-            if (!$trackResource)
-            {
-                exit(API\Response::code(404)->error_message("An error occurred while processing track data."));
-            }
-
-            $htmlPage->body->add_element($trackResource->view("metadata-html"));
+            $htmlPage->body->add_element("<div>No tracks found</div>");
         }
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
-        $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
+        else
+        {
+            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
+            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+            foreach ($tracks as $trackResource)
+            {
+                if (!$trackResource)
+                {
+                    exit(API\Response::code(404)->error_message("An error occurred while processing track data."));
+                }
+
+                $htmlPage->body->add_element($trackResource->view("metadata-html"));
+            }
+            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
+        }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 

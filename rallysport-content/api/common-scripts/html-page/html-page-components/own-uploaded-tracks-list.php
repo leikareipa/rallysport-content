@@ -26,29 +26,46 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
     {
         $tableRows = [];
 
-        foreach ($tracks as $track)
+        if (empty($tracks))
         {
-            $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
-
-            $tableRows[] = "
+            $tableRows[] =
+            "
             <tr>
-
-                <td>
-                    <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
-                        {$track->data()->display_name()}
-                    </a>
+            
+                <td colspan='3'
+                    style='color: gray; text-align: center;'>
+                    No tracks uploaded yet
                 </td>
-
-                <td style='text-align: center'>{$trackDownloadCount}</td>
                 
-                <td style='text-align: right'>
-                    <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'>
-                        delete
-                    </a>
-                </td>
-
             </tr>
             ";
+        }
+        else
+        {
+            foreach ($tracks as $track)
+            {
+                $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
+
+                $tableRows[] = "
+                <tr>
+
+                    <td>
+                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
+                            {$track->data()->display_name()}
+                        </a>
+                    </td>
+
+                    <td style='text-align: center'>{$trackDownloadCount}</td>
+                    
+                    <td style='text-align: right'>
+                        <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'>
+                            delete
+                        </a>
+                    </td>
+
+                </tr>
+                ";
+            }
         }
 
         return "
