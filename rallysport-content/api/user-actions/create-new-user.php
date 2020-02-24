@@ -59,7 +59,7 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
         {
             $registrationHash = hash("sha256", $track->data()->container());
 
-            if (!(new DatabaseConnection\UserDatabase())->is_registration_hash_unique($registrationHash))
+            if (!(new DatabaseConnection\UserDatabase())->is_resource_hash_unique($registrationHash))
             {
                 exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Please select a different track file"));
             }

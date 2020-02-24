@@ -14,7 +14,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
-        return "Account activated";
+        return "Account created";
     }
 
     static public function inner_html() : string
@@ -28,7 +28,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
             <input type='text' id='user-id' name='email' value={$userIDString} readonly>
 
             <div class='footnote'>
-                * You can log in to Rally-Sport Content using this ID and
+                * You can now log in to Rally-Sport Content using this ID and
                 the password you provided during registration. You'll need
                 them both, so don't lose them!
             </div>

@@ -42,6 +42,60 @@ class TrackDatabase extends DatabaseConnection
         return;
     }
 
+    // Returns TRUE if a track has not yet been uploaded using the given hash;
+    // FALSE otherwise. Note that FALSE will also be returned if an error is
+    // encountered.
+    public function is_resource_hash_unique(string $resourceHash) : bool
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_tracks
+                                             WHERE resource_hash = ?",
+                                            [$resourceHash]);
+
+        error_log("QWESDFCGV".$dbResponse[0]["COUNT(*)"]);
+
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+
+        return (($dbResponse[0]["COUNT(*)"] == 0)? true : false);
+    }
+
+    // Returns TRUE if the given internal and display names of a track do not
+    // exist among the other tracks in the database; FALSE otherwise.
+    public function are_track_names_unique(string $internalName,
+                                           string $displayName) : bool
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_tracks
+                                             WHERE track_name_internal = ?
+                                             OR track_name_display = ?",
+                                            [$internalName,
+                                             $displayName]);
+
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+
+        return (($dbResponse[0]["COUNT(*)"] == 0)? true : false);
+    }
+
     private function increment_track_download_count(Resource\TrackResourceID $resourceID) : bool 
     {
         if (!$this->is_connected())
@@ -99,6 +153,7 @@ class TrackDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_command("UPDATE rsc_tracks
                                                SET resource_visibility = ?,
+                                                   resource_hash = NULL,
                                                    track_width = NULL,
                                                    track_height = NULL,
                                                    track_name_internal = NULL,
@@ -117,6 +172,7 @@ class TrackDatabase extends DatabaseConnection
     // TRUE on success; FALSE otherwise.
     public function add_new_track(Resource\TrackResourceID $resourceID,
                                   int /*\ResourceVisibility*/ $resourceVisibility,
+                                  string $resourceHash,
                                   Resource\UserResourceID $creatorID,
                                   int $downloadCount,
                                   int $creationTimestamp,
@@ -146,6 +202,7 @@ class TrackDatabase extends DatabaseConnection
                                  "INSERT INTO rsc_tracks
                                   (resource_id,
                                    resource_visibility,
+                                   resource_hash,
                                    track_name_internal,
                                    track_name_display,
                                    track_width,
@@ -156,9 +213,10 @@ class TrackDatabase extends DatabaseConnection
                                    creation_timestamp,
                                    download_count,
                                    creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $resourceVisibility,
+                                   $resourceHash,
                                    $internalName,
                                    $displayName,
                                    $width,

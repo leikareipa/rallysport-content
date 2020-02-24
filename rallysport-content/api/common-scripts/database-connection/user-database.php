@@ -63,7 +63,7 @@ class UserDatabase extends DatabaseConnection
     // Returns TRUE if a user account has not yet been registered using the
     // given hash; FALSE otherwise. Note that FALSE will also be returned if
     // an error is encountered.
-    public function is_registration_hash_unique($registrationHash)
+    public function is_resource_hash_unique(string $resourceHash) : bool
     {
         if (!$this->is_connected())
         {
@@ -72,8 +72,8 @@ class UserDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_users
-                                             WHERE registration_hash = ?",
-                                            [$registrationHash]);
+                                             WHERE resource_hash = ?",
+                                            [$resourceHash]);
 
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
@@ -95,7 +95,7 @@ class UserDatabase extends DatabaseConnection
     public function create_new_user(Resource\UserResourceID $resourceID,
                                     string $plaintextPassword,
                                     string $plaintextEmail,
-                                    string $registrationHash) : bool
+                                    string $resourceHash) : bool
     {
         if (!$this->is_connected())
         {
@@ -111,16 +111,16 @@ class UserDatabase extends DatabaseConnection
                                  "INSERT INTO rsc_users
                                    (resource_id,
                                     resource_visibility,
+                                    resource_hash,
                                     php_password_hash,
                                     php_password_hash_email,
-                                    registration_hash,
                                     creation_timestamp)
                                   VALUES (?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    Resource\ResourceVisibility::PUBLIC,
+                                   $resourceHash,
                                    $passwordHash,
                                    $emailHash,
-                                   $registrationHash,
                                    time()]);
 
         return (($databaseReturnValue == 0)? true : false);

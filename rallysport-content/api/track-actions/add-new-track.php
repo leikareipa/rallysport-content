@@ -59,9 +59,28 @@ function add_new_track(array $uploadedFileInfo) : void
 
     /// TODO: Test to make sure the track's name is unique in the TRACKS table.
 
+    // All uploaded tracks should be unique wrt. the tracks currently in the
+    // database; so verify that a track too similar hasn't already been
+    // uploaded.
+    {
+        $trackDataHash = hash("sha256", $newTrack->data()->container());
+
+        if (!(new DatabaseConnection\TrackDatabase())->is_resource_hash_unique($trackDataHash))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track like that already exists"));
+        }
+
+        if (!(new DatabaseConnection\TrackDatabase())->are_track_names_unique($newTrack->data()->internal_name(),
+                                                                              $newTrack->data()->display_name()))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track by that name already exists"));
+        }
+    }
+
     if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
                                                     $newTrack->id(),
                                                     $newTrack->visibility(),
+                                                    $trackDataHash,
                                                     $newTrack->creator_id(),
                                                     $newTrack->download_count(),
                                                     $newTrack->creation_timestamp(),

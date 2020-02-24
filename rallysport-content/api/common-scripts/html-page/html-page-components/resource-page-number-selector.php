@@ -19,7 +19,7 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/page-number-selector.css");
+        return file_get_contents(__DIR__."/css/resource-page-number-selector.css");
     }
 
     static public function html(int $resourceCount) : string
@@ -31,7 +31,7 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
         $formattedSelectorRow = self::format_selector_row($selectorRow, $currentPage);
 
         return "
-        <div class='page-number-selector ".(($numPages <= 0)? "empty" : "")."'>
+        <div class='page-number-selector ".(($numPages <= 1)? "empty" : "")."'>
 
             ".implode("", $formattedSelectorRow)."
 

@@ -48,7 +48,7 @@ function delete_track(Resource\TrackResourceID $resourceID) : void
 
     if (!(new DatabaseConnection\TrackDatabase())->delete_track($trackResource->id()))
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
+        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=delete&error=Database error"));
     }
 
     // Successfully deleted.
