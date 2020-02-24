@@ -33,15 +33,26 @@ abstract class LoginWidget extends HTMLPage\HTMLPageComponent
         <div class='login-widget'>
 
             ".(isset($_SESSION["user_resource_id"])
-            ?
-            "<span><i class='far fa-fw fa-sm fa-user'></i>{$_SESSION["user_resource_id"]}</span>
-             <span class='separator'>|</span>
-             <a href='/rallysport-content/logout.php'>Log out</a>"
-            :
-            "<a href='/rallysport-content/?form=login'>Log in</a>
-             <span class='separator'>|</span>
-             <a href='/rallysport-content/users/?form=add'>Register</a>"
-            )."
+            ? "
+            <span>
+                 <a href='/rallysport-content/'>
+                     <i class='far fa-fw fa-sm fa-user'></i>{$_SESSION["user_resource_id"]}
+                 </a>
+            </span>
+            <span class='separator'>|</span>
+            <a href='/rallysport-content/logout.php'>
+                Log out
+            </a>
+            "
+            : "
+            <a href='/rallysport-content/?form=login'>
+                Log in
+            </a>
+            <span class='separator'>|</span>
+            <a href='/rallysport-content/users/?form=add'>
+                Register
+            </a>
+            ")."
 
         </div>
         ";
