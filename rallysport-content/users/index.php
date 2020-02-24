@@ -18,7 +18,7 @@ require_once __DIR__."/../api/user-actions/create-new-user.php";
 require_once __DIR__."/../api/user-actions/serve-user-data.php";
 require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
-require_once __DIR__."/../api/common-scripts/resource/resource-url-params.php";
+require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {
@@ -48,13 +48,13 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
         else if ($_GET["metadata"] ?? false)
         {
-            API\Users\serve_user_data_as_json("metadata-array", Resource\UserResourceID::from_string(Resource\ResourceURLParams::target_id()));
+            API\Users\serve_user_data_as_json("metadata-array", Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
         }
         else // Provide a HTML view into the user data.
         {
-            if (Resource\ResourceURLParams::target_id())
+            if (Resource\ResourceViewURLParams::target_id())
             {
-                API\PageDisplay\Users\specific_public_user(Resource\UserResourceID::from_string(Resource\ResourceURLParams::target_id()));
+                API\PageDisplay\Users\specific_public_user(Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
             }
             else
             {

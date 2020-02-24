@@ -51,9 +51,9 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
     /// TODO: We only need to request from the database the particular tracks
     ///       that fall on the current sub-page, not all of them and then
     ///       discard a bunch.
-    $numPages = ceil($totalTrackCount / Resource\ResourceURLParams::items_per_page());
-    $startIdx = (min(($numPages - 1), Resource\ResourceURLParams::page_number()) * Resource\ResourceURLParams::items_per_page());
-    $tracks = array_slice($tracks, $startIdx, Resource\ResourceURLParams::items_per_page());
+    $numPages = ceil($totalTrackCount / Resource\ResourceViewURLParams::items_per_page());
+    $startIdx = (min(($numPages - 1), Resource\ResourceViewURLParams::page_number()) * Resource\ResourceViewURLParams::items_per_page());
+    $tracks = array_slice($tracks, $startIdx, Resource\ResourceViewURLParams::items_per_page());
 
     // Build a HTML page that lists the requested tracks.
     {

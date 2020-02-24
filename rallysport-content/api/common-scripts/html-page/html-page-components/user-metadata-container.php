@@ -9,7 +9,7 @@
  * 
  */
 
-require_once __DIR__."/../../resource/resource-url-params.php";
+require_once __DIR__."/../../resource/resource-view-url-params.php";
 require_once __DIR__."/../html-page-component.php";
 require_once __DIR__."/../../../session.php";
 
@@ -44,7 +44,7 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
         return "
         <div class='rsc-table-container plain'>
 
-            <div class='rsc-table-title'>".(Resource\ResourceURLParams::target_id()? "User ID search results" : "Registered users")."</div>
+            <div class='rsc-table-title'>".(Resource\ResourceViewURLParams::target_id()? "User ID search results" : "Registered users")."</div>
 
             <table class='rsc-table' style='width: 395px;'>
 

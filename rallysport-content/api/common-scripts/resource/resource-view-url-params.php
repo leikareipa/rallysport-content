@@ -8,7 +8,7 @@
  */
 
 // A convenience class for querying resource-related URL parameters
-abstract class ResourceURLParams
+abstract class ResourceViewURLParams
 {
     // HTML view: which page to display.
     public static function page_number() : int

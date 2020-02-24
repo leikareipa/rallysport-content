@@ -8,7 +8,7 @@
  * 
  */
 
-require_once __DIR__."/../../../../common-scripts/resource/resource-url-params.php";
+require_once __DIR__."/../../../../common-scripts/resource/resource-view-url-params.php";
 require_once __DIR__."/../../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
 
@@ -33,12 +33,12 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
 
     static public function inner_html() : string
     {
-        if (!\RSC\Resource\ResourceURLParams::target_id())
+        if (!\RSC\Resource\ResourceViewURLParams::target_id())
         {
             exit(\RSC\API\Response::code(404)->error_message("Track deletion requires a target resource ID."));
         }
 
-        $trackResource = \RSC\Resource\TrackResource::from_database(\RSC\Resource\ResourceURLParams::target_id(), true);
+        $trackResource = \RSC\Resource\TrackResource::from_database(\RSC\Resource\ResourceViewURLParams::target_id(), true);
 
         if (!$trackResource)
         {

@@ -10,7 +10,7 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
-require_once __DIR__."/../../resource/resource-url-params.php";
+require_once __DIR__."/../../resource/resource-view-url-params.php";
 
 
 // A widget with which the user can specify the page number of a multi-page
@@ -24,8 +24,8 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
 
     static public function html(int $resourceCount) : string
     {
-        $numPages = ceil($resourceCount / Resource\ResourceURLParams::items_per_page());
-        $currentPage = min($numPages, (Resource\ResourceURLParams::page_number() + 1));
+        $numPages = ceil($resourceCount / Resource\ResourceViewURLParams::items_per_page());
+        $currentPage = min($numPages, (Resource\ResourceViewURLParams::page_number() + 1));
 
         $selectorRow = self::create_selector_row($resourceCount, $currentPage, $numPages);
         $formattedSelectorRow = self::format_selector_row($selectorRow, $currentPage);

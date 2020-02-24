@@ -21,7 +21,7 @@ require_once __DIR__."/../api/track-actions/serve-track-data.php";
 require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-visibility.php";
-require_once __DIR__."/../api/common-scripts/resource/resource-url-params.php";
+require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
 require_once __DIR__."/../api/common-scripts/is-valid-uploaded-file.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
@@ -33,9 +33,9 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         // Find which track we're requested to operate on. If no track ID is
         // provided, we assume the query relates to all tracks in the database.
-        if (Resource\ResourceURLParams::target_id())
+        if (Resource\ResourceViewURLParams::target_id())
         {
-            $resourceID = Resource\TrackResourceID::from_string(Resource\ResourceURLParams::target_id());
+            $resourceID = Resource\TrackResourceID::from_string(Resource\ResourceViewURLParams::target_id());
 
             if (!$resourceID)
             {
@@ -82,13 +82,13 @@ switch ($_SERVER["REQUEST_METHOD"])
         else if ($_GET["metadata"] ?? false) API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);
         else // Provide a HTML view into the track data.
         {
-            if (Resource\ResourceURLParams::creator_id())
+            if (Resource\ResourceViewURLParams::creator_id())
             {
-                API\PageDisplay\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string(Resource\ResourceURLParams::creator_id()));
+                API\PageDisplay\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::creator_id()));
             }
-            else if (Resource\ResourceURLParams::target_id())
+            else if (Resource\ResourceViewURLParams::target_id())
             {
-                API\PageDisplay\Tracks\specific_public_track(Resource\TrackResourceID::from_string(Resource\ResourceURLParams::target_id()));
+                API\PageDisplay\Tracks\specific_public_track(Resource\TrackResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
             }
             else
             {
@@ -100,7 +100,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     }
     case "DELETE":
     {
-        API\Tracks\delete_track(Resource\TrackResourceID::from_string(Resource\ResourceURLParams::target_id()));
+        API\Tracks\delete_track(Resource\TrackResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
 
         break;
     }
