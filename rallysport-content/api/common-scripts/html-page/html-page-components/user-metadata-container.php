@@ -1,6 +1,7 @@
 <?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
       use RSC\Resource;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -42,9 +43,20 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
     static public function open() : string
     {
         return "
-        <div class='rsc-table-container plain'>
+        <div class='rsc-table-container'>
 
             <div class='rsc-table-title'>".(Resource\ResourceViewURLParams::target_id()? "User ID search results" : "Registered users")."</div>
+
+            ".(API\Session\is_client_logged_in()
+            ? "
+            "
+            : "
+            <a href='/rallysport-content/users/?form=add' title='Register on Rally-Sport Content'>
+                <div class='round-button top-right'>
+                    <i class='fas fa-user-plus'></i>
+                </div>
+            </a>
+            ")."
 
             <table class='rsc-table' style='width: 395px;'>
 
