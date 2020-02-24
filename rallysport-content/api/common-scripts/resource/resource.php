@@ -21,6 +21,7 @@ abstract class Resource
     protected $data;              // Mixed.
     protected $visibility;        // Of enum class ResourceVisibility.
     protected $creationTimestamp; // Int; when the resource was created (uploaded to Rally-Sport Content).
+    protected $downloadCount;     // Int.
 
     public function view(string $viewType)
     {
@@ -33,4 +34,5 @@ abstract class Resource
     public function data()               { return $this->data;              }
     public function visibility()         { return $this->visibility;        }
     public function creation_timestamp() { return $this->creationTimestamp; }
+    public function download_count()     { return $this->downloadCount; }
 }

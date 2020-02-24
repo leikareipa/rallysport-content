@@ -49,10 +49,10 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                 <div class='info-box'>
 
                     <div class='track-title'>
-                        {$track->data()->display_name()}
+                        <i class='fas fa-fw fa-road'></i> {$track->data()->display_name()}
                     </div>
 
-                    <div class='icon-row'>
+                    <div class='icon-row right'>
 
                         <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
                            title='Permalink'>
@@ -62,7 +62,10 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                         <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                            title='Download as a ZIP'>
                             <i class='fas fa-fw fa-file-download'></i>
+                            {$track->download_count()}
                         </a>
+
+                        </span>
 
                     </div>
 

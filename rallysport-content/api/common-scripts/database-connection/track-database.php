@@ -118,6 +118,8 @@ class TrackDatabase extends DatabaseConnection
     public function add_new_track(Resource\TrackResourceID $resourceID,
                                   int /*\ResourceVisibility*/ $resourceVisibility,
                                   Resource\UserResourceID $creatorID,
+                                  int $downloadCount,
+                                  int $creationTimestamp,
                                   string $internalName,
                                   string $displayName,
                                   int $width,
@@ -152,8 +154,9 @@ class TrackDatabase extends DatabaseConnection
                                    track_manifesto_gzip,
                                    kierros_svg_gzip,
                                    creation_timestamp,
+                                   download_count,
                                    creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $resourceVisibility,
                                    $internalName,
@@ -163,7 +166,8 @@ class TrackDatabase extends DatabaseConnection
                                    $compressedContainer,
                                    $compressedManifesto,
                                    $compressedKierrosSVG,
-                                   time(),
+                                   $creationTimestamp,
+                                   $downloadCount,
                                    $creatorID->string()]);
 
         return (($databaseReturnValue == 0)? true : false);
@@ -333,6 +337,7 @@ class TrackDatabase extends DatabaseConnection
                                                     resource_visibility,
                                                     creator_resource_id,
                                                     creation_timestamp,
+                                                    download_count,
                                                     track_name_internal,
                                                     track_name_display,
                                                     track_width,
@@ -381,6 +386,7 @@ class TrackDatabase extends DatabaseConnection
 
         $trackResource = Resource\TrackResource::with($rsedTrack,
                                                       $dbResponse[0]["creation_timestamp"],
+                                                      $dbResponse[0]["download_count"],
                                                       Resource\TrackResourceID::from_string($dbResponse[0]["resource_id"]),
                                                       Resource\UserResourceID::from_string($dbResponse[0]["creator_resource_id"]),
                                                       $dbResponse[0]["resource_visibility"]);

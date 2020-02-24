@@ -19,25 +19,26 @@
 
 .track-metadata > .card > .info-box
 {
-    padding: 10px;
-    text-align: center;
+    padding: 10px 0;
+    margin-left: 10px;
+    text-align: left;
     position: relative;
 }
 
 .track-metadata > .card > .info-box > .track-title
 {
-    text-align: center;
+    text-align: left;
     display: inline-block;
 }
 
 .track-metadata > .card > .info-box > .icon-row
 {
-    margin-right: 10px;
     position: absolute;
-    right: 0;
-    text-align: right;
     display: inline-block;
     color: lightgray;
+    right: 0;
+    text-align: right;
+    margin-right: 10px;
 }
 
 .track-metadata > .card > .info-box > .icon-row > a
