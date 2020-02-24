@@ -35,17 +35,19 @@ class RallySportEDTrackData
         return;
     }
 
-    public function manifesto()                           : string { return $this->manifesto->data(); }
-    public function container(string $segmentName = NULL) : string { return $this->container->data($segmentName); }
-    public function display_name()                        : string { return $this->displayName->string(); }
-    public function internal_name()                       : string { return $this->internalName->string(); }
-    public function side_length()                         : int    { return $this->sideLength; }
+    // Getters.
+    public function manifesto()                           : string { return $this->manifesto->data();                 }
+    public function container(string $segmentName = NULL) : string { return $this->container->data($segmentName);     }
+    public function display_name()                        : string { return $this->displayName->string();             }
+    public function internal_name()                       : string { return $this->internalName->string();            }
+    public function side_length()                         : int    { return $this->sideLength;                        }
 
+    // Setters.
     // Note: Setters return true if the data were successfully set; false
     // otherwise.
-    public function set_manifesto(string $newManifesto)        : bool { return $this->manifesto->set_data($newManifesto); }
-    public function set_container(string $newContainer)        : bool { return $this->container->set_data($newContainer); }
-    public function set_display_name(string $newDisplayName)   : bool { return $this->displayName->set_name($newDisplayName); }
+    public function set_manifesto(string $newManifesto)        : bool { return $this->manifesto->set_data($newManifesto);       }
+    public function set_container(string $newContainer)        : bool { return $this->container->set_data($newContainer);       }
+    public function set_display_name(string $newDisplayName)   : bool { return $this->displayName->set_name($newDisplayName);   }
     public function set_internal_name(string $newInternalName) : bool { return $this->internalName->set_name($newInternalName); }
 
     public function set_side_length(int $newSideLength) : bool

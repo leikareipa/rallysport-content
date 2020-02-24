@@ -17,6 +17,7 @@ require_once __DIR__."/../api/page-dispatch/pages/users/specific-public-user.php
 require_once __DIR__."/../api/user-actions/create-new-user.php";
 require_once __DIR__."/../api/user-actions/serve-user-data.php";
 require_once __DIR__."/../api/response.php";
+require_once __DIR__."/../api/session.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
 
@@ -30,18 +31,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"])
             {
-                case "add":
-                {
-                    // We're not allowing new user registrations right now, so we'll
-                    // force an informational error message to that effect. The
-                    // CreateUserAccount form will pick up this message and display
-                    // it to the user.
-                    $_GET["error"] = "Registration is temporarily unavailable";
-
-                    API\PageDisplay\form(API\Form\CreateUserAccount::class);
-
-                    break;
-                }
+                case "add":                 API\PageDisplay\form(API\Form\CreateUserAccount::class); break;
                 case "new-account-created": API\PageDisplay\form(API\Form\NewUserAccountCreated::class); break;
                 default:                    API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
@@ -66,14 +56,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     }
     case "POST": // Create a new user account.
     {
-        // NOTE: Creating user accounts is temporarily disabled.
-        exit(API\Response::code(404)->error_message("Registration is temporarily unavailable."));
-        //////////////////////
-        //////////////////////
-
-
-
-        if (isset($_SESSION["user_resource_id"]))
+        if (API\Session\is_client_logged_in())
         {
             exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=You are already logged in as a user"));
         }
@@ -84,7 +67,12 @@ switch ($_SERVER["REQUEST_METHOD"])
             exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Missing email or password"));
         }
 
-        API\Users\create_new_user($_POST["email"], $_POST["password"]);
+        if (!isset($_FILES["rallysported_track_file"]))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Missing the track ZIP file"));
+        }
+
+        API\Users\create_new_user($_POST["email"], $_POST["password"], $_FILES["rallysported_track_file"]);
 
         break;
     }

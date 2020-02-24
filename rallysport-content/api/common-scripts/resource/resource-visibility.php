@@ -19,6 +19,7 @@ abstract class ResourceVisibility
     public const PRIVATE    = 2; // The resource can be accessed publically only by the user account that uploaded this resource.
     public const PUBLIC     = 3; // The visibility of this resource is not limited.
     public const PROCESSING = 4; // The resource has not yet been made available since it was uploaded, e.g. because it's being reviewed by administration (for e.g. tracks) or awaiting email verification (for e.g. users).
+    public const HIDDEN     = 5; // The resource will not be shown to anyone but administrators.
 
     static public function label(int $visibilityLevel) : string
     {
@@ -29,6 +30,7 @@ abstract class ResourceVisibility
             case self::PRIVATE:    return "Private";
             case self::PUBLIC:     return "Public";
             case self::PROCESSING: return "Processing";
+            //case self::HIDDEN    // We let self::HIDDEN be handled by the default case, since this type of resource shouldn't be publically acknowledged.
             default:               return "Unknown";
         }
     }

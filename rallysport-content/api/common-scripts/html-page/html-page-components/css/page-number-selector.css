@@ -19,6 +19,11 @@
     line-height: 10px;
 }
 
+.page-number-selector .fas
+{
+    color: lightgray;
+}
+
 .page-number-selector span.current-page
 {
     color: black;

@@ -31,7 +31,7 @@ class UserDatabase extends DatabaseConnection
      * 
      */
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         return;
@@ -39,7 +39,7 @@ class UserDatabase extends DatabaseConnection
 
     // Returns true if the given password is that of the given user; false
     // otherwise.
-    function validate_credentials(Resource\UserResourceID $resourceID, string $plaintextPassword) : bool
+    public function validate_credentials(Resource\UserResourceID $resourceID, string $plaintextPassword) : bool
     {
         if (!$this->is_connected() ||
             !$resourceID)
@@ -60,21 +60,42 @@ class UserDatabase extends DatabaseConnection
         return password_verify($plaintextPassword, $userInfo[0]["php_password_hash"]);
     }
 
-    // Adds into the USERS table a new user with the given password. The plaintext
-    // password will not be entered into the database; instead, it will be ignored
-    // once a salted hash has been derived from it, and the hash will be stored
-    // instead, along with the salt.
-    //
-    // By defalt, each account will be created in a suspended state, where it cannot
-    // yet be used to create new content etc. The person who registered the account
-    // will go through a separate process of email verification or the like to have
-    // the initial suspension lifted.
+    // Returns TRUE if a user account has not yet been registered using the
+    // given hash; FALSE otherwise. Note that FALSE will also be returned if
+    // an error is encountered.
+    public function is_registration_hash_unique($registrationHash)
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_users
+                                             WHERE registration_hash = ?",
+                                            [$registrationHash]);
+
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+
+        return (($dbResponse[0]["COUNT(*)"] == 0)? true : false);
+    }
+
+    // Adds into the USERS table a new user with the given password and email.
+    // Note that each new user requires a unique registration hash to be provided;
+    // it's assumed here that the uniqueness of that hash has already been
+    // verified by the caller.
     //
     // Returns TRUE on success; FALSE otherwise.
     //
-    function create_new_user(Resource\UserResourceID $resourceID,
-                             string $plaintextPassword,
-                             string $plaintextEmail) : bool
+    public function create_new_user(Resource\UserResourceID $resourceID,
+                                    string $plaintextPassword,
+                                    string $plaintextEmail,
+                                    string $registrationHash) : bool
     {
         if (!$this->is_connected())
         {
@@ -92,12 +113,14 @@ class UserDatabase extends DatabaseConnection
                                     resource_visibility,
                                     php_password_hash,
                                     php_password_hash_email,
+                                    registration_hash,
                                     creation_timestamp)
-                                  VALUES (?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    Resource\ResourceVisibility::PUBLIC,
                                    $passwordHash,
                                    $emailHash,
+                                   $registrationHash,
                                    time()]);
 
         return (($databaseReturnValue == 0)? true : false);

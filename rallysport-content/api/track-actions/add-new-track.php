@@ -17,6 +17,7 @@ require_once __DIR__."/../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../common-scripts/svg-image-from-kierros-data.php";
+require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
 require_once __DIR__."/../session.php";
 
 // Takes in a $_FILES[][...] array describing an uploaded file whose data should

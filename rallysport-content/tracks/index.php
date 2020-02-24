@@ -22,7 +22,6 @@ require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-visibility.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
-require_once __DIR__."/../api/common-scripts/is-valid-uploaded-file.php";
 
 switch ($_SERVER["REQUEST_METHOD"])
 {

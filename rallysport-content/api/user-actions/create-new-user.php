@@ -15,33 +15,67 @@
 
 require_once __DIR__."/../response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
+require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
+require_once __DIR__."/../common-scripts/resource/track-resource.php";
 require_once __DIR__."/../common-scripts/database-connection/user-database.php";
 
-// Attempts to add to the Rally-Sport Content database a new user, whose
-// password is specified by the function call parameters.
+// Attempts to add to the Rally-Sport Content database a new user.
+//
+// New user registration requires three parameters: email, password, and a
+// RallySportED track file - the latter as an anti-spam measure.
 //
 // Note: The function should always return using exit() together with a
 // Response object, e.g. exit(API\Response::code(200)->json([...]).
 //
-// Returns: a response from the Response class (HTML status code + body).
-//
-//  - On failure, the response body will be a JSON string whose 'errorMessage'
-//    attribute provides a brief description of the error.
-//
-//  - On success, returns the HTML status code 201 and a body as a JSON string
-//    that provides information about the newly-created user account.
-//
-function create_new_user(string $email, string $plaintextPassword) : void
+function create_new_user(string $email, string $plaintextPassword, array $uploadedFileInfo) : void
 {
     /// TODO: Make sure the password and email are of the appropriate length, etc.
+
+    // Verify that the uploaded file is a valid RallySportED track file.
+    {
+        if (!$uploadedFileInfo ||
+            !\RSC\is_valid_uploaded_file($uploadedFileInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Invalid track file"));
+        }
+
+        $track = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
+                                              time(),
+                                              0,
+                                              Resource\TrackResourceID::random(),
+                                              Resource\UserResourceID::random(),
+                                              Resource\ResourceVisibility::HIDDEN);
+
+        // If this isn't a valid RallySportED track file.
+        if (!$track)
+        {
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Please select a different track file"));
+        }
+
+        // All tracks used to register with should be unique wrt. previous
+        // registrations, so verify that a track matching this one's hash hasn't
+        // already been registered with.
+        {
+            $registrationHash = hash("sha256", $track->data()->container());
+
+            if (!(new DatabaseConnection\UserDatabase())->is_registration_hash_unique($registrationHash))
+            {
+                exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Please select a different track file"));
+            }
+        }
+    }
 
     $userResourceID = Resource\UserResourceID::random();
 
     if (!$userResourceID ||
-        !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID, $plaintextPassword, $email))
+        !(new DatabaseConnection\UserDatabase())->create_new_user($userResourceID,
+                                                                  $plaintextPassword,
+                                                                  $email,
+                                                                  $registrationHash))
     {
         exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Failed to create a new user account"));
     }
 
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=new-account-created&user-id=".$userResourceID->string()));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=new-account-created&new-user-id=".$userResourceID->string()));
 }

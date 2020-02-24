@@ -21,10 +21,17 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
     {
         return "
         <form onsubmit='submit_button.disabled = true'
-                class='html-page-form' method='POST' action='/rallysport-content/login.php'>
+              class='html-page-form'
+              method='POST'
+              action='/rallysport-content/login.php'>
 
             <label for='user-id'>User ID</label>
-            <input type='text' id='user-id' name='user_id' placeholder='E.g. user.xxx-xxx-xxx' required>
+            <input type='text'
+                   id='user-id'
+                   name='user_id'
+                   placeholder='E.g. user.xxx-xxx-xxx'
+                   value='".($_GET["id"] ?? "")."'
+                   required>
 
             <label for='password'>Password</label>
             <input type='password' id='password' name='password' required>

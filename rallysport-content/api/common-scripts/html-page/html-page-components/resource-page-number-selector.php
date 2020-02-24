@@ -129,7 +129,7 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
         {
             return "
             <a href='?{$modifiedQueryString}'>
-                <i style='color: lightgray;' class='fas fa-fw fa-sm fa-".$icon."'></i>
+                <i class='fas fa-fw fa-sm fa-".$icon."'></i>
             </a>
             ";
         }

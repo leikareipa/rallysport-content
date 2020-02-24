@@ -30,12 +30,12 @@ if (!isset($_POST["user_id"]) ||
 $userResourceID = Resource\UserResourceID::from_string($_POST["user_id"]);
 if (!$userResourceID)
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Invalid user ID or password"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Incorrect user ID or password"));
 }
 
 if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResourceID, $_POST["password"]))
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Invalid user ID or password"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Incorrect user ID or password"));
 }
 else // Successful login.
 {
