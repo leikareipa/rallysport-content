@@ -51,7 +51,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 
                     <td>
                         <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
-                            {$track->data()->display_name()}
+                            {$track->data()->name()}
                         </a>
                     </td>
 

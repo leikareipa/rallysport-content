@@ -57,7 +57,7 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
     // data.
     $zipArchive = new \RSC\ZipFile();
     {
-        $internalTrackName = strtoupper($tracks[0]->data()->internal_name());
+        $trackName = strtoupper($tracks[0]->data()->name());
         $fileTimestamp = time();
 
         // We'll include Rally-Sport's default HITABLE.TXT file.
@@ -66,15 +66,15 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
             exit(API\Response::code(500)->error_message("Internal server error."));
         }
 
-        $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.DTA",
+        $zipArchive->add_file("{$trackName}/{$trackName}.DTA",
                               $tracks[0]->data()->container(),
                               $fileTimestamp);
 
-        $zipArchive->add_file("{$internalTrackName}/{$internalTrackName}.\$FT",
+        $zipArchive->add_file("{$trackName}/{$trackName}.\$FT",
                               $tracks[0]->data()->manifesto(),
                               $fileTimestamp);
 
-        $zipArchive->add_file("{$internalTrackName}/HITABLE.TXT",
+        $zipArchive->add_file("{$trackName}/HITABLE.TXT",
                               $hitableData,
                               $fileTimestamp);
     }
@@ -82,7 +82,7 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
     // We ask the client to cache the response data only if they are for a
     // single track - otherwise, when new tracks are added, they would not
     // show up in the cached response.
-    exit(API\Response::code(200)->binary_file("{$internalTrackName}.ZIP",
+    exit(API\Response::code(200)->binary_file("{$trackName}.ZIP",
                                               $zipArchive->string(),
                                               ($trackResourceID? 2592000 : 0)));
 }

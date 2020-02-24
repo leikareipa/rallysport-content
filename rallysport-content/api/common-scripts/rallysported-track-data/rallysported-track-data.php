@@ -9,8 +9,7 @@
 
 require_once __DIR__."/rallysported-track-manifesto.php";
 require_once __DIR__."/rallysported-track-container.php";
-require_once __DIR__."/rallysported-track-display-name.php";
-require_once __DIR__."/rallysported-track-internal-name.php";
+require_once __DIR__."/rallysported-track-name.php";
 
 // Represents the data of a track created in RallySportED.
 class RallySportEDTrackData
@@ -18,16 +17,14 @@ class RallySportEDTrackData
     public const MAX_BYTE_SIZE = (RallySportEDTrackData_Manifesto::MAX_BYTE_SIZE +
                                   RallySportEDTrackData_Container::MAX_BYTE_SIZE);
 
-    private $internalName;
-    private $displayName;
+    private $name;
     private $sideLength; // Width & height (tracks are expected to be square).
     private $manifesto;
     private $container;
 
     public function __construct()
     {
-        $this->internalName = new RallySportEDTrackData_InternalName;
-        $this->displayName = new RallySportEDTrackData_DisplayName;
+        $this->name = new RallySportEDTrackData_Name;
         $this->manifesto = new RallySportEDTrackData_Manifesto;
         $this->container = new RallySportEDTrackData_Container;
         $this->sideLength = 0;
@@ -36,10 +33,9 @@ class RallySportEDTrackData
     }
 
     // Getters.
+    public function name()                                : string { return $this->name->string();                    }
     public function manifesto()                           : string { return $this->manifesto->data();                 }
     public function container(string $segmentName = NULL) : string { return $this->container->data($segmentName);     }
-    public function display_name()                        : string { return $this->displayName->string();             }
-    public function internal_name()                       : string { return $this->internalName->string();            }
     public function side_length()                         : int    { return $this->sideLength;                        }
 
     // Setters.
@@ -47,8 +43,7 @@ class RallySportEDTrackData
     // otherwise.
     public function set_manifesto(string $newManifesto)        : bool { return $this->manifesto->set_data($newManifesto);       }
     public function set_container(string $newContainer)        : bool { return $this->container->set_data($newContainer);       }
-    public function set_display_name(string $newDisplayName)   : bool { return $this->displayName->set_name($newDisplayName);   }
-    public function set_internal_name(string $newInternalName) : bool { return $this->internalName->set_name($newInternalName); }
+    public function set_name(string $newName)                  : bool { return $this->name->set($newName);                      }
 
     public function set_side_length(int $newSideLength) : bool
     {
@@ -119,14 +114,14 @@ class RallySportEDTrackData
         }
 
         // The archive's files should be inside a directory whose name defines
-        // the track's internal name (e.g. "SUORUNDI/SUORUNDI.DTA" for a track
-        // whose internal name is "SUORUNDI").
+        // the track's name (e.g. "SUORUNDI/SUORUNDI.DTA" for a track whose name
+        // is "SUORUNDI").
         {
-            $internalName = (explode("/", $trackFilenames["container"])[0] ?? NULL);
+            $trackName = (explode("/", $trackFilenames["container"])[0] ?? NULL);
 
-            if (!RallySportEDTrackData_InternalName::is_valid_internal_name($internalName) ||
-                ((explode("/", $trackFilenames["hitable"])[0] ?? NULL) !== $internalName) ||
-                ((explode("/", $trackFilenames["manifesto"])[0] ?? NULL) !== $internalName))
+            if (!RallySportEDTrackData_Name::is_valid_name($trackName) ||
+                ((explode("/", $trackFilenames["hitable"])[0] ?? NULL) !== $trackName) ||
+                ((explode("/", $trackFilenames["manifesto"])[0] ?? NULL) !== $trackName))
             {
                 return NULL;
             }
@@ -147,8 +142,7 @@ class RallySportEDTrackData
 
         $dataObject = new RallySportEDTrackData();
 
-        if (!$dataObject->set_internal_name($internalName) ||
-            !$dataObject->set_display_name($internalName) ||
+        if (!$dataObject->set_name($trackName) ||
             !$dataObject->set_container($trackData["container"]) ||
             !$dataObject->set_manifesto($trackData["manifesto"]))
         {

@@ -43,8 +43,8 @@ class ResourceView
                 return [
                     "id"           => $resource->id()->string(),
                     "creatorID"    => $resource->creator_id()->string(),
-                    "displayName"  => $resource->data()->display_name(),
-                    "internalName" => $resource->data()->internal_name(),
+                    "displayName"  => $resource->data()->name(),
+                    "internalName" => $resource->data()->name(),
                 ];
             }
             case "data-array":
@@ -53,8 +53,8 @@ class ResourceView
                     "container" => base64_encode($resource->data()->container()),
                     "manifesto" => $resource->data()->manifesto(),
                     "meta"      => [
-                        "internalName" => $resource->data()->internal_name(),
-                        "displayName"  => $resource->data()->display_name(),
+                        "internalName" => $resource->data()->name(),
+                        "displayName"  => $resource->data()->name(),
                         "width"        => $resource->data()->side_length(),
                         "height"       => $resource->data()->side_length(),
                         "id       "    => $resource->id()->string(),

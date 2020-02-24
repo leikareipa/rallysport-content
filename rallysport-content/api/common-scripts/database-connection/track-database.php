@@ -57,8 +57,6 @@ class TrackDatabase extends DatabaseConnection
                                              WHERE resource_hash = ?",
                                             [$resourceHash]);
 
-        error_log("QWESDFCGV".$dbResponse[0]["COUNT(*)"]);
-
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
             !isset($dbResponse[0]["COUNT(*)"]))
@@ -69,10 +67,9 @@ class TrackDatabase extends DatabaseConnection
         return (($dbResponse[0]["COUNT(*)"] == 0)? true : false);
     }
 
-    // Returns TRUE if the given internal and display names of a track do not
-    // exist among the other tracks in the database; FALSE otherwise.
-    public function are_track_names_unique(string $internalName,
-                                           string $displayName) : bool
+    // Returns TRUE if the given track name does not exist among the other
+    // tracks in the database; FALSE otherwise.
+    public function is_track_name_unique(string $name) : bool
     {
         if (!$this->is_connected())
         {
@@ -81,10 +78,8 @@ class TrackDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_tracks
-                                             WHERE track_name_internal = ?
-                                             OR track_name_display = ?",
-                                            [$internalName,
-                                             $displayName]);
+                                             WHERE track_name = ?",
+                                            [$name]);
 
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
@@ -156,8 +151,7 @@ class TrackDatabase extends DatabaseConnection
                                                    resource_hash = NULL,
                                                    track_width = NULL,
                                                    track_height = NULL,
-                                                   track_name_internal = NULL,
-                                                   track_name_display = NULL,
+                                                   track_name = NULL,
                                                    track_container_gzip = NULL,
                                                    track_manifesto_gzip = NULL,
                                                    kierros_svg_gzip = NULL
@@ -176,8 +170,7 @@ class TrackDatabase extends DatabaseConnection
                                   Resource\UserResourceID $creatorID,
                                   int $downloadCount,
                                   int $creationTimestamp,
-                                  string $internalName,
-                                  string $displayName,
+                                  string $name,
                                   int $width,
                                   int $height,
                                   string $containerData,
@@ -203,8 +196,7 @@ class TrackDatabase extends DatabaseConnection
                                   (resource_id,
                                    resource_visibility,
                                    resource_hash,
-                                   track_name_internal,
-                                   track_name_display,
+                                   track_name,
                                    track_width,
                                    track_height,
                                    track_container_gzip,
@@ -213,12 +205,11 @@ class TrackDatabase extends DatabaseConnection
                                    creation_timestamp,
                                    download_count,
                                    creator_resource_id)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                                   [$resourceID->string(),
                                    $resourceVisibility,
                                    $resourceHash,
-                                   $internalName,
-                                   $displayName,
+                                   $name,
                                    $width,
                                    $height,
                                    $compressedContainer,
@@ -396,8 +387,7 @@ class TrackDatabase extends DatabaseConnection
                                                     creator_resource_id,
                                                     creation_timestamp,
                                                     download_count,
-                                                    track_name_internal,
-                                                    track_name_display,
+                                                    track_name,
                                                     track_width,
                                                     track_height".
                                                     ($metadataOnly? "" : ", track_container_gzip,
@@ -424,8 +414,7 @@ class TrackDatabase extends DatabaseConnection
 
         $rsedTrack = new \RSC\RallySportEDTrackData();
 
-        if (!$rsedTrack->set_display_name($dbResponse[0]["track_name_display"]) ||
-            !$rsedTrack->set_internal_name($dbResponse[0]["track_name_internal"]) ||
+        if (!$rsedTrack->set_name($dbResponse[0]["track_name"]) ||
             !$rsedTrack->set_side_length($dbResponse[0]["track_width"]))
         {
             return false;

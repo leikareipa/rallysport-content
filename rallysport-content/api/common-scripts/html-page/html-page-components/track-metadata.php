@@ -49,7 +49,7 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                 <div class='info-box'>
 
                     <div class='track-title'>
-                        <i class='fas fa-fw fa-road'></i> {$track->data()->display_name()}
+                        <i class='fas fa-fw fa-road'></i> {$track->data()->name()}
                     </div>
 
                     <div class='icon-row right'>

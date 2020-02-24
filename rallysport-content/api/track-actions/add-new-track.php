@@ -52,13 +52,6 @@ function add_new_track(array $uploadedFileInfo) : void
         exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Incompatible track data"));
     }
 
-    if (!$newTrack->data()->set_display_name($_POST["track_display_name"] ?? NULL))
-    {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track title"));
-    }
-
-    /// TODO: Test to make sure the track's name is unique in the TRACKS table.
-
     // All uploaded tracks should be unique wrt. the tracks currently in the
     // database; so verify that a track too similar hasn't already been
     // uploaded.
@@ -67,13 +60,12 @@ function add_new_track(array $uploadedFileInfo) : void
 
         if (!(new DatabaseConnection\TrackDatabase())->is_resource_hash_unique($trackDataHash))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track like that already exists"));
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track like that has already been uploaded"));
         }
 
-        if (!(new DatabaseConnection\TrackDatabase())->are_track_names_unique($newTrack->data()->internal_name(),
-                                                                              $newTrack->data()->display_name()))
+        if (!(new DatabaseConnection\TrackDatabase())->is_track_name_unique($newTrack->data()->name()))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track by that name already exists"));
+            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track by that name has already been uploaded"));
         }
     }
 
@@ -84,8 +76,7 @@ function add_new_track(array $uploadedFileInfo) : void
                                                     $newTrack->creator_id(),
                                                     $newTrack->download_count(),
                                                     $newTrack->creation_timestamp(),
-                                                    $newTrack->data()->internal_name(),
-                                                    $newTrack->data()->display_name(),
+                                                    $newTrack->data()->name(),
                                                     $newTrack->data()->side_length(),
                                                     $newTrack->data()->side_length(),
                                                     $newTrack->data()->container(),
