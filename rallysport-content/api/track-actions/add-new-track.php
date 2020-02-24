@@ -40,6 +40,7 @@ function add_new_track(array $uploadedFileInfo) : void
     }
 
     $newTrack = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
+                                             time(),
                                              Resource\TrackResourceID::random(),
                                              API\Session\logged_in_user_id(),
                                              Resource\ResourceVisibility::PUBLIC);

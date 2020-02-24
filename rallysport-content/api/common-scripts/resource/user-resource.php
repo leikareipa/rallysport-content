@@ -36,6 +36,7 @@ class UserResource extends Resource
     // Creates and returns an instance of this class with the given arguments
     // as its data. On error, returns NULL.
     public static function with(UserResourceID $resourceID = NULL,
+                                int $creationTimestamp = 0,
                                 int /*ResourceVisibility*/ $visibility = ResourceVisibility::PRIVATE)
     {
         if (!$resourceID)
@@ -49,6 +50,7 @@ class UserResource extends Resource
         $instance->creatorID = $resourceID;
         $instance->data = NULL;
         $instance->visibility = $visibility;
+        $instance->creationTimestamp = $creationTimestamp;
 
         return $instance;
     }

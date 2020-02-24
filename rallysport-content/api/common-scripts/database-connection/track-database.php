@@ -332,6 +332,7 @@ class TrackDatabase extends DatabaseConnection
         $dbResponse = $this->issue_db_query("SELECT resource_id,
                                                     resource_visibility,
                                                     creator_resource_id,
+                                                    creation_timestamp,
                                                     track_name_internal,
                                                     track_name_display,
                                                     track_width,
@@ -379,6 +380,7 @@ class TrackDatabase extends DatabaseConnection
         }
 
         $trackResource = Resource\TrackResource::with($rsedTrack,
+                                                      $dbResponse[0]["creation_timestamp"],
                                                       Resource\TrackResourceID::from_string($dbResponse[0]["resource_id"]),
                                                       Resource\UserResourceID::from_string($dbResponse[0]["creator_resource_id"]),
                                                       $dbResponse[0]["resource_visibility"]);

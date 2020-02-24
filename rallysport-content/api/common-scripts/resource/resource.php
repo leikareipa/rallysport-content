@@ -16,10 +16,11 @@ require_once __DIR__."/../database-connection/track-database.php";
 // An abstract base for resources, like tracks and users.
 abstract class Resource
 {
-    protected $id;         // ResourceID.
-    protected $creatorID;  // ResourceID of user who created/uploaded this resource.
-    protected $data;       // mixed.
-    protected $visibility; // ResourceVisibility.
+    protected $id;                // Of class ResourceID.
+    protected $creatorID;         // Of class ResourceID; user who created this resource (uploaded it to Rally-Sport Content).
+    protected $data;              // Mixed.
+    protected $visibility;        // Of enum class ResourceVisibility.
+    protected $creationTimestamp; // Int; when the resource was created (uploaded to Rally-Sport Content).
 
     public function view(string $viewType)
     {
@@ -27,8 +28,9 @@ abstract class Resource
     }
 
     // Getters.
-    public function id()         { return $this->id;         }
-    public function creator_id() { return $this->creatorID;  }
-    public function data()       { return $this->data;       }
-    public function visibility() { return $this->visibility; }
+    public function id()                 { return $this->id;                }
+    public function creator_id()         { return $this->creatorID;         }
+    public function data()               { return $this->data;              }
+    public function visibility()         { return $this->visibility;        }
+    public function creation_timestamp() { return $this->creationTimestamp; }
 }

@@ -44,6 +44,14 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
 
     $totalTrackCount = count($tracks);
 
+    // We'll display the tracks by order of upload date, newest first.
+    usort($tracks, function(Resource\TrackResource $a, Resource\TrackResource $b)
+    {
+        $timeA = $a->creation_timestamp();
+        $timeB = $b->creation_timestamp();
+        return (($timeA == $timeB)? 0 : ($timeA < $timeB)? 1 : -1);
+    });
+
     // The track view is split into sub-pages, where each sub-page displays n
     // tracks. So let's slice up the tracks array so that it only contains the
     // tracks that should be visible on the current sub-page.

@@ -176,7 +176,8 @@ class UserDatabase extends DatabaseConnection
         }
 
         $dbResponse = $this->issue_db_query("SELECT resource_id,
-                                                    resource_visibility
+                                                    resource_visibility,
+                                                    creation_timestamp
                                              FROM rsc_users
                                              WHERE resource_id = ?
                                              AND resource_visibility = ?",
@@ -192,6 +193,7 @@ class UserDatabase extends DatabaseConnection
         }
 
         $userResource = \RSC\Resource\UserResource::with(Resource\UserResourceID::from_string($dbResponse[0]["resource_id"]),
+                                                         $dbResponse[0]["creation_timestamp"],
                                                          $dbResponse[0]["resource_visibility"]);
 
         if (!$userResource)
