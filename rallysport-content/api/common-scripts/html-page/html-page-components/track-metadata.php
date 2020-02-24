@@ -59,6 +59,11 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                             <i class='fas fa-fw fa-link'></i>
                         </a>
 
+                        <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'
+                           title='Uploader'>
+                            <i class='fas fa-fw fa-user'></i>
+                        </a>
+
                         <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                            title='Download as a ZIP'>
                             <i class='fas fa-fw fa-file-download'></i>
