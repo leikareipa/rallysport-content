@@ -54,7 +54,7 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $containerTitle =
+        $inPageTitle =
         "
         A track uploaded by
         <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'>
@@ -64,7 +64,8 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($containerTitle));
+        $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
         $htmlPage->body->add_element($track->view("metadata-html"));
         $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

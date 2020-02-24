@@ -27,14 +27,14 @@ abstract class LoginWidget extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/login-widget.css");
     }
 
-    static public function html()
+    static public function html() : string
     {
         return "
         <div class='login-widget'>
 
             ".(isset($_SESSION["user_resource_id"])
             ?
-            "<span><i class='fas fa-fw fa-sm fa-user'></i><b>{$_SESSION["user_resource_id"]}</b></span>
+            "<span><i class='far fa-fw fa-sm fa-user'></i>{$_SESSION["user_resource_id"]}</span>
              <span class='separator'>|</span>
              <a href='/rallysport-content/logout.php'>Log out</a>"
             :

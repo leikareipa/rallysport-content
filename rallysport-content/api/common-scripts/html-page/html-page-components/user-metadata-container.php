@@ -39,7 +39,7 @@ abstract class UserMetadataContainer extends HTMLPage\HTMLPageComponent
                file_get_contents(__DIR__."/css/rsc-table.css");
     }
 
-    static public function open()
+    static public function open() : string
     {
         return "
         <div class='rsc-table-container plain'>

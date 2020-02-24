@@ -29,7 +29,7 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
                            LoginWidget::scripts());
     }
 
-    static public function html()
+    static public function html() : string
     {
         return "
         <header id='rallysport-content-header'>

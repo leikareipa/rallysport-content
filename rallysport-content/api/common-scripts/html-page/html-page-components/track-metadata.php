@@ -33,7 +33,7 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/track-metadata.css");
     }
 
-    static public function html(\RSC\Resource\TrackResource $track)
+    static public function html(\RSC\Resource\TrackResource $track) : string
     {
         $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
 

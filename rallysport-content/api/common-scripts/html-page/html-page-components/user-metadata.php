@@ -16,7 +16,7 @@ require_once __DIR__."/../../database-connection/track-database.php";
 //
 abstract class UserMetadata extends HTMLPage\HTMLPageComponent
 {
-    static public function html(\RSC\Resource\UserResource $user)
+    static public function html(\RSC\Resource\UserResource $user) : string
     {
         $sessionUserID       = ($_SESSION["user_resource_id"] ?? "no-session");
         $userNumPublicTracks = (new \RSC\DatabaseConnection\TrackDatabase())->num_public_tracks_by_user($user->id());
@@ -25,7 +25,7 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
         <tr>
 
             <td style='font-weight: ".(($sessionUserID == $user->id()->string())? "bold" : "normal").";'>
-                <i class='far fa-fw fa-sm fa-user'></i>{$user->id()->string()}
+                {$user->id()->string()}
             </td>
 
             <td style='text-align: center'>

@@ -20,7 +20,7 @@ abstract class RallySportContentFooter extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/rallysport-content-footer.css");
     }
 
-    static public function html()
+    static public function html() : string
     {
         return "
         <footer id='rallysport-content-footer'>

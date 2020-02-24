@@ -1,0 +1,43 @@
+.page-number-selector
+{
+    margin: 11px;
+    color: gray;
+    display: flex;
+    justify-content: center;
+}
+
+.page-number-selector.empty
+{
+    display: none;
+}
+
+.page-number-selector span,
+.page-number-selector .fas
+{
+    padding: 3px 8px;
+    border-radius: 4px;
+    line-height: 10px;
+}
+
+.page-number-selector span.current-page
+{
+    font-weight: bold;
+    color: black;
+}
+
+.page-number-selector span:hover
+{
+    color: black;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.page-number-selector > a
+{
+    text-decoration: none;
+    padding: 0;
+}
+
+.page-number-selector a:hover
+{
+    color: black;
+}

@@ -44,9 +44,16 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
 
     $totalTrackCount = count($tracks);
 
-    // We'll display at most 20 tracks, in random order.
-    shuffle($tracks);
-    $tracks = array_slice($tracks, 0, 20);
+    // The track view is split into sub-pages, where each sub-page displays n
+    // tracks. So let's slice up the tracks array so that it only contains the
+    // tracks that should be visible on the current sub-page.
+    //
+    /// TODO: We only need to request from the database the particular tracks
+    ///       that fall on the current sub-page, not all of them and then
+    ///       discard a bunch.
+    $numPages = ceil($totalTrackCount / Resource\ResourceURLParams::items_per_page());
+    $startIdx = (min(($numPages - 1), Resource\ResourceURLParams::page_number()) * Resource\ResourceURLParams::items_per_page());
+    $tracks = array_slice($tracks, $startIdx, Resource\ResourceURLParams::items_per_page());
 
     // Build a HTML page that lists the requested tracks.
     {
@@ -55,11 +62,12 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
+        $htmlPage->use_component(HTMLPage\Component\ResourcePageNumberSelector::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $containerTitle =
+        $inPageTitle =
         "
         Tracks uploaded by
         <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
@@ -69,7 +77,9 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
-        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open($containerTitle));
+        $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+        $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
+        $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
         foreach ($tracks as $trackResource)
         {
             if (!$trackResource)
@@ -80,6 +90,7 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
             $htmlPage->body->add_element($trackResource->view("metadata-html"));
         }
         $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+        $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 

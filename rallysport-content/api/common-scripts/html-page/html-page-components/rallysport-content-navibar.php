@@ -21,7 +21,7 @@ abstract class RallySportContentNavibar extends HTMLPage\HTMLPageComponent
         return file_get_contents(__DIR__."/css/rallysport-content-navibar.css");
     }
 
-    static public function html()
+    static public function html() : string
     {
         // Figure out which page we're on.
         /// TODO: Don't hard-code URLs.

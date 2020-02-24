@@ -22,7 +22,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                file_get_contents(__DIR__."/css/rsc-table.css");
     }
 
-    static public function html(array /*elements = TrackResource*/ $tracks)
+    static public function html(array /*elements = TrackResource*/ $tracks) : string
     {
         $tableRows = [];
 
