@@ -1,7 +1,7 @@
 .page-number-selector
 {
-    margin: 10px;
-    color: gray;
+    margin: 12px;
+    color: black;
     display: flex;
     justify-content: center;
 }
@@ -14,21 +14,21 @@
 .page-number-selector span,
 .page-number-selector .fas
 {
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 4px;
     line-height: 10px;
 }
 
 .page-number-selector span.current-page
 {
-    font-weight: bold;
     color: black;
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
 .page-number-selector span:hover
 {
     color: black;
-    background-color: rgba(0, 0, 0, 0.04);
+    font-weight: bold;
 }
 
 .page-number-selector > a
