@@ -88,5 +88,5 @@ function add_new_track(array $uploadedFileInfo) : void
     }
 
     // Successfully added.
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?id={$newTrack->id()->string()}"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=new-track-uploaded&id={$newTrack->id()->string()}"));
 }

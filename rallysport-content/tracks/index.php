@@ -73,6 +73,7 @@ switch ($_SERVER["REQUEST_METHOD"])
 
                     break;
                 }
+                case "new-track-uploaded": API\PageDisplay\form(API\Form\NewTrackUploaded::class); break;
                 default: API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }

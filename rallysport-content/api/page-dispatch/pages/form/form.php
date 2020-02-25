@@ -19,6 +19,7 @@ require_once __DIR__."/forms/unknown-form-identifier.php";
 require_once __DIR__."/forms/create-user-account.php";
 require_once __DIR__."/forms/user-login.php";
 require_once __DIR__."/forms/add-track.php";
+require_once __DIR__."/forms/new-track-uploaded.php";
 require_once __DIR__."/forms/delete-track.php";
 
 // Used to display HTML forms to the client.
