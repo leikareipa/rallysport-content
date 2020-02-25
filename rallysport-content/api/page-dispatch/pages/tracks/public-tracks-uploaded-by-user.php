@@ -82,6 +82,7 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
             <i class='far fa-fw fa-sm fa-user'></i>{$userResourceID->string()}
         </a>
+        (sorted by date)
         ";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
