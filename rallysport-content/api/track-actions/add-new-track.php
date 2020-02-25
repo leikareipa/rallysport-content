@@ -31,13 +31,15 @@ function add_new_track(array $uploadedFileInfo) : void
 {
     if (!API\Session\is_client_logged_in())
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Must be logged in to add a track"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                           "Must be logged in to add a track"));
     }
 
     if (!$uploadedFileInfo ||
         !\RSC\is_valid_uploaded_file($uploadedFileInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Invalid track file"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                           "Invalid track file"));
     }
 
     $newTrack = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
@@ -49,7 +51,8 @@ function add_new_track(array $uploadedFileInfo) : void
 
     if (!$newTrack)
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Incompatible track data"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                           "Incompatible track data"));
     }
 
     // All uploaded tracks should be unique wrt. the tracks currently in the
@@ -60,12 +63,14 @@ function add_new_track(array $uploadedFileInfo) : void
 
         if (!(new DatabaseConnection\TrackDatabase())->is_resource_hash_unique($trackDataHash))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track like that has already been uploaded"));
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                               "A track like that has already been uploaded"));
         }
 
         if (!(new DatabaseConnection\TrackDatabase())->is_track_name_unique($newTrack->data()->name()))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=A track by that name has already been uploaded"));
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                               "A track by that name has already been uploaded"));
         }
     }
 
@@ -84,7 +89,8 @@ function add_new_track(array $uploadedFileInfo) : void
                                                     \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
                                                                                      $newTrack->data()->side_length())))
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=add&error=Database error"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                           "Database error"));
     }
 
     // Successfully added.

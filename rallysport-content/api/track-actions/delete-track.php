@@ -21,34 +21,35 @@ function delete_track(Resource\TrackResourceID $resourceID) : void
 {
     if (!$resourceID)
     {
-        exit(API\Response::code(303)->redirect_to(
-            "/rallysport-content/tracks/?form=delete&id={$resourceID->string()}&error=Invalid track resource ID"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=delete&id={$resourceID->string()}",
+                                                           "Invalid track resource ID"));
     }
 
     if (!API\Session\is_client_logged_in())
     {
-        exit(API\Response::code(303)->redirect_to(
-            "/rallysport-content/tracks/?form=delete&id={$resourceID->string()}&error=Must be logged in to delete a track"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=delete&id={$resourceID->string()}",
+                                                           "Must be logged in to delete a track"));
     }
 
     $trackResource = Resource\TrackResource::from_database($resourceID->string(), true);
 
     if (!$trackResource)
     {
-        exit(API\Response::code(303)->redirect_to(
-            "/rallysport-content/tracks/?form=delete&id={$resourceID->string()}&error=Invalid track resource"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=delete&id={$resourceID->string()}",
+                                                           "Invalid track resource"));
     }
 
     // Only the user who uploaded the track can delete it.
     if ($trackResource->creator_id()->string() !== API\Session\logged_in_user_id()->string())
     {
-        exit(API\Response::code(303)->redirect_to(
-            "/rallysport-content/tracks/?form=delete&id={$resourceID->string()}&error=Your account is not authorized to delete this track"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=delete&id={$resourceID->string()}",
+                                                           "Your account is not authorized to delete this track"));
     }
 
     if (!(new DatabaseConnection\TrackDatabase())->delete_track($trackResource->id()))
     {
-        exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=delete&error=Database error"));
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=delete&id={$resourceID->string()}",
+                                                           "Database error"));
     }
 
     // Successfully deleted.

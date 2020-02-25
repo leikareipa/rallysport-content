@@ -94,9 +94,22 @@ class Response
         return $this->empty_body();
     }
 
+    // Asks the browser to redirect to the given URL. You'd use this with
+    // response code 303 or similar.
     public function redirect_to(string $url) : int
     {
         header("Location: {$url}");
+
+        return $this->empty_body();
+    }
+
+    // Asks the browser to load the given form and display in it the given
+    // error message. The form URL is something along the lines of
+    // "/rallysport-content/tracks/?form=add". You'd use this with response
+    // code 303 or similar.
+    public function load_form_with_error(string $formURL, string $errorMessage)
+    {
+        header("Location: {$formURL}&error={$errorMessage}");
 
         return $this->empty_body();
     }

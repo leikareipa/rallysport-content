@@ -72,18 +72,21 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         if (API\Session\is_client_logged_in())
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=You are already logged in as a user"));
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
+                                                               "You are already logged in as a user"));
         }
         
         if (!isset($_POST["email"]) ||
             !isset($_POST["password"]))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Missing email or password"));
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
+                                                               "Missing email or password"));
         }
 
         if (!isset($_FILES["rallysported_track_file"]))
         {
-            exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=add&error=Missing the track ZIP file"));
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
+                                                               "Missing the track ZIP file"));
         }
 
         API\Users\create_new_user($_POST["email"], $_POST["password"], $_FILES["rallysported_track_file"]);

@@ -18,24 +18,28 @@ require_once __DIR__."/api/common-scripts/database-connection/user-database.php"
 
 if (isset($_SESSION["user_resource_id"]))
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=You were already logged in"));
+    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
+                                                       "You were already logged in"));
 }
 
 if (!isset($_POST["user_id"]) ||
     !isset($_POST["password"]))
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Missing the user ID or password"));
+    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
+                                                       "Missing the user ID or password"));
 }
 
 $userResourceID = Resource\UserResourceID::from_string($_POST["user_id"]);
 if (!$userResourceID)
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Incorrect user ID or password"));
+    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
+                                                       "Incorrect user ID or password"));
 }
 
 if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResourceID, $_POST["password"]))
 {
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login&error=Incorrect user ID or password"));
+    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
+                                                       "Incorrect user ID or password"));
 }
 else // Successful login.
 {
