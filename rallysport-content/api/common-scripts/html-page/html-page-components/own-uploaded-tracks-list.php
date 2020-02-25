@@ -1,5 +1,6 @@
 <?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
+      use RSC\Resource;
       use RSC\DatabaseConnection;
 
 /*
@@ -25,6 +26,14 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
     static public function html(array /*elements = TrackResource*/ $tracks) : string
     {
         $tableRows = [];
+
+        // We'll display the tracks by order of upload date, newest first.
+        usort($tracks, function(Resource\TrackResource $a, Resource\TrackResource $b)
+        {
+            $timeA = $a->creation_timestamp();
+            $timeB = $b->creation_timestamp();
+            return (($timeA == $timeB)? 0 : ($timeA < $timeB)? 1 : -1);
+        });
 
         if (empty($tracks))
         {
