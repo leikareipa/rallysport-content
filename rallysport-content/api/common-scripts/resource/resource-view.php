@@ -41,14 +41,19 @@ class ResourceView
             case "metadata-array":
             {
                 return [
-                    "id"           => $resource->id()->string(),
-                    "creatorID"    => $resource->creator_id()->string(),
-                    "displayName"  => $resource->data()->name(),
-                    "internalName" => $resource->data()->name(),
+                    "name"      => $resource->data()->name(),
+                    "id"        => $resource->id()->string(),
+                    "creatorID" => $resource->creator_id()->string(),
+                    "width"     => $resource->data()->side_length(),
+                    "height"    => $resource->data()->side_length(),
                 ];
             }
             case "data-array":
             {
+                // Note: For reasons of compatibility with RallySportED-js, we
+                // provide the track's name as two variables, internalName and
+                // displayName. However, since Rally-Sport Content makes no
+                // such distinction, we just enter the track's name twice.
                 return [
                     "container" => base64_encode($resource->data()->container()),
                     "manifesto" => $resource->data()->manifesto(),
