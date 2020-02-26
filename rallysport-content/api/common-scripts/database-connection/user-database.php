@@ -37,6 +37,33 @@ class UserDatabase extends DatabaseConnection
         return;
     }
 
+    // Returns TRUE if the given user's account is active, i.e. not deleted or
+    // in some other way disabled; FALSE otherwise.
+    public function is_active_user_account(Resource\UserResourceID $resourceID) : bool
+    {
+        if (!$this->is_connected() ||
+            !$resourceID)
+        {
+            return false;
+        }
+
+        $userInfo = $this->issue_db_query("SELECT COUNT(*)
+                                           FROM rsc_users
+                                           WHERE resource_id = ?
+                                           AND resource_visibility = ?",
+                                          [$resourceID->string(),
+                                           Resource\ResourceVisibility::PUBLIC]);
+
+        if (!is_array($userInfo) ||
+            !count($userInfo) ||
+            !isset($userInfo[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+
+        return (($userInfo[0]["COUNT(*)"] == 0)? false : true);
+    }
+
     // Returns true if the given password is that of the given user; false
     // otherwise.
     public function validate_credentials(Resource\UserResourceID $resourceID, string $plaintextPassword) : bool

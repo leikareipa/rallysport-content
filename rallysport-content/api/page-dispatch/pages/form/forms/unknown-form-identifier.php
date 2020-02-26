@@ -20,6 +20,6 @@ abstract class UnknownFormIdentifier extends \RSC\HTMLPage\Component\Form
 
     static public function html() : string
     {
-        return "<div style='display: inline-block; font-style: italic;'>Error: Unknown form identifier</div>";
+        return "Unknown form identifier";
     }
 }

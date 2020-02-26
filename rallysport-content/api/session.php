@@ -1,4 +1,5 @@
 <?php namespace RSC\API\Session;
+      use RSC\DatabaseConnection;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -12,21 +13,29 @@
  * 
  */
 
+require_once __DIR__."/common-scripts/database-connection/user-database.php";
+
+// Returns TRUE if the current client is logged in; FALSE otherwise.
 function is_client_logged_in() : bool
 {
-    return isset($_SESSION["user_resource_id"]);
+    return (logged_in_user_id() !== NULL);
 }
 
 // Returns the resource ID of the user logged in on the current session; or
-// NULL if no user is logged in.
+// NULL if the client is not logged in.
 function logged_in_user_id()
 {
-    if (!is_client_logged_in())
+    $id = \RSC\Resource\UserResourceID::from_string($_SESSION["user_resource_id"] ?? "");
+
+    // Prevent usage of an account that has become disabled while being logged in.
+    if ($id &&
+        !(new DatabaseConnection\UserDatabase())->is_active_user_account($id))
     {
+        log_client_out();
         return NULL;
     }
 
-    return \RSC\Resource\UserResourceID::from_string($_SESSION["user_resource_id"]);
+    return ($id? $id : NULL);
 }
 
 // Note: This should be called only after you've verified that the given user

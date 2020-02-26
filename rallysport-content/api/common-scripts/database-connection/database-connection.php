@@ -58,6 +58,20 @@ abstract class DatabaseConnection
         return;
     }
 
+    public function __destruct()
+    {
+        $this->disconnect();
+        return;
+    }
+
+    public function disconnect() : void
+    {
+        mysqli_close($this->database);
+        $this->is_connected = false;
+
+        return;
+    }
+
     // Salts the given string with a stable salt (i.e. a pepper).
     function peppered(string $string) : string
     {

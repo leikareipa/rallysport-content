@@ -21,21 +21,23 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "HEAD":
     case "GET":
     {
-        switch ($_GET["form"] ?? "unknown-form-identifier")
+        if (isset($_GET["form"]))
         {
-            case "login": API\PageDisplay\form(API\Form\UserLogin::class); break;
-            default:
+            switch ($_GET["form"] ?? "unknown-form-identifier")
             {
-                if (!API\Session\is_client_logged_in())
-                {
-                    exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login"));
-                }
-                else
-                {
-                    API\PageDisplay\Root\control_panel();
-                }
-                
-                break;
+                case "login": API\PageDisplay\form(API\Form\UserLogin::class); break;
+                default:      API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
+            }
+        }
+        else
+        {
+            if (!API\Session\is_client_logged_in())
+            {
+                exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login"));
+            }
+            else
+            {
+                API\PageDisplay\Root\control_panel();
             }
         }
 
