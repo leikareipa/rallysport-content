@@ -23,18 +23,21 @@ class TrackResource extends Resource
                                          bool $metadataOnly = false,
                                          int /*ResourceVisibility*/ $visibility = ResourceVisibility::PUBLIC)
     {
-        $resourceID = TrackResourceID::from_string($resourceIDString);
-        $trackResource = (new DatabaseConnection\TrackDatabase())->get_track($resourceID,
-                                                                             $visibility,
-                                                                             $metadataOnly);
+        $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0,
+                                                                       0,
+                                                                       [],
+                                                                       [$visibility],
+                                                                       [$resourceIDString],
+                                                                       $metadataOnly);
 
-        if (!$trackResource)
+        // If the database query failed.
+        if (!is_array($tracks) || (count($tracks) !== 1))
         {
             return NULL;
         }
         else
         {
-            return $trackResource;
+            return $tracks[0];
         }
     }
 

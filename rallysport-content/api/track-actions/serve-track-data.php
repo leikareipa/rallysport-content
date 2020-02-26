@@ -41,9 +41,15 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
         exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track($trackResourceID,
-                                                                                      Resource\ResourceVisibility::PUBLIC)]
-                               :  (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [], [Resource\ResourceVisibility::PUBLIC], false));
+    $targetTrackIDs = ($trackResourceID? [$trackResourceID->string()] : []);
+    $targetVisibilityLevels = [Resource\ResourceVisibility::PUBLIC];
+    $targetUploaderIDs = [];
+    $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0,
+                                                                   0,
+                                                                   $targetUploaderIDs,
+                                                                   $targetVisibilityLevels,
+                                                                   $targetTrackIDs,
+                                                                   false);
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {
@@ -103,14 +109,16 @@ function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
         exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    // If we were requested to serve metadata only, we can instruct the database
-    // to include only metadata in its response to us.
     $metadataOnly = (strpos($viewType, "metadata") !== FALSE);
-
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track($trackResourceID,
-                                                                                      Resource\ResourceVisibility::PUBLIC,
-                                                                                      $metadataOnly)]
-                               :  (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [], [Resource\ResourceVisibility::PUBLIC], false));
+    $targetTrackIDs = ($trackResourceID? [$trackResourceID->string()] : []);
+    $targetVisibilityLevels = [Resource\ResourceVisibility::PUBLIC];
+    $targetUploaderIDs = [];
+    $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0,
+                                                                   0,
+                                                                   $targetUploaderIDs,
+                                                                   $targetVisibilityLevels,
+                                                                   $targetTrackIDs,
+                                                                   $metadataOnly);
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {
