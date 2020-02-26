@@ -1,13 +1,13 @@
 .track-metadata
 {
     padding: 15px;
-    margin: 7px;
+    margin: 8px;
     border-radius: 0;
     text-align: left;
     display: inline-block;
     background-color: white;
     box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.2);
-    border: 1px solid lightgray;
+    border: 1px dashed lightgray;
     border-radius: 12px;
 }
 
@@ -64,4 +64,9 @@
     stroke: dimgray;
     stroke-width: 1.5;
     fill: none;
+}
+
+.track-metadata > .card > .media svg:hover > polygon
+{
+    stroke: black;
 }
