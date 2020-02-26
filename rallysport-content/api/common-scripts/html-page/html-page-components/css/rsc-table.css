@@ -3,9 +3,7 @@
     position: relative;
     display: inline-block;
     width: 420px;
-    border: 1px solid lightgray;
     padding: 35px;
-    box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.2);
     border: 1px solid lightgray;
     border-radius: 12px;
 }
