@@ -74,20 +74,14 @@ function add_new_track(array $uploadedFileInfo) : void
         }
     }
 
-    if (!(new DatabaseConnection\TrackDatabase())->add_new_track(
-                                                    $newTrack->id(),
-                                                    $newTrack->visibility(),
-                                                    $trackDataHash,
-                                                    $newTrack->creator_id(),
-                                                    $newTrack->download_count(),
-                                                    $newTrack->creation_timestamp(),
-                                                    $newTrack->data()->name(),
-                                                    $newTrack->data()->side_length(),
-                                                    $newTrack->data()->side_length(),
-                                                    $newTrack->data()->container(),
-                                                    $newTrack->data()->manifesto(),
-                                                    \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
-                                                                                     $newTrack->data()->side_length())))
+    // Create an image that represents the track's shape. This'll be displayed
+    // in HTML views of the track.
+    $kierrosSVGImage = \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
+                                                        $newTrack->data()->side_length());
+
+    if (!(new DatabaseConnection\TrackDatabase())->add_new_track($newTrack,
+                                                                 $kierrosSVGImage,
+                                                                 $trackDataHash))
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
                                                            "Database error"));

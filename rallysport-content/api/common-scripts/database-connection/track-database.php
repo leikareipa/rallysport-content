@@ -162,30 +162,23 @@ class TrackDatabase extends DatabaseConnection
         return (($dbResponse == 0)? true : false);
     }
 
-    // Adds into the TRACKS table a new track with the given parameters. Returns
-    // TRUE on success; FALSE otherwise.
-    public function add_new_track(Resource\TrackResourceID $resourceID,
-                                  int /*\ResourceVisibility*/ $resourceVisibility,
-                                  string $resourceHash,
-                                  Resource\UserResourceID $creatorID,
-                                  int $downloadCount,
-                                  int $creationTimestamp,
-                                  string $name,
-                                  int $width,
-                                  int $height,
-                                  string $containerData,
-                                  string $manifestoData,
-                                  string $kierrosSVGImage) : bool
+    // Adds into the TRACKS table a new track using the given track resource's
+    // data. The 'resourceHash' parameter provides a hash of the track's data,
+    // such that it can be used to detect attempts to upload duplicates of this
+    // track. The 'kierrosSVGImage' parameter provides as a string an SVG image
+    // representing the track's KIERROS data. Returns TRUE on success; FALSE
+    // otherwise.
+    public function add_new_track(Resource\TrackResource $track,
+                                  string $kierrosSVGImage,
+                                  string $resourceHash) : bool
     {
         if (!$this->is_connected())
         {
             return false;
         }
 
-        /// TODO: Validate the input parameters.
-
-        if (!($compressedContainer = gzencode($containerData, 9, FORCE_GZIP)) ||
-            !($compressedManifesto = gzencode($manifestoData, 9, FORCE_GZIP)) ||
+        if (!($compressedContainer = gzencode($track->data()->container(), 9, FORCE_GZIP)) ||
+            !($compressedManifesto = gzencode($track->data()->manifesto(), 9, FORCE_GZIP)) ||
             !($compressedKierrosSVG = gzencode($kierrosSVGImage, 9, FORCE_GZIP)))
         {
             return false;
@@ -206,18 +199,18 @@ class TrackDatabase extends DatabaseConnection
                                    download_count,
                                    creator_resource_id)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                                  [$resourceID->string(),
-                                   $resourceVisibility,
+                                  [$track->id()->string(),
+                                   $track->visibility(),
                                    $resourceHash,
-                                   $name,
-                                   $width,
-                                   $height,
+                                   $track->data()->name(),
+                                   $track->data()->side_length(),
+                                   $track->data()->side_length(),
                                    $compressedContainer,
                                    $compressedManifesto,
                                    $compressedKierrosSVG,
-                                   $creationTimestamp,
-                                   $downloadCount,
-                                   $creatorID->string()]);
+                                   $track->creation_timestamp(),
+                                   $track->download_count(),
+                                   $track->creator_id()->string()]);
 
         return (($databaseReturnValue == 0)? true : false);
     }
