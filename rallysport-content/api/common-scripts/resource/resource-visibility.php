@@ -34,4 +34,20 @@ abstract class ResourceVisibility
             default:               return "Unknown";
         }
     }
+
+    // Returns TRUE if the given visibility level is a recognized value, FALSE
+    // otherwise.
+    static public function is_valid_visibility_level(int $visibilityLevel) : bool
+    {
+        switch ($visibilityLevel)
+        {
+            case self::DELETED:
+            case self::UNLISTED:
+            case self::PRIVATE:
+            case self::PUBLIC:
+            case self::PROCESSING:
+            case self::HIDDEN:     return true;
+            default:               return false;
+        }
+    }
 }

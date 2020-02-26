@@ -41,9 +41,9 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
         exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID,
-                                                                                               Resource\ResourceVisibility::PUBLIC)]
-                               : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources());
+    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track($trackResourceID,
+                                                                                      Resource\ResourceVisibility::PUBLIC)]
+                               :  (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [], [Resource\ResourceVisibility::PUBLIC], false));
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {
@@ -107,10 +107,10 @@ function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
     // to include only metadata in its response to us.
     $metadataOnly = (strpos($viewType, "metadata") !== FALSE);
 
-    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID,
-                                                                                               Resource\ResourceVisibility::PUBLIC,
-                                                                                               $metadataOnly)]
-                               : (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources());
+    $tracks = ($trackResourceID? [(new DatabaseConnection\TrackDatabase())->get_track($trackResourceID,
+                                                                                      Resource\ResourceVisibility::PUBLIC,
+                                                                                      $metadataOnly)]
+                               :  (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [], [Resource\ResourceVisibility::PUBLIC], false));
 
     if (!is_array($tracks) || !count($tracks) || !$tracks[0])
     {

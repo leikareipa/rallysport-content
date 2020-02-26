@@ -34,9 +34,9 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
 
     // Note: The page only displays track metadata, so we request that the
     // database sends metadata only.
-    $track = (new DatabaseConnection\TrackDatabase())->get_track_resource($trackResourceID,
-                                                                          Resource\ResourceVisibility::PUBLIC,
-                                                                          true);
+    $track = (new DatabaseConnection\TrackDatabase())->get_track($trackResourceID,
+                                                                 Resource\ResourceVisibility::PUBLIC,
+                                                                 true);
 
     // Build a HTML page that displays the requested track.
     {

@@ -1,6 +1,6 @@
 .page-number-selector
 {
-    margin: 6px;
+    margin: 8px;
     color: black;
     display: flex;
     justify-content: center;
@@ -27,7 +27,7 @@
 .page-number-selector span.current-page
 {
     color: black;
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .page-number-selector span:hover

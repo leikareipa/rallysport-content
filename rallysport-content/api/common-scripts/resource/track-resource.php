@@ -24,9 +24,9 @@ class TrackResource extends Resource
                                          int /*ResourceVisibility*/ $visibility = ResourceVisibility::PUBLIC)
     {
         $resourceID = TrackResourceID::from_string($resourceIDString);
-        $trackResource = (new DatabaseConnection\TrackDatabase())->get_track_resource($resourceID,
-                                                                                      $visibility,
-                                                                                      $metadataOnly);
+        $trackResource = (new DatabaseConnection\TrackDatabase())->get_track($resourceID,
+                                                                             $visibility,
+                                                                             $metadataOnly);
 
         if (!$trackResource)
         {

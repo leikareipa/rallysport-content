@@ -28,36 +28,29 @@ require_once __DIR__."/../../../common-scripts/database-connection/track-databas
 //
 function all_public_tracks() : void
 {
-    // Note: The page only displays track metadata, so we request that the
-    // database sends metadata only.
-    $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources(true);
+    $trackDB = new DatabaseConnection\TrackDatabase();
+
+    // We'll query the database for tracks by this uploader and with this
+    // visibility.
+    $uploaderConditional = [/*Empty, so query for all uploaders.*/];
+    $visibilityConditional = [Resource\ResourceVisibility::PUBLIC];
+
+    // The track view is split into sub-pages, where each sub-page displays n
+    // tracks.
+    $totalTrackCount = $trackDB->tracks_count($uploaderConditional, $visibilityConditional);
+    $numPages = ceil($totalTrackCount / Resource\ResourceViewURLParams::items_per_page());
+    $startIdx = (min(($numPages - 1), Resource\ResourceViewURLParams::page_number()) * Resource\ResourceViewURLParams::items_per_page());
+    
+    $tracks = $trackDB->get_tracks(Resource\ResourceViewURLParams::items_per_page(),
+                                   $startIdx,
+                                   $uploaderConditional,
+                                   $visibilityConditional);
 
     // If we either failed to fetch track data, or there was none to fetch.
     if (!is_array($tracks))
     {
         $tracks = [];
     }
-
-    $totalTrackCount = count($tracks);
-
-    // We'll display the tracks by order of upload date, newest first.
-    usort($tracks, function(Resource\TrackResource $a, Resource\TrackResource $b)
-    {
-        $timeA = $a->creation_timestamp();
-        $timeB = $b->creation_timestamp();
-        return (($timeA == $timeB)? 0 : ($timeA < $timeB)? 1 : -1);
-    });
-
-    // The track view is split into sub-pages, where each sub-page displays n
-    // tracks. So let's slice up the tracks array so that it only contains the
-    // tracks that should be visible on the current sub-page.
-    //
-    /// TODO: We only need to request from the database the particular tracks
-    ///       that fall on the current sub-page, not all of them and then
-    ///       discard a bunch.
-    $numPages = ceil($totalTrackCount / Resource\ResourceViewURLParams::items_per_page());
-    $startIdx = (min(($numPages - 1), Resource\ResourceViewURLParams::page_number()) * Resource\ResourceViewURLParams::items_per_page());
-    $tracks = array_slice($tracks, $startIdx, Resource\ResourceViewURLParams::items_per_page());
 
     // Build a HTML page that lists the requested tracks.
     {
@@ -71,7 +64,7 @@ function all_public_tracks() : void
         $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $inPageTitle = "Tracks uploaded by users (sorted by date)";
+        $inPageTitle = "Tracks uploaded by users (sorted by most recent)";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());

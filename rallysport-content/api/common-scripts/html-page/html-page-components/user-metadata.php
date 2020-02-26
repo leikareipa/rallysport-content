@@ -1,5 +1,6 @@
 <?php namespace RSC\HTMLPage\Component;
       use RSC\HTMLPage;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -19,7 +20,8 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
     static public function html(\RSC\Resource\UserResource $user) : string
     {
         $sessionUserID       = ($_SESSION["user_resource_id"] ?? "no-session");
-        $userNumPublicTracks = (new \RSC\DatabaseConnection\TrackDatabase())->num_public_tracks_by_user($user->id());
+        $userNumPublicTracks = (new \RSC\DatabaseConnection\TrackDatabase())->tracks_count([$user->id()->string()],
+                                                                                           [Resource\ResourceVisibility::PUBLIC]);
 
         return "
         <tr>

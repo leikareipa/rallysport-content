@@ -114,27 +114,6 @@ class TrackDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Returns the number of tracks uploaded by the given user that are marked
-    // as being publically viewable.
-    public function num_public_tracks_by_user(Resource\UserResourceID $userResourceID)
-    {
-        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
-                                             FROM rsc_tracks
-                                             WHERE creator_resource_id = ?
-                                             AND resource_visibility = ?",
-                                            [$userResourceID->string(),
-                                             Resource\ResourceVisibility::PUBLIC]);
-
-        if (!is_array($dbResponse) ||
-            !count($dbResponse) ||
-            !isset($dbResponse[0]["COUNT(*)"]))
-        {
-            return 0;
-        }
-
-        return $dbResponse[0]["COUNT(*)"];
-    }
-
     // Mark the track identified by the given resource ID as being deleted.
     // Note that the track's entry in the database will not be removed, so as
     // to reserve its resource ID. The track will, however, no longer be shown
@@ -160,6 +139,213 @@ class TrackDatabase extends DatabaseConnection
                                                $resourceID->string()]);
 
         return (($dbResponse == 0)? true : false);
+    }
+
+    // Returns the count of tracks in the database; or FALSE on error. The
+    // 'uploaders' array provides user ID strings such that if non-empty, only
+    // tracks uploaded by these users will be included in the count; and the
+    // 'visibilityLevels' array provides ResourceVisibility elements such that
+    // only tracks whose visibility level is one of these will be included in
+    // the count.
+    public function tracks_count(array $uploaders = [],
+                                 array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC]) : int
+    {
+        // Assert that we received valid parameter values.
+        {
+            foreach ($visibilityLevels as $visibilityLevel)
+            {
+                if (!Resource\ResourceVisibility::is_valid_visibility_level($visibilityLevel))
+                {
+                    return false;
+                }
+            }
+
+            foreach ($uploaders as $uploaderIDString)
+            {
+                if (!Resource\UserResourceID::from_string($uploaderIDString))
+                {
+                    return false;
+                }
+            }
+        }
+
+        $uploaderConditional = empty($uploaders)
+                               ? "1"
+                               : "creator_resource_id IN ('".implode("','", $uploaders)."')";
+
+        $resourceVisibilityConditional = empty($visibilityLevels)
+                                         ? "1"
+                                         : "resource_visibility IN ('".implode("','", $visibilityLevels)."')";
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_tracks
+                                             WHERE {$resourceVisibilityConditional}
+                                             AND {$uploaderConditional}");
+
+        
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+                                                
+        return $dbResponse[0]["COUNT(*)"];
+    }
+    
+    // Returns one or more track resources as an array of TrackResource elements;
+    // or FALSE on error. The tracks will be sorted by upload date in descending
+    // order. The 'count' parameter defines the number of tracks to return at
+    // most (if 0, all will be returned); 'offset' sets the starting offset in
+    // the full list of tracks from which to extract the desired number of tracks;
+    // 'metadataOnly' sets whether to return only metadata (like track dimensions
+    // and name) or all data (including the track's container and manifesto);
+    // 'uploaders' is an array of user ID strings such that if non-empty, only
+    // tracks uploaded by these users will be included in the return array;
+    // 'visibilityLevels' is an array of ResourceVisibility elements such that
+    // only tracks whose visibility level is one of these will be included in
+    // the return array; and 'sort' can only be "timestamp" at this time.
+    public function get_tracks(int $count = 0,
+                               int $offset = 0,
+                               array $uploaders = [],
+                               array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC],
+                               bool $metadataOnly = true,
+                               string $sort = "timestamp")
+    {
+        // Assert that we received valid parameter values.
+        {
+            if (($offset < 0) ||
+                ($count < 0))
+            {
+                return false;
+            }
+
+            // We only support sorting by timestamp, for now.
+            if ($sort !== "timestamp")
+            {
+                return false;
+            }
+
+            foreach ($visibilityLevels as $visibilityLevel)
+            {
+                if (!Resource\ResourceVisibility::is_valid_visibility_level($visibilityLevel))
+                {
+                    return false;
+                }
+            }
+
+            foreach ($uploaders as $uploaderIDString)
+            {
+                if (!Resource\UserResourceID::from_string($uploaderIDString))
+                {
+                    return false;
+                }
+            }
+        }
+
+        $uploaderConditional = empty($uploaders)
+                               ? "1"
+                               : "creator_resource_id IN ('".implode("','", $uploaders)."')";
+
+        $resourceVisibilityConditional = empty($visibilityLevels)
+                                         ? "1"
+                                         : "resource_visibility IN ('".implode("','", $visibilityLevels)."')";
+
+        // A count of 0 will return all matching tracks.
+        $limitConditional = ($count <= 0)
+                            ? ""
+                            : "LIMIT {$offset},{$count}";
+
+        $dbResponse = $this->issue_db_query("SELECT resource_id,
+                                                    resource_visibility,
+                                                    creator_resource_id,
+                                                    creation_timestamp,
+                                                    download_count,
+                                                    track_name,
+                                                    track_width,
+                                                    track_height".
+                                                    ($metadataOnly? "" : ", track_container_gzip,
+                                                                            track_manifesto_gzip")."
+                                             FROM rsc_tracks
+                                             WHERE {$resourceVisibilityConditional}
+                                             AND {$uploaderConditional}
+                                             ORDER BY creation_timestamp DESC
+                                             {$limitConditional}");
+
+        // If the query failed.
+        if (!is_array($dbResponse))
+        {
+            return false;
+        }
+
+        // Make the discrete track variables into track resource objects.
+        $tracks = [];
+        foreach ($dbResponse as $trackParameters)
+        {
+            // Verify that we have all the required parameters for a track resource.
+            {
+                if (!isset($trackParameters["track_name"]) ||
+                    !isset($trackParameters["track_width"]) ||
+                    !isset($trackParameters["creation_timestamp"]) ||
+                    !isset($trackParameters["download_count"]) ||
+                    !isset($trackParameters["resource_id"]) ||
+                    !isset($trackParameters["creator_resource_id"]) ||
+                    !isset($trackParameters["resource_visibility"]))
+                {
+                    return false;
+                }
+
+                if (!$metadataOnly)
+                {
+                    if (!isset($trackParameters["track_container_gzip"]) ||
+                        !isset($trackParameters["track_manifesto_gzip"]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            $rsedTrack = new \RSC\RallySportEDTrackData();
+
+            if (!$rsedTrack->set_name($trackParameters["track_name"]) ||
+                !$rsedTrack->set_side_length($trackParameters["track_width"]))
+            {
+                return false;
+            }
+    
+            if (!$metadataOnly)
+            {
+                if (!$rsedTrack->set_container(gzdecode($trackParameters["track_container_gzip"])) ||
+                    !$rsedTrack->set_manifesto(gzdecode($trackParameters["track_manifesto_gzip"])))
+                {
+                    return false;
+                }
+            }
+    
+            $trackResource = Resource\TrackResource::with($rsedTrack,
+                                                          $trackParameters["creation_timestamp"],
+                                                          $trackParameters["download_count"],
+                                                          Resource\TrackResourceID::from_string($trackParameters["resource_id"]),
+                                                          Resource\UserResourceID::from_string($trackParameters["creator_resource_id"]),
+                                                          $trackParameters["resource_visibility"]);
+    
+            if (!$trackResource)
+            {
+                return false;
+            }
+
+            $tracks[] = $trackResource;
+        }
+
+        if (!$metadataOnly)
+        {
+            foreach ($tracks as $track)
+            {
+                $this->increment_track_download_count($track->id());
+            }
+        }
+
+        return $tracks;
     }
 
     // Adds into the TRACKS table a new track using the given track resource's
@@ -255,115 +441,15 @@ class TrackDatabase extends DatabaseConnection
 
         return $queryResults[0]["download_count"];
     }
-
-    // Returns as an array of TrackResource elements all public tracks uploaded
-    // by the given user. On error, returns FALSE.
-    public function get_all_public_track_resources_uploaded_by_user(Resource\UserResourceID $userID,
-                                                                    bool $metadataOnly = false)
-    {
-        $trackIDs = $this->get_ids_of_all_public_tracks_uploaded_by_user($userID);
-
-        if (!is_array($trackIDs) || !count($trackIDs))
-        {
-            return false;
-        }
-
-        // Fetch the track data.
-        $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
-        {
-            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString),
-                                                            Resource\ResourceVisibility::PUBLIC,
-                                                            $metadataOnly)))
-            {
-                $acc[] = $trackResource;
-            }
-
-            return $acc;
-        }, []);
-
-        if (count($tracks) !== count($trackIDs))
-        {
-            return false;
-        }
-
-        return $tracks;
-    }
     
-    // Returns the resource IDs (as an array of strings) of all public tracks
-    // in the database. On error, returns FALSE.
-    public function get_ids_of_all_public_tracks()
-    {
-        return $this->get_ids_of_all_public_tracks_uploaded_by_user(NULL);
-    }
-
-    // Returns the resource IDs (as an array of strings) of all public tracks
-    // uploaded by the given user, or all users if NULL. On error, returns FALSE.
-    public function get_ids_of_all_public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID = NULL)
-    {
-        if (!$this->is_connected())
-        {
-            return false;
-        }
-
-        $queryResults = $this->issue_db_query("SELECT resource_id
-                                               FROM rsc_tracks
-                                               WHERE creator_resource_id LIKE ?
-                                               AND resource_visibility = ?",
-                                              [($userResourceID? $userResourceID->string() : "%"),
-                                               Resource\ResourceVisibility::PUBLIC]);
-
-        if (!is_array($queryResults) || !count($queryResults))
-        {
-            return false;
-        }
-
-        return array_reduce($queryResults, function($acc, $element)
-        {
-            $acc[] = $element["resource_id"];
-            return $acc;
-        }, []);
-    }
-
-    // Returns as an array of TrackResource elements all public tracks in the
-    // database. On error, returns FALSE.
-    public function get_all_public_track_resources(bool $metadataOnly = false)
-    {
-        $trackIDs = $this->get_ids_of_all_public_tracks();
-
-        if (!is_array($trackIDs) || !count($trackIDs))
-        {
-            return false;
-        }
-
-        // Fetch the track data.
-        $tracks = array_reduce($trackIDs, function($acc, $trackIDString) use ($metadataOnly)
-        {
-            if (($trackResource = $this->get_track_resource(Resource\TrackResourceID::from_string($trackIDString),
-                                                            Resource\ResourceVisibility::PUBLIC,
-                                                            $metadataOnly)))
-            {
-                $acc[] = $trackResource;
-            }
-
-            return $acc;
-        }, []);
-
-        if (count($tracks) !== count($trackIDs))
-        {
-            return false;
-        }
-
-        return $tracks;
-    }
-
     // Returns the given track's data as a TrackResource object. The given
     // visibility level must match the actual visibility level of the track in
     // the database; or an error will be returned. If $metadataOnly is true, only
     // metadata will be included in the return object; excluding things like
     // the track's container. On error, returns FALSE.
-    public function get_track_resource(Resource\TrackResourceID $trackResourceID = NULL,
-                                       int /*Resource\ResourceVisibility*/ $expectedVisibility = Resource\ResourceVisibility::PUBLIC,
-                                       bool $metadataOnly = false)
+    public function get_track(Resource\TrackResourceID $trackResourceID = NULL,
+                              int /*Resource\ResourceVisibility*/ $expectedVisibility = Resource\ResourceVisibility::PUBLIC,
+                              bool $metadataOnly = false)
     {
         if (!$this->is_connected())
         {

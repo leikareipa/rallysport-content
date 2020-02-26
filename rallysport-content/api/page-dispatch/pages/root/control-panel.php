@@ -49,7 +49,7 @@ function control_panel() : void
 
         // Build a table that displays the tracks the user has uploaded.
         {
-            $tracks = (new DatabaseConnection\TrackDatabase())->get_all_public_track_resources_uploaded_by_user($loggedInUserID, true);
+            $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [$loggedInUserID->string()]);
             $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html(is_array($tracks)? $tracks : []));
         }
 
