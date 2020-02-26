@@ -25,16 +25,21 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
               method='POST'
               action='/rallysport-content/login.php'>
 
-            <label for='user-id'>User ID</label>
-            <input type='text'
-                   id='user-id'
-                   name='user_id'
-                   placeholder='E.g. user.xxx-xxx-xxx'
-                   value='".($_GET["id"] ?? "")."'
+            <label for='email'>Email</label>
+            <input type='email'
+                   id='email'
+                   name='email'
+                   placeholder='E.g. user@address.com'
                    required>
 
             <label for='password'>Password</label>
             <input type='password' id='password' name='password' required>
+
+            <div class='footnote'>
+                * <a href='/rallysport-content/?form=restore-lost-credentials'>
+                      Forgot your password?
+                  </a>
+            </div>
 
             <button name='submit_button'
                     type='submit'

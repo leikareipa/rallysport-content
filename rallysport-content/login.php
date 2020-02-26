@@ -16,30 +16,28 @@ require_once __DIR__."/api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/api/common-scripts/resource/resource-type.php";
 require_once __DIR__."/api/common-scripts/database-connection/user-database.php";
 
-if (isset($_SESSION["user_resource_id"]))
+if (API\Session\is_client_logged_in())
 {
     exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
                                                        "You were already logged in"));
 }
 
-if (!isset($_POST["user_id"]) ||
-    !isset($_POST["password"]))
+$email = ($_POST["email"] ?? NULL);
+$password = ($_POST["password"] ?? NULL);
+
+if (!isset($email) ||
+    !isset($password))
 {
     exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
-                                                       "Missing the user ID or password"));
+                                                       "Missing the email address or password"));
 }
 
-$userResourceID = Resource\UserResourceID::from_string($_POST["user_id"]);
-if (!$userResourceID)
-{
-    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
-                                                       "Incorrect user ID or password"));
-}
+$userResourceID = (new DatabaseConnection\UserDatabase())->get_user_id_with_credentials($email, $password);
 
-if (!(new DatabaseConnection\UserDatabase())->validate_credentials($userResourceID, $_POST["password"]))
+if (!$userResourceID) // Failed login.
 {
     exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=login",
-                                                       "Incorrect user ID or password"));
+                                                       "Unknown email address or password"));
 }
 else // Successful login.
 {

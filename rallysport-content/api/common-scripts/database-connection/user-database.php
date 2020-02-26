@@ -31,12 +31,6 @@ class UserDatabase extends DatabaseConnection
      * 
      */
 
-    public function __construct()
-    {
-        parent::__construct();
-        return;
-    }
-
     // Returns TRUE if the given user's account is active, i.e. not deleted or
     // in some other way disabled; FALSE otherwise.
     public function is_active_user_account(Resource\UserResourceID $resourceID) : bool
@@ -64,27 +58,40 @@ class UserDatabase extends DatabaseConnection
         return (($userInfo[0]["COUNT(*)"] == 0)? false : true);
     }
 
-    // Returns true if the given password is that of the given user; false
-    // otherwise.
-    public function validate_credentials(Resource\UserResourceID $resourceID, string $plaintextPassword) : bool
+    // Returns the user ID associated with the given email and password (both
+    // given in plaintext); or NULL on error.
+    public function get_user_id_with_credentials(string $email, string $password)
     {
-        if (!$this->is_connected() ||
-            !$resourceID)
+        if (!$this->is_connected())
         {
-            return false;
+            return NULL;
         }
 
-        $userInfo = $this->issue_db_query("SELECT password_hash_php
+        $emailHash = hash("sha256", $this->peppered($email));
+
+        $userInfo = $this->issue_db_query("SELECT password_hash_php,
+                                                  resource_id
                                            FROM rsc_users
-                                           WHERE resource_id = ?",
-                                          [$resourceID->string()]);
+                                           WHERE email_hash_sha256 = ?",
+                                          [$emailHash]);
 
         if (!is_array($userInfo) || (count($userInfo) != 1))
         {
-            return false;
+            return NULL;
         }
 
-        return password_verify($plaintextPassword, $userInfo[0]["password_hash_php"]);
+        if (!isset($userInfo[0]["password_hash_php"]) ||
+            !isset($userInfo[0]["resource_id"]))
+        {
+            return NULL;
+        }
+
+        if (!password_verify($password, $userInfo[0]["password_hash_php"]))
+        {
+            return NULL;
+        }
+
+        return Resource\UserResourceID::from_string($userInfo[0]["resource_id"]);
     }
 
     // Returns TRUE if a user account has not yet been registered using the
