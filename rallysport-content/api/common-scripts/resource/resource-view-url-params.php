@@ -24,7 +24,7 @@ abstract class ResourceViewURLParams
     {
         $count = ((int)($_GET["show"] ?? 6));
 
-        return max(1, $count);
+        return min(50, max(1, $count));
     }
 
     // Filter resources by exact ID.
