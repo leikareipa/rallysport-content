@@ -24,6 +24,9 @@ abstract class DatabaseConnection
     // Set to true while we're connected to the database.
     private $isConnected;
 
+    // A constant salt value; will not change on repeated invocations of the script.
+    private $pepper;
+
     // Establishes a connection to the database. Returns true on success; false
     // otherwise.
     public function __construct()
@@ -36,7 +39,8 @@ abstract class DatabaseConnection
             !isset($databaseCredentials["host"]) ||
             !isset($databaseCredentials["user"]) ||
             !isset($databaseCredentials["password"]) ||
-            !isset($databaseCredentials["database"]))
+            !isset($databaseCredentials["database"]) ||
+            !isset($databaseCredentials["pepper"]))
         {
             $this->isConnected = false;
             return;
@@ -48,8 +52,16 @@ abstract class DatabaseConnection
                                          $databaseCredentials["database"]);
 
         $this->isConnected = (bool)($this->database && !mysqli_connect_error());
+
+        $this->pepper = $databaseCredentials["pepper"];
         
         return;
+    }
+
+    // Salts the given string with a stable salt (i.e. a pepper).
+    function peppered(string $string) : string
+    {
+        return ($this->pepper . $string);
     }
 
     public function is_connected() : bool

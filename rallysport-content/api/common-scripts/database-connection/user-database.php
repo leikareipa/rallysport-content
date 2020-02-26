@@ -47,7 +47,7 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        $userInfo = $this->issue_db_query("SELECT php_password_hash
+        $userInfo = $this->issue_db_query("SELECT password_hash_php
                                            FROM rsc_users
                                            WHERE resource_id = ?",
                                           [$resourceID->string()]);
@@ -57,7 +57,7 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        return password_verify($plaintextPassword, $userInfo[0]["php_password_hash"]);
+        return password_verify($plaintextPassword, $userInfo[0]["password_hash_php"]);
     }
 
     // Returns TRUE if a user account has not yet been registered using the
@@ -74,6 +74,30 @@ class UserDatabase extends DatabaseConnection
                                              FROM rsc_users
                                              WHERE resource_hash = ?",
                                             [$resourceHash]);
+
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+
+        return (($dbResponse[0]["COUNT(*)"] == 0)? true : false);
+    }
+
+    // Returns true if the given peppered email hash matches such a hash of
+    // a previously-added user.
+    public function is_email_hash_unique(string $mailHashPepperedSHA256) : bool
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_users
+                                             WHERE email_hash_sha256 = ?",
+                                            [$mailHashPepperedSHA256]);
 
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
@@ -102,26 +126,29 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        /// TODO: Validate the password.
-
         $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
-        $emailHash = password_hash($plaintextEmail, PASSWORD_DEFAULT);
+        $emailHash = hash("sha256", $this->peppered($plaintextEmail));
 
-        $databaseReturnValue = $this->issue_db_command(
-                                 "INSERT INTO rsc_users
-                                   (resource_id,
-                                    resource_visibility,
-                                    resource_hash,
-                                    php_password_hash,
-                                    php_password_hash_email,
-                                    creation_timestamp)
-                                  VALUES (?, ?, ?, ?, ?, ?)",
-                                  [$resourceID->string(),
-                                   Resource\ResourceVisibility::PUBLIC,
-                                   $resourceHash,
-                                   $passwordHash,
-                                   $emailHash,
-                                   time()]);
+        /// TODO: If the email hash isn't unique, the database won't accept this
+        /// user and an error will be returned. But ideally, the user would be
+        /// told that the email address is a duplicate, rather than being given
+        /// a generic error from which the case can't easily be deduced. We
+        /// could do this e.g. with return error codes.
+
+        $databaseReturnValue = $this->issue_db_command("INSERT INTO rsc_users
+                                                         (resource_id,
+                                                          resource_visibility,
+                                                          resource_hash,
+                                                          password_hash_php,
+                                                          email_hash_sha256,
+                                                          creation_timestamp)
+                                                        VALUES (?, ?, ?, ?, ?, ?)",
+                                                       [$resourceID->string(),
+                                                        Resource\ResourceVisibility::PUBLIC,
+                                                        $resourceHash,
+                                                        $passwordHash,
+                                                        $emailHash,
+                                                        time()]);
 
         return (($databaseReturnValue == 0)? true : false);
     }

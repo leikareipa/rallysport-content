@@ -77,8 +77,11 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
                                                                   $email,
                                                                   $registrationHash))
     {
+        /// TODO: If the email is a duplicate, we should give a precise error
+        /// message about it.
+        
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
-                                                           "Database error"));
+                                                           "Database error (please try again or with different email)"));
     }
 
     exit(API\Response::code(303)->redirect_to("/rallysport-content/users/?form=new-account-created&new-user-id=".$userResourceID->string()));
