@@ -54,7 +54,7 @@ class TrackDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_tracks
-                                             WHERE resource_hash = ?",
+                                             WHERE resource_data_hash_sha256 = ?",
                                             [$resourceHash]);
 
         if (!is_array($dbResponse) ||
@@ -127,7 +127,7 @@ class TrackDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_command("UPDATE rsc_tracks
                                                SET resource_visibility = ?,
-                                                   resource_hash = NULL,
+                                                   resource_data_hash_sha256 = NULL,
                                                    track_width = NULL,
                                                    track_height = NULL,
                                                    track_name = NULL,
@@ -403,7 +403,7 @@ class TrackDatabase extends DatabaseConnection
                                  "INSERT INTO rsc_tracks
                                   (resource_id,
                                    resource_visibility,
-                                   resource_hash,
+                                   resource_data_hash_sha256,
                                    track_name,
                                    track_width,
                                    track_height,

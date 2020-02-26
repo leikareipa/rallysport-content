@@ -124,7 +124,7 @@ function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
         exit(API\Response::code(404)->error_message("No matching tracks found."));
     }
 
-    // Massage the data so it's output is in the desired format.
+    // Massage the data so its output is in the desired format.
     $tracksMassaged = array_reduce($tracks, function($acc, $element) use ($viewType)
     {
         $acc[] = $element->view($viewType);

@@ -72,7 +72,7 @@ class UserDatabase extends DatabaseConnection
 
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_users
-                                             WHERE resource_hash = ?",
+                                             WHERE resource_data_hash_sha256 = ?",
                                             [$resourceHash]);
 
         if (!is_array($dbResponse) ||
@@ -138,7 +138,7 @@ class UserDatabase extends DatabaseConnection
         $databaseReturnValue = $this->issue_db_command("INSERT INTO rsc_users
                                                          (resource_id,
                                                           resource_visibility,
-                                                          resource_hash,
+                                                          resource_data_hash_sha256,
                                                           password_hash_php,
                                                           email_hash_sha256,
                                                           creation_timestamp)
