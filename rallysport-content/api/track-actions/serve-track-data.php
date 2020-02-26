@@ -102,14 +102,16 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
 function serve_track_data_as_json(string /*ResourceViewType*/ $viewType,
                                   Resource\TrackResourceID $trackResourceID = NULL) : void
 {
+    $metadataOnly = (strpos($viewType, "metadata") !== FALSE);
+
     // A NULL resource ID indicates that we should serve the data for all known
-    // tracks. However, for now, we only support serving individual tracks' data.
-    if (!$trackResourceID)
+    // tracks. However, for now, we can only serve metadata if requested for all
+    // tracks at once, not the full track data.
+    if (!$metadataOnly && !$trackResourceID)
     {
         exit(API\Response::code(400)->error_message("A track ID must be provided."));
     }
 
-    $metadataOnly = (strpos($viewType, "metadata") !== FALSE);
     $targetTrackIDs = ($trackResourceID? [$trackResourceID->string()] : []);
     $targetVisibilityLevels = [Resource\ResourceVisibility::PUBLIC];
     $targetUploaderIDs = [];
