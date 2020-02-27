@@ -60,7 +60,7 @@
 
 .track-metadata > .card > .media svg > polygon
 {
-    stroke: gray;
+    stroke: dimgray;
     stroke-width: 1.5;
     fill: none;
 }

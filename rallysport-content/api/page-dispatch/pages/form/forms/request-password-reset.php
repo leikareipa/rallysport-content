@@ -9,12 +9,13 @@
 
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
 
-// Represents a HTML form with which the user can log into their user account.
-abstract class UserLogin extends \RSC\HTMLPage\Component\Form
+// Represents a HTML form with which the user can request that their password
+// be reset.
+abstract class RequestPasswordReset extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
-        return "User login";
+        return "Request password reset";
     }
 
     static public function inner_html() : string
@@ -23,7 +24,14 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
         <form onsubmit='submit_button.disabled = true'
               class='html-page-form'
               method='POST'
-              action='/rallysport-content/login.php'>
+              action='/rallysport-content/request-password-reset.php'>
+
+            <label for='user-id'>User ID</label>
+            <input type='text'
+                   id='user-id'
+                   name='user_id'
+                   placeholder='E.g. user.xxx-xxx-xxx'
+                   required>
 
             <label for='email'>Email</label>
             <input type='email'
@@ -32,13 +40,9 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                    placeholder='E.g. user@address.com'
                    required>
 
-            <label for='password'>Password</label>
-            <input type='password' id='password' name='password' required>
-
             <div class='footnote'>
-                * <a href='/rallysport-content/?form=request-password-reset'>
-                      Forgot your password?
-                  </a>
+                * Please provide the user ID and email you registered with. You'll be
+                sent an email with instructions for resetting your password.
             </div>
 
             <button name='submit_button'

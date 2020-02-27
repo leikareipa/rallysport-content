@@ -28,11 +28,17 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
               method='POST'
               action='/rallysport-content/users/'>
 
-            <label for='user-id'>Email</label>
-            <input type='email' id='user-id' name='email' required>
+            <label for='email'>Email</label>
+            <input type='email'
+                   id='email'
+                   name='email'
+                   placeholder='E.g. user@address.com'
+                   required>
 
             <label for='password'>Password</label>
-            <input type='text' id='password' name='password' required>
+            <input type='text'
+                   id='password'
+                   name='password' required>
 
             <label for='track_file'>Track ZIP file*</label>
             <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>

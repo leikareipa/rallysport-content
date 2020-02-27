@@ -35,13 +35,6 @@ class TrackDatabase extends DatabaseConnection
      * 
      */
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        return;
-    }
-
     // Returns TRUE if a track has not yet been uploaded using the given hash;
     // FALSE otherwise. Note that FALSE will also be returned if an error is
     // encountered.

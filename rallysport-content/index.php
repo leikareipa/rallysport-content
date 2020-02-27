@@ -25,8 +25,12 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"] ?? "unknown-form-identifier")
             {
-                case "login": API\PageDisplay\form(API\Form\UserLogin::class); break;
-                default:      API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
+                case "login":                           API\PageDisplay\form(API\Form\UserLogin::class); break;
+                case "request-password-reset":          API\PageDisplay\form(API\Form\RequestPasswordReset::class); break;
+                case "password-reset-request-success":  API\PageDisplay\form(API\Form\PasswordResetRequestSuccess::class); break;
+                case "reset-password":                  API\PageDisplay\form(API\Form\ResetPassword::class); break;
+                case "password-reset-success":          API\PageDisplay\form(API\Form\PasswordResetSuccess::class); break;
+                default:                                API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
             }
         }
         else

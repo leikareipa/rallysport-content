@@ -123,6 +123,14 @@
     background-color: rgba(255, 0, 0, 0.055);
 }
 
+/* For error strings inside <form> elements.*/
+.html-page-form-error-string.in-form
+{
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: -25px;
+}
+
 .html-page-form-error-string::before
 {
     font-family: "Font Awesome 5 Free";
@@ -135,3 +143,9 @@
 {
     content: ".";
 }
+
+.html-page-form-error-string.in-form::after
+{
+    content: "";
+}
+

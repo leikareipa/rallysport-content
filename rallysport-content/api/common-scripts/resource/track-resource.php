@@ -8,6 +8,8 @@
  * 
  */
 
+require_once __DIR__."/resource.php";
+
 // A track made using RallySportED.
 class TrackResource extends Resource
 {

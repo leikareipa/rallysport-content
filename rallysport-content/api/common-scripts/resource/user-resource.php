@@ -8,6 +8,8 @@
  * 
  */
 
+require_once __DIR__."/resource.php";
+
 // A user who has registered on Rally-Sport Content.
 class UserResource extends Resource
 {

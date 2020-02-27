@@ -30,10 +30,11 @@ abstract class RallySportContentEmailer
     //
     public static function send_password_reset_link(string $to, array $resetToken) : bool
     {
+        $resetURL = "https://www.tarpeeksihyvaesoft.com/rallysport-content/?form=reset-password&token={$resetToken["value"]}";
         $message =
         "A request has been made to reset your password on Rally-Sport Content.\r\n".
         "To reset your password, visit the following link:\r\n\r\n".
-        "https://www.tarpeeksihyvaesoft.com/rallysport-content/?form=reset-password&token={$resetToken["value"]}\r\n\r\n".
+        "{$resetURL}\r\n\r\n".
         "The link is valid for 24 hours.";
 
         return static::send_email($to,

@@ -1,5 +1,6 @@
 <?php namespace RSC\API\Session;
       use RSC\DatabaseConnection;
+      use RSC\Resource;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -13,6 +14,9 @@
  * 
  */
 
+require_once __DIR__."/common-scripts/resource/user-resource.php";
+require_once __DIR__."/common-scripts/resource/resource-id.php";
+require_once __DIR__."/common-scripts/resource/resource-visibility.php";
 require_once __DIR__."/common-scripts/database-connection/user-database.php";
 
 // Returns TRUE if the current client is logged in; FALSE otherwise.
@@ -25,7 +29,7 @@ function is_client_logged_in() : bool
 // NULL if the client is not logged in.
 function logged_in_user_id()
 {
-    $id = \RSC\Resource\UserResourceID::from_string($_SESSION["user_resource_id"] ?? "");
+    $id = Resource\UserResourceID::from_string($_SESSION["user_resource_id"] ?? "");
 
     // Prevent usage of an account that has become disabled while being logged in.
     if ($id &&

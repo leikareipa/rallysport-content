@@ -24,13 +24,12 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
         return "
         <form class='html-page-form'>
 
-            <label for='user-id'>Your user ID*</label>
+            <label for='user-id'>Your user ID</label>
             <input type='text' id='user-id' name='email' value={$userIDString} readonly>
 
             <div class='footnote'>
-                * You can now log in to Rally-Sport Content using this ID and
-                the password you provided during registration. You'll need
-                them both, so don't lose them!
+                * You can now log in to Rally-Sport Content using the email and
+                password you registered with.
             </div>
 
             <a href='/rallysport-content/?form=login&id={$userIDString}'
