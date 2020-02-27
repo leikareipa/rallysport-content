@@ -24,8 +24,8 @@ abstract class PasswordResetRequestSuccess extends \RSC\HTMLPage\Component\Form
         <form class='html-page-form'>
 
             <div class='footnote'>
-                * An email has been dispatched to you. It contains the instructions
-                for resetting your password.
+                * An email has been dispatched to you with further instructions
+                on how to reset your password.
             </div>
 
             <a href='/rallysport-content/'

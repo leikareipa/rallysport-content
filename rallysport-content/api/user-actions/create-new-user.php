@@ -19,6 +19,7 @@ require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../common-scripts/resource/track-resource.php";
 require_once __DIR__."/../common-scripts/database-connection/user-database.php";
+require_once __DIR__."/../common-scripts/database-connection/track-database.php";
 
 // Attempts to add to the Rally-Sport Content database a new user.
 //
@@ -59,7 +60,15 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
         // registrations, so verify that a track matching this one's hash hasn't
         // already been registered with.
         {
-            $registrationHash = hash("sha256", $track->data()->container());
+            $registrationHash = DatabaseConnection\TrackDatabase::hash_of_track_data($track);
+
+            // Hashing the data would fail if the track resource instance contains
+            // only metadata. That shouldn't be the case in the instances we've
+            // got, but...
+            if (!$registrationHash)
+            {
+                exit(API\Response::code(500)->error_message("Internal server error. Registration failed."));
+            }
 
             if (!(new DatabaseConnection\UserDatabase())->is_resource_hash_unique($registrationHash))
             {

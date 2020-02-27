@@ -31,6 +31,39 @@ class UserDatabase extends DatabaseConnection
      * 
      */
 
+    // Utility function for creating a hash of the given password that can be
+    // stored in the user database.
+    public static function hash_of_user_password(string $plaintextPassword) : string
+    {
+        return password_hash($plaintextPassword, PASSWORD_DEFAULT);
+    }
+
+    // Utility function for creating a hash of the given email address that can
+    // be stored in the user database. On error, returns NULL. Note that we
+    // apply a stable salt (pepper) to the email before hashing - a random salt
+    // would be used, but Rally-Sport Content wants to be able to tell whether
+    // two hashed emails are duplicates of each other.
+    public static function hash_of_user_email_address(string $plaintextEmail) : string
+    {
+        $dbCredentials = json_decode(file_get_contents(self::database_credentials_filename()), true);
+
+        if (!is_array($dbCredentials))
+        {
+            return NULL;
+        }
+
+        $pepper = ($dbCredentials["pepper"] ?? NULL);
+
+        // Some sanity checks to ensure we have a reasonable pepper string.
+        if (!is_string($pepper) ||
+            strlen($pepper) < 20)
+        {
+            return NULL;
+        }
+
+        return hash("sha256", ($pepper . $plaintextEmail));
+    }
+
     // Returns TRUE if the given user's account is active, i.e. not deleted or
     // in some other way disabled; FALSE otherwise.
     public function is_active_user_account(Resource\UserResourceID $resourceID) : bool
@@ -99,7 +132,12 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        $emailHash = hash("sha256", $this->peppered($email));
+        $emailHash = self::hash_of_user_email_address($email);
+
+        if (!$emailHash)
+        {
+            return false;
+        }
 
         if (!hash_equals($userInfo[0]["email_hash_sha256"], $emailHash) ||
             !hash_equals($userInfo[0]["password_reset_token"], $resetToken))
@@ -190,7 +228,12 @@ class UserDatabase extends DatabaseConnection
             return NULL;
         }
 
-        $emailHash = hash("sha256", $this->peppered($email));
+        $emailHash = self::hash_of_user_email_address($email);
+
+        if (!$emailHash)
+        {
+            return false;
+        }
 
         if (!hash_equals($userInfo[0]["email_hash_sha256"], $emailHash))
         {
@@ -209,7 +252,12 @@ class UserDatabase extends DatabaseConnection
             return NULL;
         }
 
-        $emailHash = hash("sha256", $this->peppered($email));
+        $emailHash = self::hash_of_user_email_address($email);
+
+        if (!$emailHash)
+        {
+            return false;
+        }
 
         $userInfo = $this->issue_db_query("SELECT password_hash_php,
                                                   resource_id
@@ -263,7 +311,7 @@ class UserDatabase extends DatabaseConnection
 
     // Returns true if the given peppered email hash matches such a hash of
     // a previously-added user.
-    public function is_email_hash_unique(string $mailHashPepperedSHA256) : bool
+    public function is_email_hash_unique(string $emailHashPepperedSHA256) : bool
     {
         if (!$this->is_connected())
         {
@@ -273,7 +321,7 @@ class UserDatabase extends DatabaseConnection
         $dbResponse = $this->issue_db_query("SELECT COUNT(*)
                                              FROM rsc_users
                                              WHERE email_hash_sha256 = ?",
-                                            [$mailHashPepperedSHA256]);
+                                            [$emailHashPepperedSHA256]);
 
         if (!is_array($dbResponse) ||
             !count($dbResponse) ||
@@ -302,8 +350,14 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
-        $emailHash = hash("sha256", $this->peppered($plaintextEmail));
+        $passwordHash = self::hash_of_user_password($plaintextPassword);
+        $emailHash = self::hash_of_user_email_address($plaintextEmail);
+
+        if (!$passwordHash ||
+            !$emailHash)
+        {
+            return false;
+        }
 
         /// TODO: If the email hash isn't unique, the database won't accept this
         /// user and an error will be returned. But ideally, the user would be

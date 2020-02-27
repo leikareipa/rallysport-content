@@ -24,23 +24,19 @@ abstract class DatabaseConnection
     // Set to true while we're connected to the database.
     private $isConnected;
 
-    // A constant salt value; will not change on repeated invocations of the script.
-    private $pepper;
-
     // Establishes a connection to the database. Returns true on success; false
     // otherwise.
     public function __construct()
     {
         $this->isConnected = false;
         
-        $databaseCredentials = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../rsc-sql.json"), true);
+        $databaseCredentials = json_decode(file_get_contents(self::database_credentials_filename()), true);
 
         if (!$databaseCredentials ||
             !isset($databaseCredentials["host"]) ||
             !isset($databaseCredentials["user"]) ||
             !isset($databaseCredentials["password"]) ||
-            !isset($databaseCredentials["database"]) ||
-            !isset($databaseCredentials["pepper"]))
+            !isset($databaseCredentials["database"]))
         {
             $this->isConnected = false;
             return;
@@ -53,8 +49,6 @@ abstract class DatabaseConnection
 
         $this->isConnected = (bool)($this->database && !mysqli_connect_error());
 
-        $this->pepper = $databaseCredentials["pepper"];
-        
         return;
     }
 
@@ -64,18 +58,19 @@ abstract class DatabaseConnection
         return;
     }
 
+    // Returns the name of the configuration file which contains credentials
+    // for accessing Rally-Sport Content's database.
+    protected static function database_credentials_filename() : string
+    {
+        return ($_SERVER["DOCUMENT_ROOT"]."/../rsc-sql.json");
+    }
+
     public function disconnect() : void
     {
         mysqli_close($this->database);
         $this->is_connected = false;
 
         return;
-    }
-
-    // Salts the given string with a stable salt (i.e. a pepper).
-    function peppered(string $string) : string
-    {
-        return ($this->pepper . $string);
     }
 
     public function is_connected() : bool

@@ -59,12 +59,20 @@ function add_new_track(array $uploadedFileInfo) : void
     // database; so verify that a track too similar hasn't already been
     // uploaded.
     {
-        $trackDataHash = hash("sha256", $newTrack->data()->container());
+        $trackDataHash = DatabaseConnection\TrackDatabase::hash_of_track_data($newTrack);
+
+        // Hashing the data would fail if the track resource instance contains
+        // only metadata. That shouldn't be the case in the instances we've
+        // got, but...
+        if (!$trackDataHash)
+        {
+            exit(API\Response::code(500)->error_message("Internal server error. Track upload failed."));
+        }
 
         if (!(new DatabaseConnection\TrackDatabase())->is_resource_hash_unique($trackDataHash))
         {
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                               "A track like that has already been uploaded"));
+                                                               "A track too similar to that has already been uploaded"));
         }
 
         if (!(new DatabaseConnection\TrackDatabase())->is_track_name_unique($newTrack->data()->name()))
