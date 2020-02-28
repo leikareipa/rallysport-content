@@ -47,7 +47,7 @@ function add_new_track(array $uploadedFileInfo) : void
                                              0,
                                              Resource\TrackResourceID::random(),
                                              API\Session\logged_in_user_id(),
-                                             Resource\ResourceVisibility::PUBLIC);
+                                             Resource\ResourceVisibility::PROCESSING);
 
     if (!$newTrack)
     {
@@ -96,5 +96,5 @@ function add_new_track(array $uploadedFileInfo) : void
     }
 
     // Successfully added.
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/?form=new-track-uploaded&id={$newTrack->id()->string()}"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
 }

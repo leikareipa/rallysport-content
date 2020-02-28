@@ -49,8 +49,15 @@ function control_panel() : void
 
         // Build a table that displays the tracks the user has uploaded.
         {
-            $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0, 0, [$loggedInUserID->string()]);
-            $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html(is_array($tracks)? $tracks : []));
+            $trackDB = new DatabaseConnection\TrackDatabase();
+
+            $unprocessedTracks = $trackDB->get_tracks(0, 0, [$loggedInUserID->string()], [Resource\ResourceVisibility::PROCESSING]);
+            $publicTracks = $trackDB->get_tracks(0, 0, [$loggedInUserID->string()], [Resource\ResourceVisibility::PUBLIC]);
+
+            $tracks = array_merge(($publicTracks? $publicTracks : []),
+                                  ($unprocessedTracks? $unprocessedTracks : []));
+
+            $htmlPage->body->add_element(HTMLPage\Component\OwnUploadedTracksList::html($tracks));
         }
 
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

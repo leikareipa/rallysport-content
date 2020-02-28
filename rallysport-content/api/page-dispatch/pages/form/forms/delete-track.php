@@ -33,12 +33,14 @@ abstract class DeleteTrack extends \RSC\HTMLPage\Component\Form
 
     static public function inner_html() : string
     {
-        if (!\RSC\Resource\ResourceViewURLParams::target_id())
+        if (!Resource\ResourceViewURLParams::target_id())
         {
             exit(\RSC\API\Response::code(404)->error_message("Track deletion requires a target resource ID."));
         }
 
-        $trackResource = \RSC\Resource\TrackResource::from_database(\RSC\Resource\ResourceViewURLParams::target_id(), true);
+        $trackResource = Resource\TrackResource::from_database(Resource\ResourceViewURLParams::target_id(),
+                                                               true,
+                                                               [Resource\ResourceVisibility::PUBLIC]);
 
         if (!$trackResource)
         {

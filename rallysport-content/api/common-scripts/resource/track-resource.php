@@ -19,16 +19,16 @@ class TrackResource extends Resource
     // given ID from the database. If $metadataOnly is true, only metadata will
     // be fetched (the actual track data, like its manifesto and container,
     // will not). You must also explicitly state the expected resource visibility
-    // level - an error results if it does not match the resource's visibility
+    // level(s) - an error results if it does not match the resource's visibility
     // level in the database. On error, returns NULL.
     public static function from_database(string $resourceIDString,
                                          bool $metadataOnly = false,
-                                         int /*ResourceVisibility*/ $visibility = ResourceVisibility::PUBLIC)
+                                         array $visibility = [ResourceVisibility::PUBLIC])
     {
         $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0,
                                                                        0,
                                                                        [],
-                                                                       [$visibility],
+                                                                       $visibility,
                                                                        [$resourceIDString],
                                                                        $metadataOnly);
 

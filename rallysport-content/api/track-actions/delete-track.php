@@ -31,7 +31,9 @@ function delete_track(Resource\TrackResourceID $resourceID) : void
                                                            "Must be logged in to delete a track"));
     }
 
-    $trackResource = Resource\TrackResource::from_database($resourceID->string(), true);
+    $trackResource = Resource\TrackResource::from_database($resourceID->string(),
+                                                           true,
+                                                           [Resource\ResourceVisibility::PUBLIC]);
 
     if (!$trackResource)
     {
@@ -53,5 +55,5 @@ function delete_track(Resource\TrackResourceID $resourceID) : void
     }
 
     // Successfully deleted.
-    exit(API\Response::code(303)->redirect_to("/rallysport-content/tracks/"));
+    exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
 }

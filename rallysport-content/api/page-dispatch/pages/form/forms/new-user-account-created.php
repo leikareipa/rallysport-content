@@ -32,7 +32,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
                 password you registered with.
             </div>
 
-            <a href='/rallysport-content/?form=login&id={$userIDString}'
+            <a href='/rallysport-content/?form=login'
                class='round-button bottom-right icon-right-arrow'
                title='Proceed to log in'>
             </a>

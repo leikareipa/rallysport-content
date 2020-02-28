@@ -54,8 +54,45 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
         {
             foreach ($tracks as $track)
             {
-                $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
+                $kierrosSVG = (new DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
                 $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
+
+                if ($track->visibility() === Resource\ResourceVisibility::PUBLIC)
+                {
+                    $iconRow =
+                    "
+                    <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
+                        title='Permalink'>
+                        <i class='fas fa-fw fa-link'></i>
+                    </a>
+
+                    <a href='/rallysported/?track={$track->id()->string()}'
+                        title='Open a copy in RallySportED'>
+                        <i class='fas fa-fw fa-hammer'></i>
+                    </a>
+
+                    <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'
+                        title='Delete'>
+                        <i class='fas fa-fw fa-times'></i>
+                    </a>
+
+                    <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
+                        title='Download as a ZIP'>
+                        <i class='fas fa-fw fa-file-download'></i>
+                        {$track->download_count()}
+                    </a>
+                    ";
+                }
+                else
+                {
+                    $iconRow =
+                    "
+                    <span class='processing'
+                          title='This track will be available after undergoing manual verification'>
+                        Processing...
+                    </span>
+                    ";
+                }
 
                 $tableRows[] = "
                 <tr>
@@ -66,33 +103,14 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                             {$kierrosSVG}
                         </div>
 
-                        {$track->data()->name()}
+                        <span title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
+                            {$track->data()->name()}
+                        </span>
 
                     </td>
 
                     <td class='icon-row'>
-
-                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
-                           title='Permalink'>
-                            <i class='fas fa-fw fa-link'></i>
-                        </a>
-
-                        <a href='/rallysported/?track={$track->id()->string()}'
-                           title='Open a copy in RallySportED'>
-                            <i class='fas fa-fw fa-hammer'></i>
-                        </a>
-
-                        <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'
-                           title='Delete'>
-                            <i class='fas fa-fw fa-times'></i>
-                        </a>
-
-                        <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
-                           title='Download as a ZIP'>
-                            <i class='fas fa-fw fa-file-download'></i>
-                            {$track->download_count()}
-                        </a>
-                        
+                        {$iconRow}
                     </td>
 
                 </tr>

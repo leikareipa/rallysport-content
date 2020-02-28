@@ -15,7 +15,7 @@
     color: inherit;
 }
 
-.rsc-table.own-tracks-list tr:hover > td.icon-row a
+.rsc-table.own-tracks-list tr:hover > td.icon-row
 {
     color: gray;
 }
