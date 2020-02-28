@@ -20,7 +20,8 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
     static public function css() : string
     {
         return file_get_contents(__DIR__."/css/round-button.css").
-               file_get_contents(__DIR__."/css/rsc-table.css");
+               file_get_contents(__DIR__."/css/rsc-table.css").
+               file_get_contents(__DIR__."/css/own-uploaded-track-list.css");
     }
 
     static public function html(array /*elements = TrackResource*/ $tracks) : string
@@ -53,23 +54,45 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
         {
             foreach ($tracks as $track)
             {
+                $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
                 $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
 
                 $tableRows[] = "
                 <tr>
 
                     <td>
-                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
-                            {$track->data()->name()}
-                        </a>
+
+                        <div class='media'>
+                            {$kierrosSVG}
+                        </div>
+
+                        {$track->data()->name()}
+
                     </td>
 
-                    <td style='text-align: center'>{$trackDownloadCount}</td>
-                    
-                    <td style='text-align: right'>
-                        <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'>
-                            delete
+                    <td class='icon-row'>
+
+                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
+                           title='Permalink'>
+                            <i class='fas fa-fw fa-link'></i>
                         </a>
+
+                        <a href='/rallysported/?track={$track->id()->string()}'
+                           title='Open a copy in RallySportED'>
+                            <i class='fas fa-fw fa-hammer'></i>
+                        </a>
+
+                        <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'
+                           title='Delete'>
+                            <i class='fas fa-fw fa-times'></i>
+                        </a>
+
+                        <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
+                           title='Download as a ZIP'>
+                            <i class='fas fa-fw fa-file-download'></i>
+                            {$track->download_count()}
+                        </a>
+                        
                     </td>
 
                 </tr>
@@ -82,24 +105,31 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
         
             <div class='rsc-table-title'>Tracks you've uploaded</div>
 
-            <a href='/rallysport-content/tracks/?form=add' title='Upload a new track'>
+            <a href='/rallysport-content/tracks/?form=add'
+               title='Upload a new track'>
+
                 <div class='round-button top-right'>
                     <i class='fas fa-upload'></i>
                 </div>
+
             </a>
 
-            <table class='rsc-table' style='width: 395px;'>
+            <table class='rsc-table own-tracks-list'
+                   style='width: 395px;'>
 
                 <thead>
+
                     <tr>
                         <th >Name</th>
-                        <th style='text-align: center'>Views</th>
-                        <th style='text-align: right'>Actions</th>
+                        <th class='icon-row' colspan='3'>Manage</th>
                     </tr>
+
                 </thead>
 
                 <tbody>
+
                     ".implode("\n", $tableRows)."
+
                 </tbody>
 
             </table>

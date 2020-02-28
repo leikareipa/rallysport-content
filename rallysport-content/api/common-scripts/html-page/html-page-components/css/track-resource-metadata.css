@@ -67,7 +67,7 @@
 
 .track-metadata > .card > .media svg > polygon
 {
-    stroke: dimgray;
+    stroke: black;
     stroke-width: 1;
     fill: none;
 }
@@ -75,4 +75,5 @@
 .track-metadata:hover > .card > .media svg > polygon
 {
     stroke: black;
+    stroke-width: 2;
 }

@@ -4,7 +4,6 @@
     display: inline-block;
     width: 420px;
     padding: 35px;
-    border: 1px solid lightgray;
     border-radius: 12px;
     border: 1px dashed lightgray;
 }

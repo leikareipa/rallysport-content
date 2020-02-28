@@ -1,0 +1,41 @@
+.rsc-table.own-tracks-list th.icon-row,
+.rsc-table.own-tracks-list td.icon-row
+{
+    text-align: right;
+}
+
+.rsc-table.own-tracks-list td.icon-row
+{
+    color: lightgray;
+}
+
+.rsc-table.own-tracks-list td.icon-row a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+.rsc-table.own-tracks-list tr:hover > td.icon-row a
+{
+    color: gray;
+}
+
+.rsc-table.own-tracks-list tr > td.icon-row a:hover
+{
+    color: black;
+}
+
+.rsc-table.own-tracks-list .media
+{
+    display: inline-block;
+    width: 25px;
+    height: 16px;
+    border-radius: 0;
+}
+
+.rsc-table.own-tracks-list .media svg > polygon
+{
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+}
