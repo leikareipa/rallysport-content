@@ -383,104 +383,116 @@ class UserDatabase extends DatabaseConnection
         return (($databaseReturnValue == 0)? true : false);
     }
 
-    // Returns the resource IDs (as an array of strings) of all public users.
-    // On error, returns FALSE.
-    public function get_ids_of_all_public_users()
+    // Returns one or more user resources as an array of UserResource elements;
+    // or FALSE on error. The users will be sorted by creation date in descending
+    // order.
+    //
+    // $count = defines the number of users to return at most (if 0, all will
+    // be returned).
+    //
+    // $offset = sets the starting offset in the full list of users from which
+    // to extract the desired number of users.
+    //
+    // $visibilityLevels = an array of ResourceVisibility elements such that
+    // only users whose visibility level is one of these will be included in
+    // the return array.
+    //
+    // $userIDs = an array of user ID strings such that if non-empty, only
+    // users whose resource ID matches one of these strings will be included
+    // in the return array.
+    //
+    // $sort = sets the property by which to sort the users; but can only be
+    // "timestamp" at this time.
+    //
+    public function get_users(int $count = 0,
+                              int $offset = 0,
+                              array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC],
+                              array $userIDs = [],
+                              string $sort = "timestamp")
     {
-        if (!$this->is_connected())
+        // Assert that we received valid parameter values.
         {
-            return false;
-        }
-
-        $queryResults = $this->issue_db_query("SELECT resource_id
-                                               FROM rsc_users
-                                               WHERE resource_visibility = ?",
-                                              [Resource\ResourceVisibility::PUBLIC]);
-
-        if (!is_array($queryResults) || !count($queryResults))
-        {
-            return false;
-        }
-
-        return array_reduce($queryResults, function($acc, $element)
-        {
-            $acc[] = $element["resource_id"];
-            return $acc;
-        }, []);
-    }
-
-    // Returns as an array of UserResource elements all public users in the
-    // database. On error, returns FALSE.
-    public function get_all_public_user_resources()
-    {
-        $userIDs = $this->get_ids_of_all_public_users();
-
-        if (!is_array($userIDs) || !count($userIDs))
-        {
-            return false;
-        }
-
-        // Fetch the user data.
-        $users = array_reduce($userIDs, function($acc, $element)
-        {
-            if (($userResource = Resource\UserResource::from_database($element)))
+            if (($offset < 0) ||
+                ($count < 0))
             {
-                $acc[] = $userResource;
+                return false;
             }
 
-            return $acc;
-        }, []);
+            // We only support sorting by timestamp, for now.
+            if ($sort !== "timestamp")
+            {
+                return false;
+            }
 
-        if (count($users) !== count($userIDs))
-        {
-            return false;
+            foreach ($visibilityLevels as $visibilityLevel)
+            {
+                if (!Resource\ResourceVisibility::is_valid_visibility_level($visibilityLevel))
+                {
+                    return false;
+                }
+            }
+
+            foreach ($userIDs as $userIDString)
+            {
+                if (!Resource\UserResourceID::from_string($userIDString))
+                {
+                    return false;
+                }
+            }
         }
 
-        return $users;
-    }
+        $resourceVisibilityConditional = empty($visibilityLevels)
+                                         ? "1"
+                                         : "resource_visibility IN ('".implode("','", $visibilityLevels)."')";
 
-    // Returns the given user's data as a UserResourceID object. The given
-    // visibility level must match the actual visibility level of the user
-    // in the database; or an error will be returned.On error, returns FALSE.
-    public function get_user_resource(Resource\UserResourceID $userResourceID = NULL,
-                                      int /*Resource\ResourceVisibility*/ $expectedVisibility = Resource\ResourceVisibility::PUBLIC)
-    {
-        if (!$this->is_connected())
-        {
-            return false;
-        }
+        $userIDConditional = empty($userIDs)
+                             ? "1"
+                             : "resource_id IN ('".implode("','", $userIDs)."')";
 
-        if (!$userResourceID)
-        {
-            return false;
-        }
+        // A count of 0 will return all matching users.
+        $limitConditional = ($count <= 0)
+                            ? ""
+                            : "LIMIT {$offset},{$count}";
 
         $dbResponse = $this->issue_db_query("SELECT resource_id,
                                                     resource_visibility,
                                                     creation_timestamp
                                              FROM rsc_users
-                                             WHERE resource_id = ?
-                                             AND resource_visibility = ?",
-                                            [$userResourceID->string(),
-                                             $expectedVisibility]);
+                                             WHERE {$resourceVisibilityConditional}
+                                             AND {$userIDConditional}
+                                             ORDER BY creation_timestamp DESC
+                                             {$limitConditional}");
 
-        // User resource IDs should be unique, so we should find no more than
-        // one element in the response array (or 0 elements if the ID doesn't
-        // exist).
-        if (!is_array($dbResponse) || count($dbResponse) != 1)
+        // If the query failed.
+        if (!is_array($dbResponse))
         {
             return false;
         }
 
-        $userResource = \RSC\Resource\UserResource::with(Resource\UserResourceID::from_string($dbResponse[0]["resource_id"]),
-                                                         $dbResponse[0]["creation_timestamp"],
-                                                         $dbResponse[0]["resource_visibility"]);
-
-        if (!$userResource)
+        // Combine the discrete user variables to form user resource objects.
+        $users = [];
+        foreach ($dbResponse as $userParameters)
         {
-            return false;
+            // Verify that we have all the required parameters for a user resource.
+            if (!isset($userParameters["resource_id"]) ||
+                !isset($userParameters["resource_visibility"]) ||
+                !isset($userParameters["creation_timestamp"]))
+            {
+                return false;
+            }
+
+            $userResource = Resource\UserResource::with(Resource\UserResourceID::from_string($userParameters["resource_id"]),
+                                                        $userParameters["creation_timestamp"],
+                                                        $userParameters["resource_visibility"]);
+    
+            if (!$userResource)
+            {
+                return false;
+            }
+
+            $users[] = $userResource;
         }
 
-        return $userResource;
+        return $users;
     }
 }

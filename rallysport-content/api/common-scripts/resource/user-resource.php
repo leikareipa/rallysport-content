@@ -22,16 +22,19 @@ class UserResource extends Resource
     public static function from_database(string $resourceIDString,
                                          int /*ResourceVisibility*/ $visibility = ResourceVisibility::PUBLIC)
     {
-        $resourceID = UserResourceID::from_string($resourceIDString);
-        $userResource = (new DatabaseConnection\UserDatabase())->get_user_resource($resourceID, $visibility);
+        $users = (new DatabaseConnection\UserDatabase())->get_users(0,
+                                                                    0,
+                                                                    [$visibility],
+                                                                    [$resourceIDString]);
 
-        if (!$userResource)
+        // If the database query failed.
+        if (!is_array($users) || (count($users) !== 1))
         {
             return NULL;
         }
         else
         {
-            return $userResource;
+            return $users[0];
         }
     }
 

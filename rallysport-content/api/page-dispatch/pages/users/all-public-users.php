@@ -1,6 +1,7 @@
 <?php namespace RSC\API\PageDisplay\Users;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
+      use RSC\Resource;
       use RSC\API;
 
 /*
@@ -26,7 +27,10 @@ require_once __DIR__."/../../../common-scripts/database-connection/track-databas
 //
 function all_public_users() : void
 {
-    $users = (new DatabaseConnection\UserDatabase())->get_all_public_user_resources();
+    // We'll query the database for all public users.
+    $visibilityConditional = [Resource\ResourceVisibility::PUBLIC];
+
+    $users = (new DatabaseConnection\UserDatabase())->get_users(0, 0, $visibilityConditional);
 
     // If we either failed to fetch user data, or there was none to fetch.
     if (!is_array($users))

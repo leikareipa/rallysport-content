@@ -32,7 +32,24 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
         exit(API\Response::code(404)->error_message("Invalid user ID."));
     }
 
-    $user = (new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID, Resource\ResourceVisibility::PUBLIC);
+    // We'll query the database for a specific public user.
+    $visibilityConditional = [Resource\ResourceVisibility::PUBLIC];
+    $userIDConditional = [$userResourceID->string()];
+
+    $user = (new DatabaseConnection\UserDatabase())->get_users(0,
+                                                               0,
+                                                               $visibilityConditional,
+                                                               $userIDConditional);
+
+    // If the database query failed.
+    if (!is_array($user) || (count($user) !== 1))
+    {
+        $user = NULL;
+    }
+    else
+    {
+        $user = $user[0];
+    }
 
     // Build a HTML page that displays the requested users' metadata.
     {

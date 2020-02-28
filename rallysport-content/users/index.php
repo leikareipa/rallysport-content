@@ -56,7 +56,19 @@ switch ($_SERVER["REQUEST_METHOD"])
         }
         else if ($_GET["metadata"] ?? false)
         {
-            API\Users\serve_user_data_as_json("metadata-array", Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
+            if (Resource\ResourceViewURLParams::target_id())
+            {
+                $userID = Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id());
+            }
+            else
+            {
+                // A NULL user ID means we want the metadata of all users
+                // rather than of a specific one.
+                $userID = NULL;
+            }
+
+            API\Users\serve_user_data_as_json("metadata-array", $userID);
+            
         }
         else // Provide a HTML view into the user data.
         {

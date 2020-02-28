@@ -27,13 +27,13 @@ require_once __DIR__."/../common-scripts/database-connection/user-database.php";
 function serve_user_data_as_json(string /*ResourceViewType*/ $viewType,
                                  Resource\UserResourceID $userResourceID = NULL) : void
 {
-    if (!$userResourceID)
-    {
-        exit(API\Response::code(400)->error_message("Invalid user ID."));
-    }
+    $targetUserIDs = ($userResourceID? [$userResourceID->string()] : []);
+    $targetVisibilityLevels = [Resource\ResourceVisibility::PUBLIC];
 
-    $users = ($userResourceID? [(new DatabaseConnection\UserDatabase())->get_user_resource($userResourceID, Resource\ResourceVisibility::PUBLIC)]
-                               : (new DatabaseConnection\UserDatabase())->get_all_public_user_resources());
+    $users = (new DatabaseConnection\UserDatabase())->get_users(0,
+                                                                0,
+                                                                $targetVisibilityLevels,
+                                                                $targetUserIDs);
 
     if (!is_array($users) || !count($users) || !$users[0])
     {
