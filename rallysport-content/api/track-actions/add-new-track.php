@@ -12,13 +12,14 @@
  * 
  */
 
-require_once __DIR__."/../response.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../common-scripts/svg-image-from-kierros-data.php";
 require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
+require_once __DIR__."/../response.php";
 require_once __DIR__."/../session.php";
+require_once __DIR__."/../emailer.php";
 
 // Takes in a $_FILES[][...] array describing an uploaded file whose data should
 // be added into the database as a new track. We expect the file to be a RallySportED
@@ -110,6 +111,19 @@ function add_new_track(array $uploadedFileInfo) : void
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
                                                            "Database error"));
+    }
+
+    // If this is the only new track awaiting review, notify the administrator
+    // to get to work on reviewing. (We don't want to spam the notification
+    // on every track added - just on the first new upload after all others
+    // have been reviewed.)
+    {
+        $numTracksAwaitingProcessing = $trackDB->tracks_count([], [Resource\ResourceVisibility::PROCESSING]);
+
+        if ($numTracksAwaitingProcessing === 1)
+        {
+            \RSC\RallySportContentEmailer::notify_administrator_of_new_upload();
+        }
     }
 
     // Successfully added.

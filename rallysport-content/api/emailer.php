@@ -12,6 +12,8 @@ abstract class RallySportContentEmailer
 {
     public const SENDER_ADDRESS = "Rally-Sport Content <rsc@tarpeeksihyvaesoft.com>";
 
+    private const ADMIN_ADDRESS = "Tarpeeksi Hyvae Soft <sw@tarpeeksihyvaesoft.com>";
+
     private static function send_email(string $to, string $title, string $message) : bool
     {
         $acceptedForDelivery = mail($to, $title, $message,
@@ -41,6 +43,19 @@ abstract class RallySportContentEmailer
 
         return static::send_email($to,
                                   "Resetting your password on Rally-Sport Content",
+                                  $message);
+    }
+
+    // Informs Rally-Sport Content's administrator that users have uploaded
+    // new resources that need to be reviewed.
+    public static function notify_administrator_of_new_upload()
+    {
+        $message =
+        "One or more new resources have been uploaded to Rally-Sport Content and\r\n".
+        "are awaiting verification.";
+
+        return static::send_email(static::ADMIN_ADDRESS,
+                                  "RSC: New resources have been uploaded",
                                   $message);
     }
 }
