@@ -60,7 +60,7 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
         // registrations, so verify that a track matching this one's hash hasn't
         // already been registered with.
         {
-            $registrationHash = DatabaseConnection\TrackDatabase::hash_of_track_data($track);
+            $registrationHash = DatabaseConnection\TrackDatabase::generate_hash_of_track_data($track);
 
             // Hashing the data would fail if the track resource instance contains
             // only metadata. That shouldn't be the case in the instances we've

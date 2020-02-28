@@ -33,7 +33,7 @@ class UserDatabase extends DatabaseConnection
 
     // Utility function for creating a hash of the given password that can be
     // stored in the user database.
-    public static function hash_of_user_password(string $plaintextPassword) : string
+    public static function generate_hash_of_user_password(string $plaintextPassword) : string
     {
         return password_hash($plaintextPassword, PASSWORD_DEFAULT);
     }
@@ -43,7 +43,7 @@ class UserDatabase extends DatabaseConnection
     // apply a stable salt (pepper) to the email before hashing - a random salt
     // would be used, but Rally-Sport Content wants to be able to tell whether
     // two hashed emails are duplicates of each other.
-    public static function hash_of_user_email_address(string $plaintextEmail) : string
+    public static function generate_hash_of_user_email_address(string $plaintextEmail) : string
     {
         $dbCredentials = json_decode(file_get_contents(self::database_credentials_filename()), true);
 
@@ -132,7 +132,7 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        $emailHash = self::hash_of_user_email_address($email);
+        $emailHash = self::generate_hash_of_user_email_address($email);
 
         if (!$emailHash)
         {
@@ -228,7 +228,7 @@ class UserDatabase extends DatabaseConnection
             return NULL;
         }
 
-        $emailHash = self::hash_of_user_email_address($email);
+        $emailHash = self::generate_hash_of_user_email_address($email);
 
         if (!$emailHash)
         {
@@ -252,7 +252,7 @@ class UserDatabase extends DatabaseConnection
             return NULL;
         }
 
-        $emailHash = self::hash_of_user_email_address($email);
+        $emailHash = self::generate_hash_of_user_email_address($email);
 
         if (!$emailHash)
         {
@@ -350,8 +350,8 @@ class UserDatabase extends DatabaseConnection
             return false;
         }
 
-        $passwordHash = self::hash_of_user_password($plaintextPassword);
-        $emailHash = self::hash_of_user_email_address($plaintextEmail);
+        $passwordHash = self::generate_hash_of_user_password($plaintextPassword);
+        $emailHash = self::generate_hash_of_user_email_address($plaintextEmail);
 
         if (!$passwordHash ||
             !$emailHash)

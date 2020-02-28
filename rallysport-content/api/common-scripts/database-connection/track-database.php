@@ -37,7 +37,7 @@ class TrackDatabase extends DatabaseConnection
 
     // Utility function for creating a hash of the given track resource's data
     // that can be stored in the tracks database. On error, returns NULL.
-    public static function hash_of_track_data(Resource\TrackResource $track)
+    public static function generate_hash_of_track_data(Resource\TrackResource $track)
     {
         // Some track resources instances may only contain metadata and not the
         // actual track data. In that case, we can't produce a hash.
