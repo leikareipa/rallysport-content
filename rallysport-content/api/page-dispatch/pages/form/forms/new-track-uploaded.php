@@ -22,7 +22,7 @@ abstract class NewTrackUploaded extends \RSC\HTMLPage\Component\Form
 
     static public function inner_css() : string
     {
-        return file_get_contents(__DIR__."/../../../../common-scripts/html-page/html-page-components/css/track-metadata.css");
+        return file_get_contents(__DIR__."/../../../../common-scripts/html-page/html-page-components/css/track-resource-metadata.css");
     }
 
     static public function inner_html() : string

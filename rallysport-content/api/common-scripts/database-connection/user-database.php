@@ -64,6 +64,42 @@ class UserDatabase extends DatabaseConnection
         return hash("sha256", ($pepper . $plaintextEmail));
     }
 
+    // Returns the count of users in the database; or FALSE on error. The
+    // 'visibilityLevels' array provides ResourceVisibility elements such that
+    // only users whose visibility level is one of these will be included in
+    // the count.
+    public function users_count(array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC]) : int
+    {
+        // Assert that we received valid parameter values.
+        {
+            foreach ($visibilityLevels as $visibilityLevel)
+            {
+                if (!Resource\ResourceVisibility::is_valid_visibility_level($visibilityLevel))
+                {
+                    return false;
+                }
+            }
+        }
+
+        $resourceVisibilityConditional = empty($visibilityLevels)
+                                         ? "1"
+                                         : "resource_visibility IN ('".implode("','", $visibilityLevels)."')";
+
+        $dbResponse = $this->issue_db_query("SELECT COUNT(*)
+                                             FROM rsc_users
+                                             WHERE {$resourceVisibilityConditional}");
+
+        
+        if (!is_array($dbResponse) ||
+            !count($dbResponse) ||
+            !isset($dbResponse[0]["COUNT(*)"]))
+        {
+            return false;
+        }
+                                                
+        return $dbResponse[0]["COUNT(*)"];
+    }
+
     // Returns TRUE if the given user's account is active, i.e. not deleted or
     // in some other way disabled; FALSE otherwise.
     public function is_active_user_account(Resource\UserResourceID $resourceID) : bool

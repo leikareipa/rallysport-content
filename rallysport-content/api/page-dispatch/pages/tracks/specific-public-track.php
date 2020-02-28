@@ -12,8 +12,8 @@
  */
 
 require_once __DIR__."/../../../response.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata-container.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-resource-metadata.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/resource-metadata-container.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
@@ -32,13 +32,17 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         exit(API\Response::code(404)->error_message("Invalid track ID."));
     }
 
+    // We'll query the database for a specific public track.
+    $visibilityConditional = [Resource\ResourceVisibility::PUBLIC];
+    $userIDConditional = [$trackResourceID->string()];
+
     // Note: The page only displays track metadata, so we request that the
     // database sends metadata only.
     $tracks = (new DatabaseConnection\TrackDatabase())->get_tracks(0,
                                                                    0,
                                                                    [],
-                                                                   [Resource\ResourceVisibility::PUBLIC],
-                                                                   [$trackResourceID->string()],
+                                                                   $visibilityConditional,
+                                                                   $userIDConditional,
                                                                    true);
 
     // If the database query failed.
@@ -58,8 +62,8 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
-        $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
-        $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
+        $htmlPage->use_component(HTMLPage\Component\ResourceMetadataContainer::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackResourceMetadata::class);
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
@@ -79,9 +83,9 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
             ";
 
             $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
-            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
             $htmlPage->body->add_element($track->view("metadata-html"));
-            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }

@@ -12,14 +12,16 @@
 }
 
 .page-number-selector span,
-.page-number-selector .fas
+.page-number-selector .fas,
+.page-number-selector .far
 {
     padding: 3px 6px;
     border-radius: 4px;
     line-height: 10px;
 }
 
-.page-number-selector .fas
+.page-number-selector .fas,
+.page-number-selector .far
 {
     color: lightgray;
 }

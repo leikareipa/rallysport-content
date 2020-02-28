@@ -1,0 +1,68 @@
+.user-metadata
+{
+    padding: 15px;
+    margin: 7px;
+    border-radius: 0;
+    text-align: left;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 12px;
+}
+
+.user-metadata > .card
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-metadata > .card > .info-box
+{
+    padding: 10px 0;
+    margin-left: 10px;
+    text-align: left;
+    position: relative;
+}
+
+.user-metadata > .card > .info-box > .user-title
+{
+    text-align: left;
+    display: inline-block;
+}
+
+.user-metadata > .card > .info-box > .icon-row
+{
+    position: absolute;
+    display: inline-block;
+    color: lightgray;
+    right: 0;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.user-metadata > .card > .info-box > .icon-row > a
+{
+    text-decoration: none;
+}
+
+.user-metadata > .card > .info-box > .icon-row > a:hover
+{
+    text-decoration: none;
+    color: black;
+}
+
+.user-metadata > .card > .media
+{
+    text-align: center;
+    width: 338px;
+    height: 210px;
+    border-radius: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: lightgray;
+    font-size: 500%;
+    font-weight: bold;
+}

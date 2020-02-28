@@ -17,20 +17,20 @@ require_once __DIR__."/../html-page-component.php";
 //
 //   1. Create the page object: $page = new HTMLPage();
 //
-//   2. Import the element's fragment class into the page object: $page->use_component(TrackMetadata::class);
+//   2. Import the element's fragment class into the page object: $page->use_component(TrackResourceMetadata::class);
 //
-//   3. Insert an instance of the element onto the page: $page->body->add_element(TrackMetadata::html($trackInfo));
+//   3. Insert an instance of the element onto the page: $page->body->add_element(TrackResourceMetadata::html($trackInfo));
 //      The $trackInfo parameter contains the actual track metadata as fetched
 //      from Rally-Sport Content's track database.
 //
-//   4. Optionally, you can use the TrackMetadataContainer to hold multiple
+//   4. Optionally, you can use the ResourceMetadataContainer to hold multiple
 //      track metadata elements.
 //
-abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
+abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/track-metadata.css");
+        return file_get_contents(__DIR__."/css/track-resource-metadata.css");
     }
 
     static public function html(\RSC\Resource\TrackResource $track) : string
@@ -44,7 +44,9 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
 
                 <div class='media'>
                     <a title='Open a copy in RallySportED'
-                       href='/rallysported/?track={$track->id()->string()}'>{$kierrosSVG}</a>
+                       href='/rallysported/?track={$track->id()->string()}'>
+                        {$kierrosSVG}
+                    </a>
                 </div>
 
                 <div class='info-box'>
@@ -76,8 +78,6 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
                             <i class='fas fa-fw fa-file-download'></i>
                             {$track->download_count()}
                         </a>
-
-                        </span>
 
                     </div>
 

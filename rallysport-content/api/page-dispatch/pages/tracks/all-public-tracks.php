@@ -12,8 +12,8 @@
  */
 
 require_once __DIR__."/../../../response.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-metadata-container.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/track-resource-metadata.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/resource-metadata-container.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/resource-page-number-selector.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
@@ -60,8 +60,8 @@ function all_public_tracks() : void
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\ResourcePageNumberSelector::class);
-        $htmlPage->use_component(HTMLPage\Component\TrackMetadataContainer::class);
-        $htmlPage->use_component(HTMLPage\Component\TrackMetadata::class);
+        $htmlPage->use_component(HTMLPage\Component\ResourceMetadataContainer::class);
+        $htmlPage->use_component(HTMLPage\Component\TrackResourceMetadata::class);
 
         $htmlPage->head->title = "Tracks";
         $inPageTitle = "Tracks uploaded by users (sorted by most recent)";
@@ -76,7 +76,7 @@ function all_public_tracks() : void
         {
             $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
-            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::open());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
             foreach ($tracks as $trackResource)
             {
@@ -90,7 +90,7 @@ function all_public_tracks() : void
                 }
             }
 
-            $htmlPage->body->add_element(HTMLPage\Component\TrackMetadataContainer::close());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());

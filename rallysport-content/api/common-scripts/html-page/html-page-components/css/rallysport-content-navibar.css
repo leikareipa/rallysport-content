@@ -12,7 +12,8 @@
     flex-direction: column;
 }
 
-#rallysport-content-navibar .fas
+#rallysport-content-navibar .fas,
+#rallysport-content-navibar .far
 {
     font-size: 135%;
     padding: 12px;

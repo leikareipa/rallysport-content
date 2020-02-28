@@ -8,7 +8,7 @@
  */
 
 require_once __DIR__."/resource.php";
-require_once __DIR__."/../html-page/html-page-components/track-metadata.php";
+require_once __DIR__."/../html-page/html-page-components/track-resource-metadata.php";
 
 // Provides views into resources. A view could be, for instance, a HTML element
 // or an array that provides information about the resource.
@@ -36,7 +36,7 @@ class ResourceView
         {
             case "metadata-html":
             {
-                return \RSC\HTMLPage\Component\TrackMetadata::html($resource);
+                return \RSC\HTMLPage\Component\TrackResourceMetadata::html($resource);
             }
             case "metadata-array":
             {
@@ -77,7 +77,7 @@ class ResourceView
         {
             case "metadata-html":
             {
-                return \RSC\HTMLPage\Component\UserMetadata::html($resource);
+                return \RSC\HTMLPage\Component\UserResourceMetadata::html($resource);
             }
             case "metadata-array":
             {
