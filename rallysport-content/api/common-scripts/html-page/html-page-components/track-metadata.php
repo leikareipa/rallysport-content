@@ -49,7 +49,8 @@ abstract class TrackMetadata extends HTMLPage\HTMLPageComponent
 
                 <div class='info-box'>
 
-                    <div class='track-title'>
+                    <div class='track-title'
+                         title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
                         <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
                     </div>
 
