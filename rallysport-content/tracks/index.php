@@ -23,6 +23,11 @@ require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-visibility.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
 
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/unknown-form-identifier.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/add-track.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/new-track-uploaded.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/delete-track.php";
+
 switch ($_SERVER["REQUEST_METHOD"])
 {
     case "HEAD":

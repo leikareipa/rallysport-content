@@ -16,6 +16,13 @@ require_once __DIR__."/api/page-dispatch/pages/root/control-panel.php";
 require_once __DIR__."/api/response.php";
 require_once __DIR__."/api/session.php";
 
+require_once __DIR__."/api/page-dispatch/pages/form/forms/user-login.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/request-password-reset.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/password-reset-request-success.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/password-reset-success.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/reset-password.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/unknown-form-identifier.php";
+
 switch ($_SERVER["REQUEST_METHOD"])
 {
     case "HEAD":

@@ -14,18 +14,6 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
-require_once __DIR__."/forms/new-user-account-created.php";
-require_once __DIR__."/forms/unknown-form-identifier.php";
-require_once __DIR__."/forms/create-user-account.php";
-require_once __DIR__."/forms/user-login.php";
-require_once __DIR__."/forms/add-track.php";
-require_once __DIR__."/forms/new-track-uploaded.php";
-require_once __DIR__."/forms/reset-password.php";
-require_once __DIR__."/forms/request-password-reset.php";
-require_once __DIR__."/forms/password-reset-success.php";
-require_once __DIR__."/forms/password-reset-request-success.php";
-require_once __DIR__."/forms/delete-track.php";
-
 // Used to display HTML forms to the client.
 //
 // Sample usage:

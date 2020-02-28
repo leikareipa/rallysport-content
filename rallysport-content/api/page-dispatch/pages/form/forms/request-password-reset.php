@@ -42,7 +42,7 @@ abstract class RequestPasswordReset extends \RSC\HTMLPage\Component\Form
 
             <div class='footnote'>
                 * Please provide the user ID and email you registered with. You'll be
-                sent an email with instructions for resetting your password.
+                sent an email with further instructions for resetting your password.
             </div>
 
             <button name='submit_button'

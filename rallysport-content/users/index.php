@@ -21,6 +21,10 @@ require_once __DIR__."/../api/session.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/../api/common-scripts/resource/resource-view-url-params.php";
 
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/create-user-account.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/new-user-account-created.php";
+require_once __DIR__."/../api/page-dispatch/pages/form/forms/unknown-form-identifier.php";
+
 switch ($_SERVER["REQUEST_METHOD"])
 {
     case "HEAD":

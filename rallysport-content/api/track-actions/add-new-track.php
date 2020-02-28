@@ -52,7 +52,7 @@ function add_new_track(array $uploadedFileInfo) : void
     if (!$newTrack)
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                           "Incompatible track data"));
+                                                           "Unsupported track file format"));
     }
 
     // All uploaded tracks should be unique wrt. the tracks currently in the

@@ -1,4 +1,5 @@
 <?php namespace RSC\HTMLPage\Component;
+      use RSC\API\Session;
       use RSC\HTMLPage;
       use RSC\Resource;
 
@@ -9,6 +10,7 @@
  * 
  */
 
+require_once __DIR__."/../../../session.php";
 require_once __DIR__."/../html-page-component.php";
 require_once __DIR__."/../../database-connection/track-database.php";
 
@@ -19,11 +21,17 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
 {
     static public function html(\RSC\Resource\UserResource $user) : string
     {
-        $sessionUserID       = ($_SESSION["user_resource_id"] ?? "no-session");
-        $userNumPublicTracks = (new \RSC\DatabaseConnection\TrackDatabase())->tracks_count([$user->id()->string()],
+        $sessionUserID = Session\logged_in_user_id();
+        $numTracksByUser = (new \RSC\DatabaseConnection\TrackDatabase())->tracks_count([$user->id()->string()],
                                                                                            [Resource\ResourceVisibility::PUBLIC]);
 
+        if ($sessionUserID)
+        {
+            $sessionUserID = $sessionUserID->string();
+        }
+
         return "
+        
         <tr>
 
             <td style='font-weight: ".(($sessionUserID == $user->id()->string())? "bold" : "normal").";'>
@@ -32,7 +40,7 @@ abstract class UserMetadata extends HTMLPage\HTMLPageComponent
 
             <td style='text-align: center'>
                 <a href='/rallysport-content/tracks/?by={$user->id()->string()}'>
-                    {$userNumPublicTracks}
+                    {$numTracksByUser}
                 </a>
             </td>
 
