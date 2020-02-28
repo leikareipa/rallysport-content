@@ -33,6 +33,11 @@
     border-radius: 0;
 }
 
+.rsc-table.own-tracks-list .media.empty
+{
+    display: none;
+}
+
 .rsc-table.own-tracks-list .media svg > polygon
 {
     fill: none;

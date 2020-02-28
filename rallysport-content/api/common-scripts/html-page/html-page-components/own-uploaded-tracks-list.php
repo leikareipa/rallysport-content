@@ -54,11 +54,14 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
         {
             foreach ($tracks as $track)
             {
-                $kierrosSVG = (new DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
-                $trackDownloadCount = (new DatabaseConnection\TrackDatabase())->get_track_download_count($track->id());
+                $trackDB = new DatabaseConnection\TrackDatabase();
+                $kierrosSVG = "";
+                $trackDownloadCount = $trackDB->get_track_download_count($track->id());
 
                 if ($track->visibility() === Resource\ResourceVisibility::PUBLIC)
                 {
+                    $kierrosSVG = $trackDB->get_track_svg($track->id());
+
                     $iconRow =
                     "
                     <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
@@ -88,7 +91,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                     $iconRow =
                     "
                     <span class='processing'
-                          title='This track will be available after undergoing manual verification'>
+                          title='This track will be available after undergoing a manual review'>
                         Processing...
                     </span>
                     ";
@@ -99,7 +102,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 
                     <td>
 
-                        <div class='media'>
+                        <div class='media ".(empty($kierrosSVG)? "empty" : "")."'>
                             {$kierrosSVG}
                         </div>
 

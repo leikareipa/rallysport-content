@@ -62,7 +62,7 @@
 
 .track-metadata > .card > .media svg
 {
-    transform: scale(0.75);
+    transform: scale(0.8);
 }
 
 .track-metadata > .card > .media svg > polygon

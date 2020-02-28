@@ -29,10 +29,27 @@ require_once __DIR__."/../session.php";
 //
 function add_new_track(array $uploadedFileInfo) : void
 {
-    if (!API\Session\is_client_logged_in())
+    $userID = API\Session\logged_in_user_id();
+
+    if (!$userID)
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                           "Must be logged in to add a track"));
+                                                           "You must be logged in to add a track"));
+    }
+
+    $trackDB = new DatabaseConnection\TrackDatabase();
+
+    // We'll prevent the user from uploading too many tracks before their
+    // previous uploads have finished being reviewed.
+    {
+        $numTracksProcessing = $trackDB->tracks_count([$userID->string()],
+                                                      [Resource\ResourceVisibility::PROCESSING]);
+
+        if ($numTracksProcessing >= 3)
+        {
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                               "Cannot upload more until your previous tracks have finished processing"));
+        }
     }
 
     if (!$uploadedFileInfo ||
