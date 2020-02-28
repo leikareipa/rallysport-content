@@ -54,7 +54,7 @@ abstract class UserResourceMetadata extends HTMLPage\HTMLPageComponent
                         </a>
 
                         <a href='/rallysport-content/tracks/?by={$user->id()->string()}'
-                           title='Tracks uploaded by this user'>
+                           title='Tracks uploaded'>
                             <i class='fas fa-fw fa-road'></i>
                             {$numTracksByUser}
                         </a>

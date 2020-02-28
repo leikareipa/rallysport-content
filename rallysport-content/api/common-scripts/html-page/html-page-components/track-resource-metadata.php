@@ -43,10 +43,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             <div class='card'>
 
                 <div class='media'>
-                    <a title='Open a copy in RallySportED'
-                       href='/rallysported/?track={$track->id()->string()}'>
-                        {$kierrosSVG}
-                    </a>
+                    {$kierrosSVG}
                 </div>
 
                 <div class='info-box'>
