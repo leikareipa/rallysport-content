@@ -117,6 +117,10 @@ function add_new_track(array $uploadedFileInfo) : void
     // to get to work on reviewing. (We don't want to spam the notification
     // on every track added - just on the first new upload after all others
     // have been reviewed.)
+    //
+    // Note: In theory, this could fail to send the notification if two new
+    // tracks are uploaded at virtually the same time.
+    //
     {
         $numTracksAwaitingProcessing = $trackDB->tracks_count([], [Resource\ResourceVisibility::PROCESSING]);
 
