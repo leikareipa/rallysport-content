@@ -50,7 +50,7 @@ abstract class ForbiddenResourceKey
         "h[o0]m[o0]",
         "f[a4]p",
         "tu[g9]",
-        "j[e3]w",
+        "j[e3][wv]",
         "j[o0][o0]",
         "juu",
         "tag",

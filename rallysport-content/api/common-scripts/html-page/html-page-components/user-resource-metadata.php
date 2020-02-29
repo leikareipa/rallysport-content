@@ -22,7 +22,8 @@ abstract class UserResourceMetadata extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/user-resource-metadata.css");
+        return file_get_contents(__DIR__."/css/resource-metadata.css").
+               file_get_contents(__DIR__."/css/user-resource-metadata.css");
     }
 
     static public function html(Resource\UserResource $user) : string
@@ -31,7 +32,7 @@ abstract class UserResourceMetadata extends HTMLPage\HTMLPageComponent
         $numTracksByUser = $trackDB->tracks_count([$user->id()->string()], [Resource\ResourceVisibility::PUBLIC]);
 
         return "
-        <div class='user-metadata'>
+        <div class='resource-metadata user'>
 
             <div class='card'>
 
@@ -41,7 +42,7 @@ abstract class UserResourceMetadata extends HTMLPage\HTMLPageComponent
 
                 <div class='info-box'>
 
-                    <div class='user-title'
+                    <div class='title'
                          title='{$user->id()->string()}'>
                         <i class='fas fa-fw fa-user'></i> {$user->id()->resource_key()}
                     </div>

@@ -1,78 +1,16 @@
-.track-metadata
-{
-    padding: 15px;
-    margin: 6px;
-    border-radius: 0;
-    text-align: left;
-    display: inline-block;
-    background-color: white;
-    border: 1px solid lightgray;
-    border-bottom: none;
-    box-shadow: 0 8px 5px -7px rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-}
-
-.track-metadata > .card
-{
-    display: flex;
-    flex-direction: column;
-}
-
-.track-metadata > .card > .info-box
-{
-    padding: 10px 0;
-    margin-left: 10px;
-    text-align: left;
-    position: relative;
-}
-
-.track-metadata > .card > .info-box > .track-title
-{
-    text-align: left;
-    display: inline-block;
-}
-
-.track-metadata > .card > .info-box > .icon-row
-{
-    position: absolute;
-    display: inline-block;
-    color: lightgray;
-    right: 0;
-    text-align: right;
-    margin-right: 10px;
-}
-
-.track-metadata > .card > .info-box > .icon-row > a
-{
-    text-decoration: none;
-}
-
-.track-metadata > .card > .info-box > .icon-row > a:hover
-{
-    text-decoration: none;
-    color: black;
-}
-
-.track-metadata > .card > .media
-{
-    width: 338px;
-    height: 210px;
-    border-radius: 0;
-}
-
-.track-metadata > .card > .media svg
+.resource-metadata.track > .card > .media svg
 {
     transform: scale(0.8);
 }
 
-.track-metadata > .card > .media svg > polygon
+.resource-metadata.track > .card > .media svg > polygon
 {
     stroke: black;
     stroke-width: 1;
     fill: none;
 }
 
-.track-metadata:hover > .card > .media svg > polygon
+.resource-metadata.track > .card > .media svg:hover > polygon
 {
     stroke: black;
     stroke-width: 2;

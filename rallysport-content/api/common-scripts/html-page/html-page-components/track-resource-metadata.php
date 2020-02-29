@@ -31,7 +31,8 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/track-resource-metadata.css");
+        return file_get_contents(__DIR__."/css/resource-metadata.css").
+               file_get_contents(__DIR__."/css/track-resource-metadata.css");
     }
 
     static public function html(Resource\TrackResource $track) : string
@@ -74,17 +75,20 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
         }
 
         return "
-        <div class='track-metadata'>
+        <div class='resource-metadata track'>
 
             <div class='card'>
 
                 <div class='media'>
-                    {$kierrosSVG}
+                    <a href='/rallysported/?track={$track->id()->string()}'
+                       title='Open a copy in RallySportED'>
+                        {$kierrosSVG}
+                    </a>
                 </div>
 
                 <div class='info-box'>
 
-                    <div class='track-title'
+                    <div class='title'
                          title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
                         <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
                     </div>

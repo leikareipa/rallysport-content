@@ -11,7 +11,7 @@
 abstract class UserPasswordCharacteristics
 {
     // Minimum/maximum character length for a user password.
-    public const MIN_LENGTH = 20;
+    public const MIN_LENGTH = 15;
     public const MAX_LENGTH = 100;
 
     // Characters that are not allowed to occur in user passwords.
