@@ -8,6 +8,7 @@
  */
 
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
+require_once __DIR__."/../../../../common-scripts/user/user-password-characteristics.php";
 
 // Represents a HTML form with which the user can log into their user account.
 abstract class UserLogin extends \RSC\HTMLPage\Component\Form
@@ -33,7 +34,12 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                    required>
 
             <label for='password'>Password</label>
-            <input type='password' id='password' name='password' required>
+            <input type='password'
+                   id='password'
+                   name='password'
+                   minlength='".\RSC\UserPasswordCharacteristics::MIN_LENGTH."'
+                   maxlength='".\RSC\UserPasswordCharacteristics::MAX_LENGTH."'
+                   required>
 
             <div class='footnote'>
                 * <a href='/rallysport-content/?form=request-password-reset'>

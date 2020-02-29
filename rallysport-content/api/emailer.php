@@ -32,6 +32,12 @@ abstract class RallySportContentEmailer
     //
     public static function send_password_reset_link(string $to, array $resetToken) : bool
     {
+        if (!isset($resetToken["value"]) ||
+            !isset($resetToken["expires"]))
+        {
+            return false;
+        }
+        
         $resetLink = "https://www.tarpeeksihyvaesoft.com/rallysport-content/?form=reset-password&token={$resetToken["value"]}";
 
         $message =

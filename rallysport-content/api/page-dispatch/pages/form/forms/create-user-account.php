@@ -10,6 +10,7 @@
 require_once __DIR__."/../../../../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
 require_once __DIR__."/../../../../common-scripts/resource/resource-visibility.php";
+require_once __DIR__."/../../../../common-scripts/user/user-password-characteristics.php";
 
 // Represents a HTML form with which the user can create a new user account.
 abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
@@ -38,7 +39,10 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
             <label for='password'>Password</label>
             <input type='text'
                    id='password'
-                   name='password' required>
+                   name='password'
+                   minlength='".\RSC\UserPasswordCharacteristics::MIN_LENGTH."'
+                   maxlength='".\RSC\UserPasswordCharacteristics::MAX_LENGTH."'
+                   required>
 
             <label for='track_file'>Track ZIP file*</label>
             <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>

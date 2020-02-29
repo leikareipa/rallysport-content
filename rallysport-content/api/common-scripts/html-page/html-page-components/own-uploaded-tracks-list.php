@@ -91,7 +91,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                     $iconRow =
                     "
                     <span class='processing'
-                          title='This track will be available after undergoing a manual review'>
+                          title='This track will become available after it has been reviewed by administration'>
                         Processing...
                     </span>
                     ";

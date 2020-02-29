@@ -7,6 +7,7 @@
  * 
  */
 
+require_once __DIR__."/../../../../common-scripts/user/user-password-characteristics.php";
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form with which the user can reset their password.
@@ -46,6 +47,8 @@ abstract class ResetPassword extends \RSC\HTMLPage\Component\Form
             <input type='text'
                    id='new-password'
                    name='new_password'
+                   minlength='".\RSC\UserPasswordCharacteristics::MIN_LENGTH."'
+                   maxlength='".\RSC\UserPasswordCharacteristics::MAX_LENGTH."'
                    required>
 
             <input type='hidden'

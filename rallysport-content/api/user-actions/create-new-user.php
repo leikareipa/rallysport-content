@@ -1,7 +1,7 @@
 <?php namespace RSC\API\Users;
       use RSC\DatabaseConnection;
-      use RSC\API;
       use RSC\Resource;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -14,6 +14,7 @@
  */
 
 require_once __DIR__."/../response.php";
+require_once __DIR__."/../common-scripts/user/user-password-characteristics.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
 require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
@@ -31,7 +32,11 @@ require_once __DIR__."/../common-scripts/database-connection/track-database.php"
 //
 function create_new_user(string $email, string $plaintextPassword, array $uploadedFileInfo) : void
 {
-    /// TODO: Make sure the password and email are of the appropriate length, etc.
+    if (!\RSC\UserPasswordCharacteristics::would_be_valid_password($plaintextPassword))
+    {
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
+                                                           "Malformed password"));
+    }
 
     // Verify that the uploaded file is a valid RallySportED track file.
     {

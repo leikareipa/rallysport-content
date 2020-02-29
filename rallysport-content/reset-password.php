@@ -9,6 +9,7 @@
 
 require_once __DIR__."/api/response.php";
 require_once __DIR__."/api/common-scripts/database-connection/user-database.php";
+require_once __DIR__."/api/common-scripts/user/user-password-characteristics.php";
 
 $token = ($_POST["token"] ?? NULL);
 $email = ($_POST["email"] ?? NULL);
@@ -26,6 +27,12 @@ if (!isset($newPassword) ||
 {
     exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=reset-password&token={$token}",
                                                        "Missing one or more required parameters"));
+}
+
+if (!\RSC\UserPasswordCharacteristics::would_be_valid_password($newPassword))
+{
+    exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=reset-password&token={$token}",
+                                                       "Malformed password"));
 }
 
 if (!(new DatabaseConnection\UserDatabase())->reset_user_password($email, $token, $newPassword))
