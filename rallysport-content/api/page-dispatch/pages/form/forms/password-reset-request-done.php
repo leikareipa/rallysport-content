@@ -10,12 +10,12 @@
 require_once __DIR__."/../../../../common-scripts/html-page/html-page-components/form.php";
 
 // Represents a HTML form informing the user that their request to reset their
-// password was successful.
-abstract class PasswordResetRequestSuccess extends \RSC\HTMLPage\Component\Form
+// password was completed.
+abstract class PasswordResetRequestDone extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
-        return "Password reset request succeeded";
+        return "Password reset request completed";
     }
 
     static public function inner_html() : string
@@ -24,8 +24,10 @@ abstract class PasswordResetRequestSuccess extends \RSC\HTMLPage\Component\Form
         <form class='html-page-form'>
 
             <div class='footnote'>
-                * An email has been dispatched to you with further instructions
-                on how to reset your password.
+                * If the email address and track file you provided are valid,
+                you'll receive an email with further instructions on how to
+                reset your password. If you don't receive this email, please
+                contact <a href='mailto:sw@tarpeeksihyvaesoft.com'>Tarpeeksi Hyvae Soft</a>.
             </div>
 
             <a href='/rallysport-content/'

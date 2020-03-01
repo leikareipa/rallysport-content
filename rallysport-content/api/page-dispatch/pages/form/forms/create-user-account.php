@@ -49,7 +49,9 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
             <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
             <div class='footnote'>* For verification, please provide a track you've recently
-            created using RallySportED-js.</div>
+            created using RallySportED-js. Note: if you ever need to reset your password, you may
+            be asked to provide the same track for verification, again, so don't forget which
+            one you chose!</div>
 
             <button name='submit-button'
                     type='submit'

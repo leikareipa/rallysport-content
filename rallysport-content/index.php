@@ -18,7 +18,7 @@ require_once __DIR__."/api/session.php";
 
 require_once __DIR__."/api/page-dispatch/pages/form/forms/user-login.php";
 require_once __DIR__."/api/page-dispatch/pages/form/forms/request-password-reset.php";
-require_once __DIR__."/api/page-dispatch/pages/form/forms/password-reset-request-success.php";
+require_once __DIR__."/api/page-dispatch/pages/form/forms/password-reset-request-done.php";
 require_once __DIR__."/api/page-dispatch/pages/form/forms/password-reset-success.php";
 require_once __DIR__."/api/page-dispatch/pages/form/forms/reset-password.php";
 require_once __DIR__."/api/page-dispatch/pages/form/forms/unknown-form-identifier.php";
@@ -34,7 +34,7 @@ switch ($_SERVER["REQUEST_METHOD"])
             {
                 case "login":                           API\PageDisplay\form(API\Form\UserLogin::class); break;
                 case "request-password-reset":          API\PageDisplay\form(API\Form\RequestPasswordReset::class); break;
-                case "password-reset-request-success":  API\PageDisplay\form(API\Form\PasswordResetRequestSuccess::class); break;
+                case "password-reset-request-done":     API\PageDisplay\form(API\Form\PasswordResetRequestDone::class); break;
                 case "reset-password":                  API\PageDisplay\form(API\Form\ResetPassword::class); break;
                 case "password-reset-success":          API\PageDisplay\form(API\Form\PasswordResetSuccess::class); break;
                 default:                                API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;

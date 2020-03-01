@@ -64,12 +64,41 @@ class UserDatabase extends DatabaseConnection
         return hash("sha256", ($pepper . $plaintextEmail));
     }
 
+    // Returns the resource ID of the user who registered using the given track
+    // data hash. On error (or if no such user is found), FALSE is returned.
+    public function get_owner_id_of_registration_track_hash(string $trackHashSHA256)
+    {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT resource_id
+                                             FROM rsc_users
+                                             WHERE resource_data_hash_sha256 = ?",
+                                            [$trackHashSHA256]);
+
+        if (!is_array($dbResponse) ||
+            (count($dbResponse) != 1) ||
+            !isset($dbResponse[0]["resource_id"]))
+        {
+            return false;
+        }
+
+        return Resource\UserResourceID::from_string($dbResponse[0]["resource_id"]);
+    }
+
     // Returns the count of users in the database; or FALSE on error. The
     // 'visibilityLevels' array provides ResourceVisibility elements such that
     // only users whose visibility level is one of these will be included in
     // the count.
-    public function users_count(array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC]) : int
+    public function users_count(array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC])
     {
+        if (!$this->is_connected())
+        {
+            return false;
+        }
+
         // Assert that we received valid parameter values.
         {
             foreach ($visibilityLevels as $visibilityLevel)
@@ -242,7 +271,7 @@ class UserDatabase extends DatabaseConnection
 
     // Returns true if the given email matches the email of the given user;
     // FALSE otherwise.
-    public function is_correct_user_email(string $email, Resource\UserResourceID $userResourceID)
+    public function is_correct_user_email_address(string $email, Resource\UserResourceID $userResourceID)
     {
         if (!$this->is_connected())
         {
