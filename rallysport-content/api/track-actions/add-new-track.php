@@ -13,10 +13,10 @@
  */
 
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
+require_once __DIR__."/../common-scripts/uploaded-file/uploaded-track-file.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../common-scripts/database-connection/track-database.php";
 require_once __DIR__."/../common-scripts/svg-image-from-kierros-data.php";
-require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
 require_once __DIR__."/../response.php";
 require_once __DIR__."/../session.php";
 require_once __DIR__."/../emailer.php";
@@ -38,6 +38,14 @@ function add_new_track(array $uploadedFileInfo) : void
                                                            "You must be logged in to add a track"));
     }
 
+    $trackData = \RSC\UploadedTrackFile::data($uploadedFileInfo);
+
+    if (!$trackData)
+    {
+        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
+                                                           "Incompatible track file"));
+    }
+
     $trackDB = new DatabaseConnection\TrackDatabase();
 
     // We'll prevent the user from uploading too many tracks before their
@@ -53,14 +61,7 @@ function add_new_track(array $uploadedFileInfo) : void
         }
     }
 
-    if (!$uploadedFileInfo ||
-        !\RSC\is_valid_uploaded_file($uploadedFileInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
-    {
-        exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                           "Invalid track file"));
-    }
-
-    $newTrack = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
+    $newTrack = Resource\TrackResource::with($trackData,
                                              time(),
                                              0,
                                              Resource\TrackResourceID::random(),
@@ -87,13 +88,13 @@ function add_new_track(array $uploadedFileInfo) : void
             exit(API\Response::code(500)->error_message("Internal server error. Track upload failed."));
         }
 
-        if (!(new DatabaseConnection\TrackDatabase())->is_resource_hash_unique($trackDataHash))
+        if (!$trackDB->is_resource_hash_unique($trackDataHash))
         {
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                               "A track too similar to that has already been uploaded"));
+                                                               "A track very similar to that one has already been uploaded"));
         }
 
-        if (!(new DatabaseConnection\TrackDatabase())->is_track_name_unique($newTrack->data()->name()))
+        if (!$trackDB->is_track_name_unique($newTrack->data()->name()))
         {
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
                                                                "A track by that name has already been uploaded"));
@@ -105,9 +106,9 @@ function add_new_track(array $uploadedFileInfo) : void
     $kierrosSVGImage = \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
                                                         $newTrack->data()->side_length());
 
-    if (!(new DatabaseConnection\TrackDatabase())->add_new_track($newTrack,
-                                                                 $kierrosSVGImage,
-                                                                 $trackDataHash))
+    if (!$trackDB->add_new_track($newTrack,
+                                 $kierrosSVGImage,
+                                 $trackDataHash))
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
                                                            "Database error"));

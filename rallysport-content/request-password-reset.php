@@ -15,7 +15,7 @@
 
 require_once __DIR__."/api/response.php";
 require_once __DIR__."/api/emailer.php";
-require_once __DIR__."/api/common-scripts/is-valid-uploaded-file.php";
+require_once __DIR__."/api/common-scripts/uploaded-file/uploaded-track-file.php";
 require_once __DIR__."/api/common-scripts/resource/resource-id.php";
 require_once __DIR__."/api/common-scripts/resource/track-resource.php";
 require_once __DIR__."/api/common-scripts/database-connection/user-database.php";
@@ -33,13 +33,15 @@ if (!isset($email) ||
 
 // Verify that the uploaded file is a valid RallySportED track file.
 {
-    if (!\RSC\is_valid_uploaded_file($trackFileUploadInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
+    $trackData = UploadedTrackFile::data($trackFileUploadInfo);
+
+    if (!$trackData)
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/?form=request-password-reset",
                                                            "Invalid track file"));
     }
 
-    $track = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file(($trackFileUploadInfo["tmp_name"] ?? "")),
+    $track = Resource\TrackResource::with($trackData,
                                           time(),
                                           0,
                                           Resource\TrackResourceID::random(),

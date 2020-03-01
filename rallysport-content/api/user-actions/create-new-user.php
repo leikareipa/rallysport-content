@@ -14,9 +14,9 @@
  */
 
 require_once __DIR__."/../response.php";
+require_once __DIR__."/../common-scripts/uploaded-file/uploaded-track-file.php";
 require_once __DIR__."/../common-scripts/user/user-password-characteristics.php";
 require_once __DIR__."/../common-scripts/resource/resource-id.php";
-require_once __DIR__."/../common-scripts/is-valid-uploaded-file.php";
 require_once __DIR__."/../common-scripts/rallysported-track-data/rallysported-track-data.php";
 require_once __DIR__."/../common-scripts/resource/track-resource.php";
 require_once __DIR__."/../common-scripts/database-connection/user-database.php";
@@ -40,14 +40,15 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
 
     // Verify that the uploaded file is a valid RallySportED track file.
     {
-        if (!$uploadedFileInfo ||
-            !\RSC\is_valid_uploaded_file($uploadedFileInfo, \RSC\RallySportEDTrackData::MAX_BYTE_SIZE))
+        $trackData = \RSC\UploadedTrackFile::data($uploadedFileInfo);
+
+        if (!$trackData)
         {
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
                                                                "Invalid track file"));
         }
 
-        $track = Resource\TrackResource::with(\RSC\RallySportEDTrackData::from_zip_file($uploadedFileInfo["tmp_name"]),
+        $track = Resource\TrackResource::with($trackData,
                                               time(),
                                               0,
                                               Resource\TrackResourceID::random(),
@@ -60,26 +61,26 @@ function create_new_user(string $email, string $plaintextPassword, array $upload
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
                                                                "Please select a different track file"));
         }
+    }
 
-        // All tracks used to register with should be unique wrt. previous
-        // registrations, so verify that a track matching this one's hash hasn't
-        // already been registered with.
+    // All tracks used to register with should be unique wrt. previous
+    // registrations, so verify that a track matching this one's hash hasn't
+    // already been registered with.
+    {
+        $registrationHash = DatabaseConnection\TrackDatabase::generate_hash_of_track_data($track);
+
+        // Hashing the data would fail if the track resource instance contains
+        // only metadata. That shouldn't be the case in the instances we've
+        // got, but...
+        if (!$registrationHash)
         {
-            $registrationHash = DatabaseConnection\TrackDatabase::generate_hash_of_track_data($track);
+            exit(API\Response::code(500)->error_message("Internal server error. Registration failed."));
+        }
 
-            // Hashing the data would fail if the track resource instance contains
-            // only metadata. That shouldn't be the case in the instances we've
-            // got, but...
-            if (!$registrationHash)
-            {
-                exit(API\Response::code(500)->error_message("Internal server error. Registration failed."));
-            }
-
-            if (!(new DatabaseConnection\UserDatabase())->is_resource_hash_unique($registrationHash))
-            {
-                exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
-                                                                   "Please select a different track file"));
-            }
+        if (!(new DatabaseConnection\UserDatabase())->is_resource_hash_unique($registrationHash))
+        {
+            exit(API\Response::code(303)->load_form_with_error("/rallysport-content/users/?form=add",
+                                                                "Please select a different track file"));
         }
     }
 
