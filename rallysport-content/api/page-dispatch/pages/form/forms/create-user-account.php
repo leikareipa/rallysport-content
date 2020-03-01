@@ -45,8 +45,14 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
                    required>
 
             <label for='track_file'>Track ZIP file*</label>
-            <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
-            <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
+            <input type='hidden'
+                   name='MAX_FILE_SIZE'
+                   value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
+            <input type='file'
+                   accept='.zip'
+                   id='track-file'
+                   name='rallysported_track_file'
+                   required>
 
             <div class='footnote'>* For verification, please provide a track you've recently
             created using RallySportED-js. Note: if you ever need to reset your password, you may

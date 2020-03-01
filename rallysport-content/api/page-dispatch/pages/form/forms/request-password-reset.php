@@ -35,8 +35,14 @@ abstract class RequestPasswordReset extends \RSC\HTMLPage\Component\Form
                    required>
 
             <label for='track_file'>Track ZIP file</label>
-            <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
-            <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
+            <input type='hidden'
+                   name='MAX_FILE_SIZE'
+                   value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
+            <input type='file'
+                   accept='.zip'
+                   id='track-file'
+                   name='rallysported_track_file'
+                   required>
 
             <div class='footnote'>
                 * Please provide the email address and RallySportED-js track file you
