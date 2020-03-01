@@ -105,9 +105,9 @@ class RallySportEDTrackData
                 }
             }
 
-            if (!($trackFilenames["hitable"] ?? false) ||
-                !($trackFilenames["container"] ?? false) ||
-                !($trackFilenames["manifesto"] ?? false))
+            if ((($trackFilenames["hitable"] ?? NULL) == NULL) ||
+                (($trackFilenames["container"] ?? NULL) == NULL) ||
+                (($trackFilenames["manifesto"] ?? NULL) == NULL))
             {
                 return NULL;
             }
@@ -117,11 +117,19 @@ class RallySportEDTrackData
         // the track's name (e.g. "SUORUNDI/SUORUNDI.DTA" for a track whose name
         // is "SUORUNDI").
         {
-            $trackName = (explode("/", $trackFilenames["container"])[0] ?? NULL);
+            // Get the directory/track name.
+            $trackName = (explode(DIRECTORY_SEPARATOR, $trackFilenames["container"])[0] ?? NULL);
 
-            if (!RallySportEDTrackData_Name::is_valid_name($trackName) ||
-                ((explode("/", $trackFilenames["hitable"])[0] ?? NULL) !== $trackName) ||
-                ((explode("/", $trackFilenames["manifesto"])[0] ?? NULL) !== $trackName))
+            if (!$trackName ||
+                !RallySportEDTrackData_Name::is_valid_name($trackName))
+            {
+                return NULL;
+            }
+
+            // Verify that the directory contains the other required track
+            // files, as well.
+            if (((explode(DIRECTORY_SEPARATOR, $trackFilenames["hitable"])[0] ?? NULL) !== $trackName) ||
+                ((explode(DIRECTORY_SEPARATOR, $trackFilenames["manifesto"])[0] ?? NULL) !== $trackName))
             {
                 return NULL;
             }

@@ -110,6 +110,8 @@ abstract class UploadATrack extends \RSC\HTMLPage\Component\HelpTopic
                +--> HITABLE.TXT
         </pre>
 
+        Track names are limited to ASCII A-Z and can be between 1 and 8 characters long.
+
         <p>Once submitted, a track can't be modified in any way except by full
         deletion. You can choose to delete a track by clicking on the
         <i class='fas fa-fw fa-times'></i> icon next to the track's name on your account's
