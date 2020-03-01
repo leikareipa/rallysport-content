@@ -71,7 +71,7 @@ class RallySportEDTrackData
 
         $zipFile = new \ZipArchive($zipFilename);
 
-        if (!$zipFile->open($zipFilename, \ZipArchive::CHECKCONS))
+        if ($zipFile->open($zipFilename, \ZipArchive::CHECKCONS) !== TRUE)
         {
             return NULL;
         }
