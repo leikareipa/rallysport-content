@@ -27,7 +27,7 @@ abstract class PasswordResetRequestDone extends \RSC\HTMLPage\Component\Form
                 * If the email address and track file you provided are valid,
                 you'll receive an email with further instructions on how to
                 reset your password. If you don't receive this email, please
-                contact <a href='mailto:sw@tarpeeksihyvaesoft.com'>Tarpeeksi Hyvae Soft</a>.
+                <a href='mailto:rsc@tarpeeksihyvaesoft.com'>contact us</a>.
             </div>
 
             <a href='/rallysport-content/'

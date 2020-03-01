@@ -12,6 +12,11 @@ require_once __DIR__."/../../../../common-scripts/html-page/html-page-components
 // Lists the help topics that the user can access.
 abstract class AvailableHelpTopics extends \RSC\HTMLPage\Component\HelpTopic
 {
+    static public function id() : string
+    {
+        return "available-help-topics";
+    }
+
     static public function inner_title() : string
     {
         return "Available help topics";
@@ -19,9 +24,16 @@ abstract class AvailableHelpTopics extends \RSC\HTMLPage\Component\HelpTopic
 
     static public function inner_html() : string
     {
-        $helpURL = function(string $topicID) : string
+        $helpTopic = function(string $helpTopicClassName) : string
         {
-            return "/rallysport-content/help/?topic={$topicID}";
+            return 
+            "
+            <li>
+                <a href='/rallysport-content/help/?topic={$helpTopicClassName::id()}'>
+                    ".$helpTopicClassName::inner_title()."
+                </a>
+            </li>
+            ";
         };
 
         return "
@@ -29,11 +41,13 @@ abstract class AvailableHelpTopics extends \RSC\HTMLPage\Component\HelpTopic
 
         <ul>
 
-            <li>
-                <a href='{$helpURL("create-user-account")}'>
-                    Creating a user account
-                </a>
-            </li>
+            ".$helpTopic(PrivacyPolicy::class)."
+
+            ".$helpTopic(CreateUserAccount::class)."
+
+            ".$helpTopic(ResetUserPassword::class)."
+
+            ".$helpTopic(UploadATrack::class)."
 
         </ul>
         ";

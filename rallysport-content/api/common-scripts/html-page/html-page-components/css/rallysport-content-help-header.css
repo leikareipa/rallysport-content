@@ -20,6 +20,6 @@
 #rallysport-content-help-header .subtitle
 {
     font-size: initial;
-    display: block;
-    margin: 16px 0 20px 0;
+    display: inline-block;
+
 }

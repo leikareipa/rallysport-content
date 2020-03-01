@@ -33,8 +33,16 @@ abstract class RallySportContentHelpHeader extends HTMLPage\HTMLPageComponent
                 </a>
             </div>
 
-            <a href='/rallysport-content/help/' class='subtitle'>
-                Help Central
+            <div style='margin: 16px 0 20px 0;'>
+                <a href='/rallysport-content/help/'
+                class='subtitle'>
+                    Help Central
+                </a>
+                <span style='margin: 0 5px'>|</span>
+                <a href='mailto:rsc@tarpeeksihyvaesoft.com'
+                class='subtitle'>
+                    Get in touch
+                </a>
             </div>
 
         </header>
