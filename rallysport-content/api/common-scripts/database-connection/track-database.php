@@ -105,6 +105,17 @@ class TrackDatabase extends DatabaseConnection
             return false;
         }
 
+        // If write access to the database is currently disabled, we want to
+        // bail without attempting to increment the download count, as proceeding
+        // would cause the script to exit with an error, preventing the user from
+        // e.g. downloading a track (which triggers the download count increment
+        // in the first place). Failing to count downloads is better than entirely
+        // disrupting the service.
+        if (!self::DATABASE_WRITE_ACCESS)
+        {
+            return false;
+        }
+
         // The HEAD request is identical to a GET request in all respects except
         // that the data body is not returned to the caller. As such, we shouldn't
         // increment the download count then.

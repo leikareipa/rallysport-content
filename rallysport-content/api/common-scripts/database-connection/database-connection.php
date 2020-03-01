@@ -1,4 +1,5 @@
 <?php namespace RSC\DatabaseConnection;
+      use RSC\API;
 
 /*
  * 2020 Tarpeeksi Hyvae Soft
@@ -14,9 +15,14 @@
  */
 
 require_once __DIR__."/../resource/resource-id.php";
+require_once __DIR__."/../../response.php";
 
 abstract class DatabaseConnection
 {
+    // Whether reading/writing from/to the database is currently allowed.
+    public const ALLOW_DATABASE_WRITE_ACCESS = true;
+    public const ALLOW_DATABASE_READ_ACCESS = true;
+
     // An object returned from mysqli_connect() for accessing the database. Will be
     // initialized by the class constructor.
     private $database;
@@ -84,6 +90,11 @@ abstract class DatabaseConnection
     // returned either if there was no data to return or if an error occurred.
     protected function issue_db_query(string $queryString, array $parameters = NULL): array
     {
+        if (!$this->has_read_access())
+        {
+            exit(API\Response::code(404)->error_message("Cannot perform the requested action at this time."));
+        }
+
         $stmt = mysqli_prepare($this->database, $queryString);
 
         if ($parameters)
@@ -119,6 +130,11 @@ abstract class DatabaseConnection
     //
     protected function issue_db_command(string $commandString, array $parameters): int
     {
+        if (!$this->has_write_access())
+        {
+            exit(API\Response::code(404)->error_message("Cannot perform the requested action at this time."));
+        }
+        
         $stmt = mysqli_prepare($this->database, $commandString);
 
         mysqli_stmt_bind_param($stmt, str_repeat("s", count($parameters)), ...$parameters);
@@ -126,5 +142,15 @@ abstract class DatabaseConnection
         mysqli_stmt_execute($stmt);
 
         return mysqli_errno($this->database);
+    }
+
+    private function has_write_access(int $operation = 1)
+    {
+        return (self::ALLOW_DATABASE_WRITE_ACCESS == TRUE);
+    }
+
+    private function has_read_access(int $operation = 1)
+    {
+        return (self::ALLOW_DATABASE_READ_ACCESS == TRUE);
     }
 }

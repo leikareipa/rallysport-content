@@ -18,7 +18,12 @@ function request_track_deletion(trackID)
     })
     .then(response=>
     {
-        if (response.redirected)
+        if (!response.ok)
+        {
+            window.alert("Track deletion failed.");
+            location.reload();
+        }
+        else if (response.redirected)
         {
             window.location.href = response.url;
         }
