@@ -1,0 +1,23 @@
+.help-topic-container
+{
+    width: 30%;
+    min-width: 400px;
+    display: inline-block;
+}
+
+.help-topic
+{
+    text-align: left;
+    margin: 30px;
+    display: block;
+}
+
+.help-topic a
+{
+    color: blue;
+}
+
+.help-topic a:visited
+{
+    color: purple;
+}

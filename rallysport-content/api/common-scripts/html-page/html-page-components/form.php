@@ -43,11 +43,9 @@ abstract class Form extends HTMLPage\HTMLPageComponent
         return [""];
     }
 
-    // Override this to customize your form's title.
-    static public function title() : string
-    {
-        return "Untitled sample form";
-    }
+    // Override this to customize your form's title. Note: each form MUST
+    // provide a title html by overriding this function.
+    abstract static public function title() : string; // EXAMPLE: { return "Untitled sample form"; }
 
     // Returns the form's HTML as a string. To customize your derived form's
     // HTML, don't override this - override inner_html, instead.
@@ -56,15 +54,20 @@ abstract class Form extends HTMLPage\HTMLPageComponent
         return "
         <div class='html-page-form-container'>
 
-            <header>".static::title()."</header>
+            <header>
+                ".static::title()."
+            </header>
 
             ".static::inner_html()."
+
         </div>
         ";
     }
 
-    // Override this to provide your custom form HTML.
-    static public function inner_html() : string
+    // Override this to provide your custom form HTML. Note: each form MUST
+    // provide an inner html by overriding this function.
+    abstract static public function inner_html() : string;
+    /* EXAMPLE:
     {
         return "
         <form class='html-page-form'>
@@ -73,5 +76,5 @@ abstract class Form extends HTMLPage\HTMLPageComponent
 
         </form>
         ";
-    }
+    }*/
 }

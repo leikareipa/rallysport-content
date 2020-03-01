@@ -1,0 +1,25 @@
+#rallysport-content-help-header
+{
+    padding: 17px 0 5px 0;
+    margin: 0 0 50px 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#rallysport-content-help-header > .title
+{
+    font-size: 275%;
+    font-family: "Comic Sans (server-side)", sans-serif;
+    font-weight: bold;
+}
+
+#rallysport-content-help-header > .title a
+{
+    text-decoration: none;
+}
+
+#rallysport-content-help-header .subtitle
+{
+    font-size: initial;
+    display: block;
+    margin: 16px 0 20px 0;
+}

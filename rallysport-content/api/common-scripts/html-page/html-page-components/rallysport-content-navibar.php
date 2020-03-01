@@ -33,6 +33,10 @@ abstract class RallySportContentNavibar extends HTMLPage\HTMLPageComponent
         {
             $currentPage = "users";
         }
+        else if (strpos($_SERVER["REQUEST_URI"], "/rallysport-content/help") !== FALSE)
+        {
+            $currentPage = "help";
+        }
         else
         {
             $currentPage = "home";
@@ -45,15 +49,24 @@ abstract class RallySportContentNavibar extends HTMLPage\HTMLPageComponent
                 <i class='fas fa-fw fa-home'></i>
             </a>
 
-            <a href='/rallysport-content/tracks/' title='Tracks'
+            <a href='/rallysport-content/tracks/'
+               title='Tracks'
                class='button ".(($currentPage == "tracks")? "current-page" : "")."'>
                 <i class='fas fa-fw fa-road'></i>
             </a>
 
-            <a href='/rallysport-content/users/' title='Users'
+            <a href='/rallysport-content/users/'
+               title='Users'
                class='button ".(($currentPage == "users")? "current-page" : "")."'>
                 <i class='fas fa-fw fa-users'></i>
             </a>
+
+            <a href='/rallysport-content/help/'
+               title='Help Central'
+               class='button ".(($currentPage == "help")? "current-page" : "")."'>
+                <i class='fas fa-fw fa-notes-medical'></i>
+            </a>
+
         </div>
         ";
     }
