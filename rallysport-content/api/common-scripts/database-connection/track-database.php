@@ -111,7 +111,7 @@ class TrackDatabase extends DatabaseConnection
         // e.g. downloading a track (which triggers the download count increment
         // in the first place). Failing to count downloads is better than entirely
         // disrupting the service.
-        if (!self::DATABASE_WRITE_ACCESS)
+        if (!self::ALLOW_DATABASE_WRITE_ACCESS)
         {
             return false;
         }
