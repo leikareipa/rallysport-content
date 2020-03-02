@@ -38,7 +38,7 @@ abstract class UploadATrack extends \RSC\HTMLPage\Component\HelpTopic
                 new submission is being reviewed, you'll see a \"Processing...\"
                 next to its name on your account's
                 <a href='/rallysport-content/tracks/?form=add'>control panel<i class='fas fa-fw fa-sm fa-lock'></i></a>.
-                The review process may take hours, days, weeks, or even longer &ndash;
+                The review process can take hours, days, weeks, or even longer &ndash;
                 administration works on a volunteer basis, so no guarantees can be
                 given, although a best effort is made.
                 </li>
@@ -114,7 +114,7 @@ abstract class UploadATrack extends \RSC\HTMLPage\Component\HelpTopic
 
         <p>Once submitted, a track can't be modified in any way except by full
         deletion. You can choose to delete a track by clicking on the
-        <i class='fas fa-fw fa-times'></i> icon next to the track's name on your account's
+        <i class='fas fa-sm fa-times'></i> icon next to the track's name on your account's
         <a href='/rallysport-content/tracks/?form=add'>control panel<i class='fas fa-fw fa-sm fa-lock'></i></a>.
         If this icon isn't available (and you see something like \"Processing...\"
         instead), the track submission hasn't yet been reviewed by administration,

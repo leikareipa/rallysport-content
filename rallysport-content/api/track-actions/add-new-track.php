@@ -57,7 +57,7 @@ function add_new_track(array $uploadedFileInfo) : void
         if ($numTracksProcessing >= 3)
         {
             exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
-                                                               "Cannot upload more until your previous tracks have finished processing"));
+                                                               "Please wait until some of your previous tracks have finished processing"));
         }
     }
 

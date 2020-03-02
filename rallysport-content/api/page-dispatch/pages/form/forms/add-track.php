@@ -29,12 +29,15 @@ abstract class AddTrack extends \RSC\HTMLPage\Component\Form
               method='POST'
               action='/rallysport-content/tracks/'>
 
-            <label for='track_file'>Track ZIP file*</label>
+            <label for='track_file'>Track ZIP file</label>
             <input type='hidden' name='MAX_FILE_SIZE' value='".\RSC\RallySportEDTrackData::MAX_BYTE_SIZE."'>
             <input type='file' accept='.zip' id='track-file' name='rallysported_track_file' required>
 
             <div class='footnote'>* Select a ZIP file containing the track's data as exported
-            from RallySportED-js.</div>
+            from RallySportED-js. Also, please read
+            <a style='text-decoration: underline;' href='/rallysport-content/help/?topic=upload-a-track'>this article</a>
+            to understand the implications of uploading a track.
+            </div>
 
             <button name='submit_button'
                     type='submit'
