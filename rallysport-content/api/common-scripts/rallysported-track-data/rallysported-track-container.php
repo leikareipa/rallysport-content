@@ -103,11 +103,11 @@ class RallySportEDTrackData_Container
             return false;
         }
 
-        // Every 2nd byte in the MAASTO data should be a value of 0, 1, or 255.
+        // Every 2nd byte in the MAASTO data should be a value of 0, 1, 15, or 255.
         $dataByteOffset += 4;
         for ($i = 0; $i < $maastoDataLen; $i += 2, $dataByteOffset += 2)
         {
-            if ($dataByteOffset >= $containerDataLen)
+            if (($dataByteOffset + 1) >= $containerDataLen)
             {
                 return false;
             }
