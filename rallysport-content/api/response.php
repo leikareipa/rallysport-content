@@ -65,10 +65,12 @@ class Response
         if (($numSeconds <= 0) ||
             (($this->htmlResponseCode < 200) || ($this->htmlResponseCode > 299)))
         {
+            header("Pragma: no-cache");
             header("Cache-Control: no-store");
         }
         else
         {
+            header("Pragma: cache");
             header("Cache-Control: max-age={$numSeconds}");
         }
 
