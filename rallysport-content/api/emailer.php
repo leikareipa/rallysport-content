@@ -11,14 +11,13 @@
 abstract class RallySportContentEmailer
 {
     public const SENDER_ADDRESS = "Rally-Sport Content <rsc@tarpeeksihyvaesoft.com>";
-
     private const ADMIN_ADDRESS = "Tarpeeksi Hyvae Soft <sw@tarpeeksihyvaesoft.com>";
 
     private static function send_email(string $to, string $title, string $message) : bool
     {
         $acceptedForDelivery = mail($to, $title, $message,
-                                    "From: {static::SENDER_ADDRESS}\r\n".
-                                    "Reply-To: {static::SENDER_ADDRESS}");
+                                    "From: ".self::SENDER_ADDRESS."\r\n".
+                                    "Reply-To: ".self::SENDER_ADDRESS);
 
         return $acceptedForDelivery;
     }
@@ -47,9 +46,9 @@ abstract class RallySportContentEmailer
         "The link will expire when you've changed your password, or in roughly\r\n".
         "24 hours from when this email was sent to you.";
 
-        return static::send_email($to,
-                                  "Resetting your password on Rally-Sport Content",
-                                  $message);
+        return self::send_email($to,
+                                "Resetting your password on Rally-Sport Content",
+                                $message);
     }
 
     // Informs Rally-Sport Content's administrator that users have uploaded
@@ -60,8 +59,8 @@ abstract class RallySportContentEmailer
         "One or more new resources have been uploaded to Rally-Sport Content and\r\n".
         "are awaiting verification.";
 
-        return static::send_email(static::ADMIN_ADDRESS,
-                                  "RSC: New resources have been uploaded",
-                                  $message);
+        return self::send_email(self::ADMIN_ADDRESS,
+                                "RSC: New resources have been uploaded",
+                                $message);
     }
 }
