@@ -26,34 +26,57 @@ function is_client_logged_in() : bool
 }
 
 // Returns the resource ID of the user logged in on the current session; or
-// NULL if the client is not logged in.
+// NULL if the client is not logged in (or if they should be considered as
+// not being logged in).
 function logged_in_user_id()
 {
-    $id = Resource\UserResourceID::from_string($_SESSION["user_resource_id"] ?? "");
+    $userID = Resource\UserResourceID::from_string($_SESSION["user_resource_id"] ?? "");
 
-    // Prevent usage of an account that has become disabled while being logged in.
-    if ($id &&
-        !(new DatabaseConnection\UserDatabase())->is_active_user_account($id))
+    if ($userID)
     {
-        log_client_out();
-        return NULL;
+        $userDB = new DatabaseConnection\UserDatabase();
+
+        // Prevent this session from using the target account if the account
+        // has been logged into by another session.
+        if (!$userDB->is_account_logged_into_by_session($userID, session_id()))
+        {
+            return NULL;
+        }
+
+        // Prevent usage of an account that has become disabled while being
+        // logged in.
+        if (!$userDB->is_active_user_account($userID))
+        {
+            log_client_out();
+            return NULL;
+        }
     }
 
-    return ($id? $id : NULL);
+    return ($userID? $userID : NULL);
 }
 
 // Note: This should be called only after you've verified that the given user
 // has provided valid credentials for logging in.
 function log_client_in(\RSC\Resource\UserResourceID $userResourceID) : void
 {
-    $_SESSION["user_resource_id"] = $userResourceID->string();
+    if ((new DatabaseConnection\UserDatabase())->set_account_session_id($userResourceID, session_id()))
+    {
+        $_SESSION["user_resource_id"] = $userResourceID->string();
+    }
 
     return;
 }
 
-function log_client_out() : void
+function log_client_out(string $targetUserID = NULL) : void
 {
+    $userID = Resource\UserResourceID::from_string($targetUserID ?? $_SESSION["user_resource_id"] ?? "");
+
     $_SESSION["user_resource_id"] = NULL;
+
+    if ($userID)
+    {
+        (new DatabaseConnection\UserDatabase())->set_account_session_id($userID, NULL);
+    }
 
     return;
 }

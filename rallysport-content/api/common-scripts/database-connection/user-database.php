@@ -63,6 +63,57 @@ class UserDatabase extends DatabaseConnection
 
         return hash("sha256", ($pepper . $plaintextEmail));
     }
+    
+    // Returns TRUE if the account of the given user is currently logged into
+    // with the given session ID; FALSE otherwise.
+    public function is_account_logged_into_by_session(Resource\UserResourceID $userID = NULL,
+                                                      string $sessionID = NULL) : bool
+    {
+        if (!$userID ||
+            !$this->is_connected())
+        {
+            return false;
+        }
+
+        $dbResponse = $this->issue_db_query("SELECT `php_session_id`
+                                             FROM rsc_users
+                                             WHERE resource_id = ?",
+                                            [$userID->string()]);
+
+        if (!is_array($dbResponse) ||
+            (count($dbResponse) != 1) ||
+            !array_key_exists("php_session_id", $dbResponse[0]))
+        {
+            return false;
+        }
+
+        return ($dbResponse[0]["php_session_id"] === $sessionID);
+    }
+
+    // To be called when the account logs in/out.
+    public function set_account_session_id(Resource\UserResourceID $userID = NULL,
+                                           string $sessionID = NULL) : bool
+    {
+        if (!$userID ||
+            !$this->is_connected())
+        {
+            return false;
+        }
+        
+        $dbResponse = $this->issue_db_command("UPDATE rsc_users
+                                               SET `php_session_id` = ?
+                                               WHERE resource_id = ?",
+                                              [$sessionID,
+                                               $userID->string()]);
+
+        // If the DB query failed.
+        if ($dbResponse !== 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     // Returns the resource ID of the user who registered using the given track
     // data hash. On error (or if no such user is found), FALSE is returned.

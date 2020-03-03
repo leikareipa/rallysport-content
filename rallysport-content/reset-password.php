@@ -47,7 +47,8 @@ if (!(new DatabaseConnection\UserDatabase())->reset_user_password($email, $token
 }
 else // Password successfully reset.
 {
-    API\Session\log_client_out();
-    
+    $targetUserID = (new DatabaseConnection\UserDatabase())->get_user_id_with_credentials($email, $newPassword);
+    API\Session\log_client_out($targetUserID->string());
+
     exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=password-reset-success"));
 }
