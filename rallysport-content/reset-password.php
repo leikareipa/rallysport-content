@@ -1,5 +1,7 @@
 <?php namespace RSC;
 
+session_start();
+
 /*
  * 2020 Tarpeeksi Hyvae Soft
  * 
@@ -7,16 +9,19 @@
  * 
  */
 
+require_once __DIR__."/api/session.php";
 require_once __DIR__."/api/response.php";
 require_once __DIR__."/api/common-scripts/database-connection/user-database.php";
 require_once __DIR__."/api/common-scripts/user/user-password-characteristics.php";
 
+// The token is a random string generated when the user requested a password
+// reset. Only requests that provide a matching token are considered valid.
 $token = ($_POST["token"] ?? NULL);
 $email = ($_POST["email"] ?? NULL);
 $newPassword = ($_POST["new_password"] ?? NULL);
 
-// The 'token' parameter is absolutely required for resetting a password,
-// and we can do nothing without it.
+// The token is absolutely required for resetting a password, and we can do
+// nothing without it.
 if (!isset($token))
 {
     exit(API\Response::code(303)->redirect_to("/rallysport-content/"));
@@ -42,5 +47,7 @@ if (!(new DatabaseConnection\UserDatabase())->reset_user_password($email, $token
 }
 else // Password successfully reset.
 {
+    API\Session\log_client_out();
+    
     exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=password-reset-success"));
 }
