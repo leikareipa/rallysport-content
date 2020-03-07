@@ -62,7 +62,7 @@ class ResourceView
                         "displayName"  => $resource->data()->name(),
                         "width"        => $resource->data()->side_length(),
                         "height"       => $resource->data()->side_length(),
-                        "id       "    => $resource->id()->string(),
+                        "id"           => $resource->id()->string(),
                         "creatorID"    => $resource->creator_id()->string(),
                     ],
                 ];
