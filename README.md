@@ -121,12 +121,11 @@ Instead of directly issuing DELETE requests, please use the HTML form provided f
 
 To host Rally-Sport Content on your own PHP 7.1-compatible, MySQL-enabled server, do the following:
 
-- Copy the [rallysport-content](rallysport-content/) directory onto your server
+1. Set up your database tables as per the [Database](#database) subsection.
+2. Update the email addresses in [api/emailer.php](rallysport-content/api/emailer.php); and ensure your server is configured for PHP's [mail](https://www.php.net/manual/en/function.mail.php) function.
+3. Copy the [rallysport-content/](rallysport-content/) directory onto your server.
     - The server's client-facing directory structure should be `<host>/rallysport-content/` - e.g. [tarpeeksihyvaesoft.com/rallysport-content/](https://www.tarpeeksihyvaesoft.com/rallysport-content/) - as some of Rally-Sport Content's code makes a hard-coded assumption of such.
-- Set up your database tables as per the [Database](#database) subsection
-- Optionally, ensure that PHP's [mail()](https://www.php.net/manual/en/function.mail.php) function is able to send email from your server
-- Optionally, also host the [browser-based RallySportED editor](https://www.github.com/leikareipa/rallysported-js/)
-    - At `<host>/rallysported/` - e.g. [tarpeeksihyvaesoft.com/rallysported/](https://www.tarpeeksihyvaesoft.com/rallysported/)
+4. Also host the [browser-based RallySportED editor](https://www.github.com/leikareipa/rallysported-js/), at `<host>/rallysported/` - e.g. [tarpeeksihyvaesoft.com/rallysported/](https://www.tarpeeksihyvaesoft.com/rallysported/).
 
 ## Database
 
