@@ -15,32 +15,12 @@
     color: inherit;
 }
 
-.rsc-table.own-tracks-list tr:hover > td.icon-row
-{
-    color: gray;
-}
-
 .rsc-table.own-tracks-list tr > td.icon-row a:hover
 {
     color: black;
 }
 
-.rsc-table.own-tracks-list .media
+.rsc-table.own-tracks-list tr:hover > td.icon-row
 {
-    display: inline-block;
-    width: 25px;
-    height: 16px;
-    border-radius: 0;
-}
-
-.rsc-table.own-tracks-list .media.empty
-{
-    display: none;
-}
-
-.rsc-table.own-tracks-list .media svg > polygon
-{
-    fill: none;
-    stroke: black;
-    stroke-width: 1;
+    color: black;
 }

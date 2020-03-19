@@ -85,7 +85,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 
                     <div class='title'
                          title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
-                        <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
+                        <i class='fas fa-fw fa-road'></i> {$track->data()->name()}
                     </div>
 
                     <div class='icon-row right'>

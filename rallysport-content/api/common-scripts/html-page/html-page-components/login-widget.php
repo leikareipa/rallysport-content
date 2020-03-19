@@ -38,7 +38,7 @@ abstract class LoginWidget extends HTMLPage\HTMLPageComponent
             ? "
             <span>
                  <a href='/rallysport-content/'>
-                     <i class='far fa-fw fa-sm fa-user'></i>".API\Session\logged_in_user_id()->string()."
+                     <i class='fas fa-fw fa-user'></i>".API\Session\logged_in_user_id()->string()."
                  </a>
             </span>
             <span class='separator'>|</span>

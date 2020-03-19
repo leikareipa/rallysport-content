@@ -13,5 +13,5 @@
 .resource-metadata.track > .card > .media svg:hover > polygon
 {
     stroke: black;
-    stroke-width: 2;
+    stroke-width: 1.5;
 }

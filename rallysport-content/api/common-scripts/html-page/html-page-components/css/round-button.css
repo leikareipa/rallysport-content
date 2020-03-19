@@ -4,7 +4,7 @@
     height: 75px;
     line-height: 75px;
     position: absolute;
-    border: 1px solid lightgray;
+    border: 1px solid gray;
     border-radius: 50%;
     background-color: white;
     cursor: pointer;
@@ -18,6 +18,7 @@
     line-height: 75px;
     position: absolute;
     border-color: gray;
+    border-style: solid;
 }
 
 .round-button.warn
@@ -45,10 +46,12 @@
 {
     right: -28px;
     bottom: -28px;
+    border-top-left-radius: 0;
 }
 
 .round-button.top-right
 {
     right: -28px;
     top: -28px;
+    border-bottom-left-radius: 0;
 }

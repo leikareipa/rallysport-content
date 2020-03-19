@@ -1,8 +1,8 @@
 #rallysport-content-header
 {
-    padding: 17px 0 5px 0;
+    padding: 17px 0 7px 0;
     margin: 0 0 50px 0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 5px -4px rgba(0, 0, 0, 0.4);
 }
 
 #rallysport-content-header > .title
