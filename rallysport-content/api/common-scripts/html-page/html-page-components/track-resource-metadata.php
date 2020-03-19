@@ -49,7 +49,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             </a>
 
             <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'
-                title='Uploader'>
+                title='Uploaded by {$track->creator_id()->string()}'>
                 <i class='fas fa-fw fa-user'></i>
             </a>
 
