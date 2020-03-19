@@ -22,7 +22,7 @@ abstract class ResourceViewURLParams
     // HTML view: how many resource items to show per page.
     public static function items_per_page() : int
     {
-        $count = ((int)($_GET["show"] ?? 9));
+        $count = ((int)($_GET["show"] ?? 8));
 
         return min(50, max(1, $count));
     }
