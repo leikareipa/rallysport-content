@@ -66,7 +66,7 @@ function add_new_track(array $uploadedFileInfo) : void
                                              0,
                                              Resource\TrackResourceID::random(),
                                              API\Session\logged_in_user_id(),
-                                             Resource\ResourceVisibility::PROCESSING);
+                                             Resource\ResourceVisibility::PUBLIC);
 
     if (!$newTrack)
     {
@@ -106,9 +106,7 @@ function add_new_track(array $uploadedFileInfo) : void
     $kierrosSVGImage = \RSC\svg_image_from_kierros_data($newTrack->data()->container("kierros"),
                                                         $newTrack->data()->side_length());
 
-    if (!$trackDB->add_new_track($newTrack,
-                                 $kierrosSVGImage,
-                                 $trackDataHash))
+    if (!$trackDB->add_new_track($newTrack, $kierrosSVGImage, $trackDataHash))
     {
         exit(API\Response::code(303)->load_form_with_error("/rallysport-content/tracks/?form=add",
                                                            "Database error"));

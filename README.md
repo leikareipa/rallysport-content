@@ -203,12 +203,6 @@ The following columns are common to all resource tables.
 
 ## Administrating
 
-### Reviewing uploaded content
-
-When a user uploads a resource (e.g. a track), its visibility (cf. [resource-visibility.php](rallysport-content/api/common-scripts/resource/resource-visibility.php)) will be set to non-public by default, and must be made public manually by the administrator before the resource's data can be accessed by users.
-
-To do this, simply update the `resource_visibility` column for the given resource to the value of `ResourceVisibility::PUBLIC`. (Presumably, you'll first want to inspect the resource to make sure it doesn't break any of your content rules, etc.)
-
 ### Backing up content
 
 All user-submitted content is stored in the database, so backing up the database is sufficient to back up content data.
