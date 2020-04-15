@@ -45,13 +45,11 @@
 .round-button.bottom-right
 {
     right: -28px;
-    bottom: -28px;
-    border-top-left-radius: 0;
+    bottom: -20px;
 }
 
 .round-button.top-right
 {
     right: -28px;
-    top: -28px;
-    border-bottom-left-radius: 0;
+    top: -20px;
 }

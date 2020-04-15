@@ -48,6 +48,11 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                 <i class='fas fa-fw fa-link'></i>
             </a>
 
+            <a href='/rallysported/?track={$track->id()->string()}'
+               title='Open a copy in RallySportED'>
+                <i class='fas fa-fw fa-hammer'></i>
+            </a>
+
             <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'
                 title='Uploaded by {$track->creator_id()->string()}'>
                 <i class='fas fa-fw fa-user'></i>
@@ -75,10 +80,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             <div class='card'>
 
                 <div class='media'>
-                    <a href='/rallysported/?track={$track->id()->string()}'
-                       title='Open a copy in RallySportED'>
-                        {$kierrosSVG}
-                    </a>
+                    {$kierrosSVG}
                 </div>
 
                 <div class='info-box'>

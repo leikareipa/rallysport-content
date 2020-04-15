@@ -1,17 +1,11 @@
 .resource-metadata.track > .card > .media svg
 {
-    transform: scale(0.8);
+    transform: scale(0.65);
 }
 
 .resource-metadata.track > .card > .media svg > polygon
 {
     stroke: black;
-    stroke-width: 1;
-    fill: none;
-}
-
-.resource-metadata.track > .card > .media svg:hover > polygon
-{
-    stroke: black;
     stroke-width: 1.5;
+    fill: none;
 }

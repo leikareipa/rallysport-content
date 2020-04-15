@@ -19,8 +19,3 @@
 {
     color: black;
 }
-
-.rsc-table.own-tracks-list tr:hover > td.icon-row
-{
-    color: black;
-}

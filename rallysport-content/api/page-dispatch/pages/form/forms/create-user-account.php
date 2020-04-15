@@ -56,8 +56,8 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
 
             <div class='footnote'>* For verification, please provide a track you've recently
             created using RallySportED-js. Note: if you ever need to reset your password, you may
-            be asked to provide the same track for verification, again, so don't forget which
-            one you chose!</div>
+            be asked to provide this same track for verification, again, so don't forget which
+            file you chose!</div>
 
             <button name='submit-button'
                     type='submit'

@@ -1,6 +1,6 @@
 .page-number-selector
 {
-    margin: 17px;
+    margin: 20px;
     color: black;
     display: flex;
     justify-content: center;
@@ -24,16 +24,19 @@
 .page-number-selector .fas,
 .page-number-selector .far
 {
-    padding: 4px 6px;
-    border-radius: 4px;
+    padding: 4px 5px;
     line-height: 10px;
+}
+
+.page-number-selector span
+{
+    color: black;
 }
 
 .page-number-selector span.current-page
 {
-    color: white;
-    background-color: black;
-    border-radius: 3px;
+    font-weight: bold;
+    color: black;
 }
 
 .page-number-selector span:not(.current-page):hover
