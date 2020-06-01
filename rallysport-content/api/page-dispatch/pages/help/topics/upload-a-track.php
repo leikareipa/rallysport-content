@@ -66,7 +66,7 @@ abstract class UploadATrack extends \RSC\HTMLPage\Component\HelpTopic
         </p>
 
         <p>You should, however, first leaf through
-        <a href='/rallysported/userguide/'>the RallySportED-js user guide</a>.
+        <a href='/rallysported/user-guide/'>the RallySportED-js user guide</a>.
         Most importantly, you should be aware that the track's name will be
         determined by the directory structure inside the ZIP archive. For instance,
         a track will be called \"Suorundi\" on Rally-Sport Content if it has
