@@ -54,12 +54,12 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             </a>
 
             <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'
-                title='Uploaded by {$track->creator_id()->string()}'>
+               title='Uploaded by {$track->creator_id()->string()}'>
                 <i class='fas fa-fw fa-user'></i>
             </a>
 
             <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
-                title='Download as a ZIP'>
+               title='Download as a ZIP'>
                 <i class='fas fa-fw fa-file-download'></i>
                 {$track->download_count()}
             </a>
