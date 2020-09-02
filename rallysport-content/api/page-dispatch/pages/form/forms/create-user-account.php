@@ -59,9 +59,10 @@ abstract class CreateUserAccount extends \RSC\HTMLPage\Component\Form
             be asked to provide this same track for verification, again, so don't forget which
             file you chose!</div>
 
-            <button name='submit-button'
+            <button disabled
+                    name='submit-button'
                     type='submit'
-                    class='round-button bottom-right'
+                    class='round-button bottom-right blocked'
                     title='Submit the form'>
             </button>
 
