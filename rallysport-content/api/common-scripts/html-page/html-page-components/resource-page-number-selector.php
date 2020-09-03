@@ -33,7 +33,7 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
         return "
         <div class='page-number-selector ".(($numPages <= 1)? "empty" : "")."'>
 
-            Page&nbsp;
+            Page:&nbsp;
             
             ".implode("", $formattedSelectorRow)."
 
@@ -165,7 +165,7 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
 
         // Add navigational arrows to the sides of the selector row. They move
         // one page back or forward.
-        //array_splice($selectorRow, 0, 0, self::make_page_link(max(1, ($currentPageNumber - 1)), $currentPageNumber, "arrow-left"));
+        array_splice($selectorRow, 0, 0, self::make_page_link(max(1, ($currentPageNumber - 1)), $currentPageNumber, "arrow-left"));
         array_splice($selectorRow, count($selectorRow), 0, self::make_page_link(min($numPages, ($currentPageNumber + 1)), $currentPageNumber, "arrow-right"));
 
         return $selectorRow;

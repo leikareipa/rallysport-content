@@ -6,8 +6,6 @@
     padding: 35px;
     border-radius: 3px;
     border: 1px dashed lightgray;
-    border-bottom: none;
-    box-shadow: 0 4px 5px -4px rgba(0, 0, 0, 0.4);
 }
 
 .rsc-table-container.plain

@@ -30,7 +30,8 @@
 
 .page-number-selector span
 {
-    color: black;
+    color: lightgray;
+    font-weight: bold;
 }
 
 .page-number-selector span.current-page
