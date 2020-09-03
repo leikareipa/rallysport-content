@@ -2,7 +2,7 @@
 
 A backend app with a frontend view to host and deliver user-made content for Rally-Sport/[RallySportED](https://www.github.com/leikareipa/rallysported/).
 
-The app can be found live on the web [here](https://www.tarpeeksihyvaesoft.com/rallysport-content/) (temporarily down - in the meantime, please see a video demonstration [here](https://www.youtube.com/watch?v=BDQMMeW9wWk)!).
+The app can be found live on the web [here](https://www.tarpeeksihyvaesoft.com/rallysport-content/).
 
 ![A screenshot of Rally-Sport content](screenshots/tracks-beta-2.png)
 
