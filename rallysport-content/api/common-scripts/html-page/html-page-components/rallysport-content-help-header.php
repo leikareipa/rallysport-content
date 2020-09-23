@@ -29,11 +29,11 @@ abstract class RallySportContentHelpHeader extends HTMLPage\HTMLPageComponent
 
             <div class='title'>
                 <a href='/rallysport-content/'>
-                    Rally-Sport Content <i style='color: mediumseagreen;' class='fas fa-notes-medical'></i>
+                    Rally-Sport Content <i style='margin-left: 3px; color: mediumseagreen;' class='fas fa-notes-medical'></i>
                 </a>
             </div>
 
-            <div style='margin: 16px 0 20px 0;'>
+            <div style='margin: 13px 0 20px 0;'>
                 <a href='/rallysport-content/help/'
                 class='subtitle'>
                     Help Central

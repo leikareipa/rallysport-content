@@ -36,8 +36,8 @@
 
 .round-button:disabled
 {
-    color: lightgrey;
-    border: 1px dashed lightgray;
+    color: black;
+    border: 1px dashed black;
     cursor: not-allowed;
     background-color: white;
 }

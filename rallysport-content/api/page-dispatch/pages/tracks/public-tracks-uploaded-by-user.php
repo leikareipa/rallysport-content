@@ -82,7 +82,7 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         if (empty($tracks))
         {
-            $htmlPage->body->add_element("<div>No tracks found</div>");
+            $htmlPage->body->add_element("<div>No such tracks found</div>");
         }
         else
         {

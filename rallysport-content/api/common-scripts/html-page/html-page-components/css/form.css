@@ -9,10 +9,11 @@
     padding-top: 0;
     margin-top: 0;
     background-color: white;
+    border-bottom: none;
     border-radius: 6px;
-    border: 1px dashed lightgray;
     padding-bottom: 65px;
     border-radius: 3px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .html-page-form-container > header
@@ -116,11 +117,17 @@
 .html-page-form-error-string
 {
     font-weight: bold;
-    color: rgb(223, 0, 0);
+    color: #ff3690;
     padding: 23px;
     margin-bottom: 35px;
     margin-top: -30px; /* Negate header's bottom margin.*/
-    background-color: rgba(255, 0, 0, 0.055);
+    background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 2px,
+        #ff369015 2px,
+        #ff369015 3px
+    );
 }
 
 /* For error strings inside <form> elements.*/

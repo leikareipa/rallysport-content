@@ -18,6 +18,7 @@
 .page-number-selector .far
 {
     color: lightgray;
+    font-size: 80%;
 }
 
 .page-number-selector span,
@@ -30,8 +31,7 @@
 
 .page-number-selector span
 {
-    color: lightgray;
-    font-weight: bold;
+    color: gray;
 }
 
 .page-number-selector span.current-page

@@ -1,12 +1,12 @@
 .resource-metadata
 {
     padding: 10px 15px;
-    margin: 6px;
+    margin: 7px;
     text-align: left;
     display: inline-block;
     background-color: white;
-    border: 1px dashed lightgray;
-    border-radius: 3px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .resource-metadata > .card
@@ -47,7 +47,7 @@
 .resource-metadata > .card > .info-box > .icon-row > a:hover
 {
     text-decoration: none;
-    color: black;
+    color: #ff3690;
 }
 
 .resource-metadata > .card > .media
