@@ -120,7 +120,7 @@
     color: #ff3690;
     padding: 23px;
     margin-bottom: 35px;
-    margin-top: -30px; /* Negate header's bottom margin.*/
+    margin-top: -35px; /* Negate header's bottom margin.*/
     background: repeating-linear-gradient(
         -45deg,
         transparent,
@@ -145,14 +145,3 @@
     font-weight: bold;
     content: "\f06a";
 }
-
-.html-page-form-error-string::after
-{
-    content: ".";
-}
-
-.html-page-form-error-string.in-form::after
-{
-    content: "";
-}
-

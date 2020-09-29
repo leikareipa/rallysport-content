@@ -68,7 +68,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 
                     <a href='/rallysported/?track={$track->id()->string()}'
                         title='Open a copy in RallySportED'>
-                        <i class='fas fa-fw fa-hammer'></i>
+                        <i class='fas fa-fw fa-expand'></i>
                     </a>
 
                     <a href='/rallysport-content/tracks/?form=delete&id={$track->id()->string()}'
@@ -79,7 +79,6 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                     <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                         title='Download as a ZIP'>
                         <i class='fas fa-fw fa-file-download'></i>
-                        {$track->download_count()}
                     </a>
                     ";
                 }

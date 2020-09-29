@@ -21,6 +21,12 @@
     font-size: 80%;
 }
 
+.page-number-selector .fas:hover,
+.page-number-selector .far:hover
+{
+    color: dimgray;
+}
+
 .page-number-selector span,
 .page-number-selector .fas,
 .page-number-selector .far

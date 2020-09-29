@@ -50,18 +50,12 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 
             <a href='/rallysported/?track={$track->id()->string()}'
                title='Open a copy in RallySportED'>
-                <i class='fas fa-fw fa-hammer'></i>
-            </a>
-
-            <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'
-               title='Uploaded by {$track->creator_id()->string()}'>
-                <i class='fas fa-fw fa-user'></i>
+                <i class='fas fa-fw fa-box'></i>
             </a>
 
             <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
-               title='Download as a ZIP'>
+               title='Download'>
                 <i class='fas fa-fw fa-file-download'></i>
-                {$track->download_count()}
             </a>
             ";
         }
@@ -86,7 +80,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                 <div class='info-box'>
 
                     <div class='title'
-                         title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
+                         title='".date("j M Y", $track->creation_timestamp())." &bull; {$track->creator_id()->string()}'>
                         <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
                     </div>
 
