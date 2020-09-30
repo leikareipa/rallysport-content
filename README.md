@@ -10,7 +10,7 @@ The app can be found live on the web [here](https://www.tarpeeksihyvaesoft.com/r
 
 Rally-Sport Content provides modders of Rally-Sport (the mid-90s racing game) a centralized service to share with others the content they've made.
 
-Rally-Sport Content is aimed at content made using the [RallySportED](https://www.github.com/leikareipa/rallysported/) toolset; and integrates with browser-based implementations of those tools. For example, you can directly open tracks hosted on Rally-Sport Content in the [browser-based RallySportED track editor](https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod).
+Rally-Sport Content is aimed at content made using the [RallySportED](https://www.github.com/leikareipa/rallysported/) toolset; and integrates with browser-based implementations of those tools. For example, you can directly open tracks hosted on Rally-Sport Content in the [browser-based RallySportED track editor](https://www.tarpeeksihyvaesoft.com/rallysported/).
 
 # Communicating with the API
 
