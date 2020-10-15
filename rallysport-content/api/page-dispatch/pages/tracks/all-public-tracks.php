@@ -64,7 +64,7 @@ function all_public_tracks() : void
         $htmlPage->use_component(HTMLPage\Component\TrackResourceMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $inPageTitle = "Tracks uploaded by users (sorted by most recent)";
+        $inPageTitle = "Tracks uploaded by users (sorted from newest to oldest)";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
