@@ -74,7 +74,8 @@ function all_public_tracks() : void
         }
         else
         {
-            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element("<div style='/*margin: 30px;*/'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
             foreach ($tracks as $trackResource)
@@ -90,7 +91,6 @@ function all_public_tracks() : void
             }
 
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
-            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }

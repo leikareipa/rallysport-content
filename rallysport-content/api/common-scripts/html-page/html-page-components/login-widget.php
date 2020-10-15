@@ -36,24 +36,30 @@ abstract class LoginWidget extends HTMLPage\HTMLPageComponent
 
             ".(API\Session\is_client_logged_in()
             ? "
-            <span>
+            <div class='logged-in-id'>
                  <a href='/rallysport-content/'>
-                     <i class='fas fa-fw fa-user-check'></i>".API\Session\logged_in_user_id()->string()."
+                     <i class='fas fa-fw fa-user'></i>".API\Session\logged_in_user_id()->string()."
                  </a>
-            </span>
-            <span class='separator'>|</span>
-            <a href='/rallysport-content/logout.php'>
-                Log out
-            </a>
+            </div>
+
+            <div class='logout-action'>
+                <a href='/rallysport-content/logout.php'>
+                    Log out
+                </a>
+            </div>
             "
             : "
-            <a href='/rallysport-content/?form=login'>
-                Log in
-            </a>
-            <span class='separator'>|</span>
-            <a href='/rallysport-content/users/?form=add'>
-                Register
-            </a>
+            <div class='login-action'>
+                <a href='/rallysport-content/?form=login'>
+                    Log in
+                </a>
+            </div>
+
+            <div class='register-action'>
+                <a href='/rallysport-content/users/?form=add'>
+                    Register
+                </a>
+            </div>
             ")."
 
         </div>

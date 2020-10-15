@@ -36,12 +36,14 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
 
             <div class='title'>
                 <a href='/rallysport-content/'>
+
+                    <i class='fas fa-air-freshener'
+                       style='color: #ff3690;
+                              transform: rotate(-24deg);
+                              margin-right: 8px;'></i>
+
                     Rally-Sport Content
-                    <i style='color: #dedede;' class='fas fa-air-freshener'></i>
-                    <i style='position: absolute;
-                              color: #ff3690;
-                              transform: translateX(-25px) translateY(4px) rotate(-24deg)'
-                       class='fas fa-air-freshener'></i>
+
                 </a>
             </div>
 

@@ -5,7 +5,8 @@ body
 
 #rallysport-content-header
 {
-    padding: 18px 0 7px 0;
+    display: flex;
+    padding: 15px 25px 15px 25px;
     margin: 0 0 35px 0;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -13,7 +14,7 @@ body
 
 #rallysport-content-header > .title
 {
-    font-size: 255%;
+    font-size: 230%;
     font-family: "Fredoka One", sans-serif;
     font-weight: normal;
     color: black;
@@ -27,6 +28,20 @@ body
 #rallysport-content-header .login-widget
 {
     font-size: initial;
-    display: block;
-    margin: 13px 0 20px 0;
+    margin-left: auto;
+}
+
+#rallysport-content-header .login-widget div + div
+{
+    margin-left: 10px;
+}
+
+#rallysport-content-header .login-widget .login-action,
+#rallysport-content-header .login-widget .logout-action
+{
+    padding: 6px 12px;
+    background-color: #ff3690;
+    border-radius: 6px;
+    font-weight: bold;
+    color: white;
 }

@@ -9,7 +9,7 @@
 
 .page-number-selector.empty
 {
-    display: none;
+    /*display: none;*/
 }
 
 /* Assumes any Font Awesome icons represent the navigational arrows to the
@@ -37,7 +37,12 @@
 
 .page-number-selector span
 {
-    color: gray;
+    color: black;
+}
+
+.page-number-selector span:hover
+{
+    font-weight: bold;
 }
 
 .page-number-selector span.current-page

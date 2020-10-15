@@ -118,16 +118,8 @@
 {
     font-weight: bold;
     color: #ff3690;
-    padding: 23px;
-    margin-bottom: 35px;
+    padding: 30px;
     margin-top: -35px; /* Negate header's bottom margin.*/
-    background: repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 2px,
-        #ff369015 2px,
-        #ff369015 3px
-    );
 }
 
 /* For error strings inside <form> elements.*/
