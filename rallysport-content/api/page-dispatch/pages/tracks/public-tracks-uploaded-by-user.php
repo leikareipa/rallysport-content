@@ -73,8 +73,8 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         "
         Tracks uploaded by
         <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
-            <i class='fas fa-fw fa-sm fa-user'></i>{$userResourceID->string()}
-        </a>
+            {$userResourceID->string()}<!--
+        --></a>
         (sorted by most recent)
         ";
         

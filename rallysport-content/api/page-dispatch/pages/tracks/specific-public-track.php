@@ -69,7 +69,7 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         if (!$track)
         {
-            $htmlPage->body->add_element("<div>No such track found</div>");
+            $htmlPage->body->add_element("<div>No such track found.</div>");
         }
         else
         {
