@@ -55,7 +55,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 
             <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                title='Download'>
-                <i class='fas fa-fw fa-file-download'></i>
+                <i class='fas fa-fw fa-download'></i>
             </a>
             ";
         }

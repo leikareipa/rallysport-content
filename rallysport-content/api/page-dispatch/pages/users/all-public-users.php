@@ -73,7 +73,7 @@ function all_public_users() : void
         }
         else
         {
-            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element("<div style='/*margin: 30px;*/'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
@@ -90,7 +90,6 @@ function all_public_users() : void
             }
 
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
-            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
