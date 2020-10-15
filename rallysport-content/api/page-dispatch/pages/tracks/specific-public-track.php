@@ -73,7 +73,7 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         }
         else
         {
-            $htmlPage->head->title = "Tracks";
+            $htmlPage->head->title = $track->data()->name();
 
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
             $htmlPage->body->add_element($track->view("metadata-html"));
