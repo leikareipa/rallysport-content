@@ -74,15 +74,7 @@ function specific_public_track(Resource\TrackResourceID $trackResourceID) : void
         else
         {
             $htmlPage->head->title = "Tracks";
-            $inPageTitle =
-            "
-            A track uploaded by
-            <a href='/rallysport-content/users/?id={$track->creator_id()->string()}'>
-                <i class='fas fa-fw fa-sm fa-user'></i>{$track->creator_id()->string()}
-            </a>
-            ";
 
-            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
             $htmlPage->body->add_element($track->view("metadata-html"));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
