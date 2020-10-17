@@ -60,7 +60,8 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\PageDisplay\form(API\Form\AddTrack::class);
+                        $page = API\BuildPage\form(API\Form\AddTrack::class);
+                        exit(API\Response::code(200)->html($page->html()));
                     }
 
                     break;
@@ -69,35 +70,58 @@ switch ($_SERVER["REQUEST_METHOD"])
                 {
                     if (!API\Session\is_client_logged_in())
                     {
-                        API\Response::code(303)->redirect_to("/rallysport-content/?form=login");
+                        exit(API\Response::code(303)->redirect_to("/rallysport-content/?form=login"));
                     }
                     else
                     {
-                        API\PageDisplay\form(API\Form\DeleteTrack::class);
+                        $page = API\BuildPage\form(API\Form\DeleteTrack::class);
+                        exit(API\Response::code(200)->html($page->html()));
                     }
 
                     break;
                 }
-                case "new-track-uploaded": API\PageDisplay\form(API\Form\NewTrackUploaded::class); break;
-                default: API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
+                case "new-track-uploaded":
+                {
+                    $page = API\BuildPage\form(API\Form\NewTrackUploaded::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                default:
+                {
+                    $page = API\BuildPage\form(API\Form\UnknownFormIdentifier::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
             }
         }
-        else if ($_GET["zip"] ?? false)      API\Tracks\serve_track_data_as_zip_file($resourceID);
-        else if ($_GET["json"] ?? false)     API\Tracks\serve_track_data_as_json("data-array", $resourceID);
-        else if ($_GET["metadata"] ?? false) API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);
+        else if ($_GET["zip"] ?? false)
+        {
+            API\Tracks\serve_track_data_as_zip_file($resourceID);
+        }
+        else if ($_GET["json"] ?? false)
+        {
+            API\Tracks\serve_track_data_as_json("data-array", $resourceID);
+        }
+        else if ($_GET["metadata"] ?? false)
+        {
+            API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);
+        }
         else // Provide a HTML view into the track data.
         {
             if (Resource\ResourceViewURLParams::creator_id())
             {
-                API\PageDisplay\Tracks\public_tracks_uploaded_by_user(Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::creator_id()));
+                $uploaderId = Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::creator_id());
+                $page = API\BuildPage\Tracks\public_tracks_uploaded_by_user($uploaderId);
+                exit(API\Response::code(200)->html($page->html()));
             }
             else if (Resource\ResourceViewURLParams::target_id())
             {
-                API\PageDisplay\Tracks\specific_public_track(Resource\TrackResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
+                $trackId = Resource\TrackResourceID::from_string(Resource\ResourceViewURLParams::target_id());
+                $page = API\BuildPage\Tracks\specific_public_track($trackId);
+                exit(API\Response::code(200)->html($page->html()));
             }
             else
             {
-                API\PageDisplay\Tracks\all_public_tracks();
+                $page = API\BuildPage\Tracks\all_public_tracks();
+                exit(API\Response::code(200)->html($page->html()));
             }
         }
 
@@ -115,5 +139,8 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
-    default: exit(API\Response::code(405)->allowed("GET, HEAD, POST, DELETE"));
+    default:
+    {
+        exit(API\Response::code(405)->allowed("GET, HEAD, POST, DELETE"));
+    }
 }

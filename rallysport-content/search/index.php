@@ -25,14 +25,19 @@ switch ($_SERVER["REQUEST_METHOD"])
         // the results to the user.
         if ($_GET["q"] ?? false)
         {
-            API\PageDisplay\Search\search_results($_GET["q"]);
+            $page = API\BuildPage\Search\search_results($_GET["q"]);
+            exit(API\Response::code(200)->html($page->html()));
         }
         else
         {
-            API\PageDisplay\Search\advanced_search();
+            $page = API\BuildPage\Search\advanced_search();
+            exit(API\Response::code(200)->html($page->html()));
         }
 
         break;
     }
-    default: exit(API\Response::code(405)->allowed("GET, HEAD"));
+    default:
+    {
+        exit(API\Response::code(405)->allowed("GET, HEAD"));
+    }
 }

@@ -51,13 +51,20 @@ switch ($_SERVER["REQUEST_METHOD"])
                     }
                     else
                     {
-                        API\PageDisplay\form(API\Form\CreateUserAccount::class);
+                        $page = API\BuildPage\form(API\Form\CreateUserAccount::class);
+                        exit(API\Response::code(200)->html($page->html()));
                     }
-                
-                    break;
                 }
-                case "new-account-created": API\PageDisplay\form(API\Form\NewUserAccountCreated::class); break;
-                default:                    API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
+                case "new-account-created":
+                {
+                    $page = API\BuildPage\form(API\Form\NewUserAccountCreated::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                default:
+                {
+                    $page = API\BuildPage\form(API\Form\UnknownFormIdentifier::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
             }
         }
         else if ($_GET["metadata"] ?? false)
@@ -80,11 +87,13 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             if (Resource\ResourceViewURLParams::target_id())
             {
-                API\PageDisplay\Users\specific_public_user(Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
+                $page = API\BuildPage\Users\specific_public_user(Resource\UserResourceID::from_string(Resource\ResourceViewURLParams::target_id()));
+                exit(API\Response::code(200)->html($page->html()));
             }
             else
             {
-                API\PageDisplay\Users\all_public_users();
+                $page = API\BuildPage\Users\all_public_users();
+                exit(API\Response::code(200)->html($page->html()));
             }
         }
 
@@ -118,5 +127,8 @@ switch ($_SERVER["REQUEST_METHOD"])
 
         break;
     }
-    default: exit(API\Response::code(405)->allowed("GET, HEAD, POST"));
+    default:
+    {
+        exit(API\Response::code(405)->allowed("GET, HEAD, POST"));
+    }
 }

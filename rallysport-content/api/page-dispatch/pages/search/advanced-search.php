@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay\Search;
+<?php namespace RSC\API\BuildPage\Search;
       use RSC\HTMLPage;
       use RSC\API;
 
@@ -15,13 +15,11 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
-// Constructs a HTML page in memory, and sends it to the client for display.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
 // The page provides a way for the user to search for specific resources.
-//
-// Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->html(...).
-//
-function advanced_search() : void
+function advanced_search() : HTMLPage\HTMLPage
 {
     $htmlPage = new HTMLPage\HTMLPage();
 
@@ -41,5 +39,5 @@ function advanced_search() : void
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

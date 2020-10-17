@@ -32,12 +32,36 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             switch ($_GET["form"] ?? "unknown-form-identifier")
             {
-                case "login":                           API\PageDisplay\form(API\Form\UserLogin::class); break;
-                case "request-password-reset":          API\PageDisplay\form(API\Form\RequestPasswordReset::class); break;
-                case "password-reset-request-done":     API\PageDisplay\form(API\Form\PasswordResetRequestDone::class); break;
-                case "reset-password":                  API\PageDisplay\form(API\Form\ResetPassword::class); break;
-                case "password-reset-success":          API\PageDisplay\form(API\Form\PasswordResetSuccess::class); break;
-                default:                                API\PageDisplay\form(API\Form\UnknownFormIdentifier::class); break;
+                case "login":
+                {
+                    $page = API\BuildPage\form(API\Form\UserLogin::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                case "request-password-reset":
+                {
+                    $page = API\BuildPage\form(API\Form\RequestPasswordReset::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                case "password-reset-request-done":
+                {
+                    $page = API\BuildPage\form(API\Form\PasswordResetRequestDone::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                case "reset-password":
+                {
+                    $page = API\BuildPage\form(API\Form\ResetPassword::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                case "password-reset-success":
+                {
+                    $page = API\BuildPage\form(API\Form\PasswordResetSuccess::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
+                default:
+                {
+                    $page = API\BuildPage\form(API\Form\UnknownFormIdentifier::class);
+                    exit(API\Response::code(200)->html($page->html()));
+                }
             }
         }
         else
@@ -48,11 +72,15 @@ switch ($_SERVER["REQUEST_METHOD"])
             }
             else
             {
-                API\PageDisplay\Root\control_panel();
+                $page = API\BuildPage\Root\control_panel();
+                exit(API\Response::code(200)->html($page->html()));
             }
         }
 
         break;
     }
-    default: exit(API\Response::code(405)->allowed("GET, HEAD"));
+    default:
+    {
+        exit(API\Response::code(405)->allowed("GET, HEAD"));
+    }
 }

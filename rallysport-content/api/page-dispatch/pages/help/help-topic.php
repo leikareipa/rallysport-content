@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay;
+<?php namespace RSC\API\BuildPage;
       use RSC\HTMLPage;
       use RSC\API;
 
@@ -14,17 +14,19 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
-// Displays a HTML page that provides the user with help, e.g. documentation of
-// a particular feature.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
+// The page displays a help topic, whose type is identified by $helpTopicClassName.
 //
 // Sample usage:
 //
 //   help_topic(API\HelpTopic\CreateUserAccount::class);
 //
-//   The above will display to the client a HTML page as defined by the
-//   CreateUserAccount class.
+//   The above will return a HTML page containing the information provided by
+//   the CreateUserAccount class.
 //
-function help_topic(string $helpTopicClassName) : void
+function help_topic(string $helpTopicClassName) : HTMLPage\HTMLPage
 {
     $htmlPage = new HTMLPage\HTMLPage();
 
@@ -39,5 +41,5 @@ function help_topic(string $helpTopicClassName) : void
     $htmlPage->body->add_element($helpTopicClassName::html());
     $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

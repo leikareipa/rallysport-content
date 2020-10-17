@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay\Root;
+<?php namespace RSC\API\BuildPage\Root;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;
@@ -18,15 +18,13 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
-// Constructs a HTML page in memory, and sends it to the client for display.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
 // The page provides a control panel with which the (logged-in) user can access
 // restricted features of Rally-Sport Content, like creating and modifying
 // resources.
-//
-// Note: This function should always return using exit() together with a
-// Response object, e.g. exit(API\Response::code(200)->json([...]).
-//
-function control_panel() : void
+function control_panel() : HTMLPage\HTMLPage
 {
     if (!($loggedInUserID = API\Session\logged_in_user_id()))
     {
@@ -63,5 +61,5 @@ function control_panel() : void
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

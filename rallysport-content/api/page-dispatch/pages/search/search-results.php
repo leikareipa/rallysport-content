@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay\Search;
+<?php namespace RSC\API\BuildPage\Search;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;
@@ -20,13 +20,11 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
-// Constructs a HTML page in memory, and sends it to the client for display.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
 // The page provides search results for the given search query.
-//
-// Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->html(...).
-//
-function search_results(string $queryString) : void
+function search_results(string $queryString) : HTMLPage\HTMLPage
 {
     $queryString = htmlspecialchars($queryString);
 
@@ -87,5 +85,5 @@ function search_results(string $queryString) : void
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

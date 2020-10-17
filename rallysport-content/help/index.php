@@ -27,12 +27,35 @@ switch ($_SERVER["REQUEST_METHOD"])
     {
         switch ($_GET["topic"] ?? "")
         {
-            case API\HelpTopic\PrivacyPolicy::id():       API\PageDisplay\help_topic(API\HelpTopic\PrivacyPolicy::class); break;
-            case API\HelpTopic\ResetUserPassword::id():   API\PageDisplay\help_topic(API\HelpTopic\ResetUserPassword::class); break;
-            case API\HelpTopic\UploadATrack::id():        API\PageDisplay\help_topic(API\HelpTopic\UploadATrack::class); break;
-            case API\HelpTopic\CreateUserAccount::id():   API\PageDisplay\help_topic(API\HelpTopic\CreateUserAccount::class); break;
-            case API\HelpTopic\AvailableHelpTopics::id(): API\PageDisplay\help_topic(API\HelpTopic\AvailableHelpTopics::class); break;
-            default:                                      exit(API\Response::code(303)->redirect_to("/rallysport-content/help/?topic=available-help-topics"));
+            case API\HelpTopic\PrivacyPolicy::id():
+            {
+                $page = API\BuildPage\help_topic(API\HelpTopic\PrivacyPolicy::class);
+                exit(API\Response::code(200)->html($page->html()));
+            }
+            case API\HelpTopic\ResetUserPassword::id():
+            {
+                $page = API\BuildPage\help_topic(API\HelpTopic\ResetUserPassword::class);
+                exit(API\Response::code(200)->html($page->html()));
+            }
+            case API\HelpTopic\UploadATrack::id():
+            {
+                $page = API\BuildPage\help_topic(API\HelpTopic\UploadATrack::class);
+                exit(API\Response::code(200)->html($page->html()));
+            }
+            case API\HelpTopic\CreateUserAccount::id():
+            {
+                $page = API\BuildPage\help_topic(API\HelpTopic\CreateUserAccount::class);
+                exit(API\Response::code(200)->html($page->html()));
+            }
+            case API\HelpTopic\AvailableHelpTopics::id():
+            {
+                $page = API\BuildPage\help_topic(API\HelpTopic\AvailableHelpTopics::class);
+                exit(API\Response::code(200)->html($page->html()));
+            }
+            default:
+            {
+                exit(API\Response::code(303)->redirect_to("/rallysport-content/help/?topic=available-help-topics"));
+            }
         }
 
         break;

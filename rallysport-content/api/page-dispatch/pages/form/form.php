@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay;
+<?php namespace RSC\API\BuildPage;
       use RSC\HTMLPage;
       use RSC\API;
 
@@ -14,15 +14,19 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 
-// Used to display HTML forms to the client.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
+// The page is made up of a single form, whose type is given by $formClassName.
 //
 // Sample usage:
 //
 //   form(API\Form\CreateUserAccount::class);
 //
-//   The above will display to the client a form defined by the CreateUserAccount class.
+//   The above will return a HTML page containing the form defined by the
+//   CreateUserAccount class.
 //
-function form(string $formClassName) : void
+function form(string $formClassName) : HTMLPage\HTMLPage
 {
     $htmlPage = new HTMLPage\HTMLPage();
 
@@ -41,5 +45,5 @@ function form(string $formClassName) : void
     $htmlPage->body->add_element($formClassName::html());
     $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

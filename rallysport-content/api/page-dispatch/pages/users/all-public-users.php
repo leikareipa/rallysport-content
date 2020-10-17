@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay\Users;
+<?php namespace RSC\API\BuildPage\Users;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;
@@ -20,13 +20,11 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
-// Constructs a HTML page in memory, and sends it to the client for display.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
 // The page provides a listing of all the public users in the database.
-//
-// Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->html(...).
-//
-function all_public_users() : void
+function all_public_users() : HTMLPage\HTMLPage
 {
     $userDB = new DatabaseConnection\UserDatabase();
 
@@ -94,5 +92,5 @@ function all_public_users() : void
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }

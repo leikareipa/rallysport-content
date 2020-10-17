@@ -1,4 +1,4 @@
-<?php namespace RSC\API\PageDisplay\Users;
+<?php namespace RSC\API\BuildPage\Users;
       use RSC\DatabaseConnection;
       use RSC\HTMLPage;
       use RSC\Resource;
@@ -19,13 +19,11 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/ra
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/user-database.php";
 
-// Constructs a HTML page in memory, and sends it to the client for display.
+// Constructs a HTML page in memory and returns it as a HTMLPage object. On
+// error, will exit with API\Response.
+//
 // The page provides information about a specific public user in the database.
-//
-// Note: The function should always return using exit() together with a
-// Response object, e.g. exit(Response::code(200)->html(...).
-//
-function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : void
+function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : HTMLPage\HTMLPage
 {
     if (!$userResourceID)
     {
@@ -69,10 +67,8 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
         }
         else
         {
-            $htmlPage->head->title = "Users";
-            $inPageTitle = "User ID search results";
+            $htmlPage->head->title = $user->id()->string();
 
-            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
             $htmlPage->body->add_element($user->view("metadata-html"));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
@@ -80,5 +76,5 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
 
-    exit(API\Response::code(200)->html($htmlPage->html()));
+    return $htmlPage;
 }
