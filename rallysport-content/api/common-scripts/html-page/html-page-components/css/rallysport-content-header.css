@@ -6,10 +6,15 @@ body
 #rallysport-content-header
 {
     display: flex;
-    padding: 15px 8% 15px 8%;
+    padding: 15px 2% 15px 2%;
     margin: 0 0 35px 0;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#rallysport-content-header > div + div
+{
+    margin-left: 40px;
 }
 
 #rallysport-content-header > .title
@@ -46,21 +51,68 @@ body
     color: white;
 }
 
+#rallysport-content-header .search-widget 
+{
+    width: 350px;
+}
+
+#rallysport-content-header .search-widget .input-field
+{
+    padding: 6px 12px;
+    border-radius: 0 60px 60px 0;
+    border: 1px solid lightgray;
+    border-left: none;
+    outline: none;
+}
+
+#rallysport-content-header .search-widget .submit-button
+{
+    padding: 6px 16px;
+    border-radius: 6px 0 0 6px;
+    border: none;
+    color: gray;
+    outline: none;
+    background-color: white;
+    border: 1px solid  lightgray;
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 1100px)
 {
-    #rallysport-content-header
+    #rallysport-content-header .search-widget 
     {
-        padding-left: 6%;
-        padding-right: 6%;
+        width: 300px;
+    }
+
+    #rallysport-content-header > div + div
+    {
+        margin-left: 25px;
     }
 }
 
-@media only screen and (max-width: 980px)
+@media only screen and (max-width: 1010px)
 {
-    #rallysport-content-header
+    #rallysport-content-header .search-widget 
     {
-        padding-left: 5%;
-        padding-right: 5%;
+        width: 260px;
+    }
+}
+
+@media only screen and (max-width: 900px)
+{
+    #rallysport-content-header .search-widget .submit-button
+    {
+        border-radius: 6px;
+    }
+
+    #rallysport-content-header .search-widget .input-field
+    {
+        display: none;
+    }
+
+    #rallysport-content-header .search-widget
+    {
+        flex-basis: 10px;
     }
 }
 
@@ -70,5 +122,10 @@ body
     {
         padding-left: 15px;
         padding-right: 15px;
+    }
+
+    #rallysport-content-header .search-widget
+    {
+        display: none;
     }
 }
