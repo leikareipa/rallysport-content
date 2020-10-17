@@ -14,6 +14,7 @@
     padding-bottom: 65px;
     border-radius: 3px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid lightgray;
 }
 
 .html-page-form-container > header

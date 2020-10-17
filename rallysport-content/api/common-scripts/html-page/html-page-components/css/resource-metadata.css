@@ -1,12 +1,12 @@
 .resource-metadata
 {
     padding: 10px 15px;
-    margin: 7px;
+    margin: 6px;
     text-align: left;
     display: inline-block;
     background-color: white;
     border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid lightgray;
 }
 
 .resource-metadata > .card
