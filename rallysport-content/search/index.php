@@ -12,6 +12,7 @@ session_start();
  */
 
 require_once __DIR__."/../api/page-dispatch/pages/search/advanced-search.php";
+require_once __DIR__."/../api/page-dispatch/pages/search/search-results.php";
 require_once __DIR__."/../api/response.php";
 require_once __DIR__."/../api/session.php";
 
@@ -24,9 +25,7 @@ switch ($_SERVER["REQUEST_METHOD"])
         // the results to the user.
         if ($_GET["q"] ?? false)
         {
-            /// TODO.
-
-            exit(API\Response::code(404)->error_message("Search functionality is not yet implemented."));
+            API\PageDisplay\Search\search_results($_GET["q"]);
         }
         else
         {

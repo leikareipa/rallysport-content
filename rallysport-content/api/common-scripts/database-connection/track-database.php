@@ -210,6 +210,96 @@ class TrackDatabase extends DatabaseConnection
                                                 
         return $dbResponse[0]["COUNT(*)"];
     }
+
+    // Returns as an array of TrackResource elements the track resources that match
+    // the given query string; or FALSE on error. The tracks will be sorted by
+    // upload date in descending order.
+    //
+    // $visibilityLevels = an array of ResourceVisibility elements such that
+    // only tracks whose visibility level is one of these will be included in
+    // the return array
+    //
+    public function search(string $queryString,
+                           array $visibilityLevels = [Resource\ResourceVisibility::PUBLIC])
+    {
+         // Assert that we received valid parameter values.
+         {
+            foreach ($visibilityLevels as $visibilityLevel)
+            {
+                if (!Resource\ResourceVisibility::is_valid_visibility_level($visibilityLevel))
+                {
+                    return false;
+                }
+            }
+        }
+
+        $resourceVisibilityConditional = empty($visibilityLevels)
+                                         ? "1"
+                                         : "resource_visibility IN ('".implode("','", $visibilityLevels)."')";
+                                         
+        $dbResponse = $this->issue_db_query("SELECT resource_id,
+                                                    resource_visibility,
+                                                    creator_resource_id,
+                                                    creation_timestamp,
+                                                    download_count,
+                                                    track_name,
+                                                    track_width,
+                                                    track_height
+                                             FROM rsc_tracks
+                                             WHERE {$resourceVisibilityConditional}
+                                             AND track_name LIKE CONCAT('%', ?, '%')
+                                             ORDER BY creation_timestamp DESC",
+                                             [$queryString]);
+
+        // If the query failed.
+        if (!is_array($dbResponse))
+        {
+            return false;
+        }
+
+        // Combine the discrete track variables to form track resource objects.
+        $tracks = [];
+        foreach ($dbResponse as $trackParameters)
+        {
+            // Verify that we have all the required parameters for a track resource.
+            {
+                if (!isset($trackParameters["track_name"]) ||
+                    !isset($trackParameters["track_width"]) ||
+                    !isset($trackParameters["creation_timestamp"]) ||
+                    !isset($trackParameters["download_count"]) ||
+                    !isset($trackParameters["resource_id"]) ||
+                    !isset($trackParameters["creator_resource_id"]) ||
+                    !isset($trackParameters["resource_visibility"]))
+                {
+                    continue;
+                }
+            }
+
+            $trackData = new \RSC\RallySportEDTrackData();
+
+            if (!$trackData->set_name($trackParameters["track_name"]) ||
+                !$trackData->set_side_length($trackParameters["track_width"]))
+            {
+                return false;
+            }
+    
+            $trackResource = Resource\TrackResource::with($trackData,
+                                                          $trackParameters["creation_timestamp"],
+                                                          $trackParameters["download_count"],
+                                                          Resource\TrackResourceID::from_string($trackParameters["resource_id"]),
+                                                          Resource\UserResourceID::from_string($trackParameters["creator_resource_id"]),
+                                                          $trackParameters["resource_visibility"]);
+    
+            if (!$trackResource)
+            {
+                return false;
+            }
+
+            $tracks[] = $trackResource;
+        }
+
+        return $tracks;
+    }
     
     // Returns one or more track resources as an array of TrackResource elements;
     // or FALSE on error. The tracks will be sorted by upload date in descending
