@@ -1,11 +1,10 @@
 .resource-metadata
 {
-    padding: 10px 15px;
-    margin: 6px;
+    margin: 7px;
     text-align: left;
     display: inline-block;
     background-color: white;
-    border-radius: 6px;
+    border-radius: 3px;
     border: 1px solid lightgray;
 }
 
@@ -17,7 +16,7 @@
 
 .resource-metadata > .card > .info-box
 {
-    padding: 10px 0;
+    padding: 11px 2px 14px 2px;
     margin-left: 10px;
     text-align: left;
     position: relative;
@@ -36,12 +35,17 @@
     color: lightgray;
     right: 0;
     text-align: right;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .resource-metadata > .card > .info-box > .icon-row > a
 {
     text-decoration: none;
+}
+
+.resource-metadata > .card > .info-box > .icon-row > a + a
+{
+    margin-left: 2px;
 }
 
 .resource-metadata > .card > .info-box > .icon-row > a:hover
@@ -52,7 +56,17 @@
 
 .resource-metadata > .card > .media
 {
-    width: 338px;
-    height: 210px;
+    width: 358px;
+    height: 230px;
     border-radius: 0;
+
+    /* Checker pattern.*/
+    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
+                      linear-gradient(-45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%),
+                      linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+    border-bottom: 1px solid lightgray;
+    border-radius: 9px;
 }

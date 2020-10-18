@@ -5,7 +5,7 @@
 
 .resource-metadata.track > .card > .media svg > polygon
 {
-    stroke: black;
-    stroke-width: 1.5;
+    stroke: #292929;
+    stroke-width: 1;
     fill: none;
 }
