@@ -4,7 +4,6 @@
     color: black;
     display: flex;
     justify-content: center;
-    color: gray;
 }
 
 .page-number-selector.empty
@@ -37,13 +36,12 @@
 
 .page-number-selector span
 {
-    color: gray;
+    color: black;
 }
 
 .page-number-selector span:hover
 {
     font-weight: bold;
-    color: gray;
 }
 
 .page-number-selector span.current-page
