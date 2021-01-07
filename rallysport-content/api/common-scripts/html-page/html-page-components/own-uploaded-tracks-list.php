@@ -66,7 +66,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
                         <i class='fas fa-fw fa-link'></i>
                     </a>
 
-                    <a href='/rallysported/?content={$track->id()->string()}'
+                    <a href='/rallysported/?fromContent={$track->id()->string()}'
                         title='Open a copy in RallySportED'>
                         <i class='fas fa-fw fa-expand'></i>
                     </a>
