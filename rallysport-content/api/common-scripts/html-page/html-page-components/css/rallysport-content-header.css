@@ -59,21 +59,20 @@ body
 #rallysport-content-header .search-widget .input-field
 {
     padding: 6px 12px;
-    border-radius: 0 60px 60px 0;
+    border-radius: 6px 0 0 6px;
     border: 1px solid lightgray;
-    border-left: none;
+    border-right: none;
     outline: none;
 }
 
 #rallysport-content-header .search-widget .submit-button
 {
-    padding: 6px 14px;
-    border-radius: 6px 0 0 6px;
-    border: none;
+    padding: 6px 16px;
+    border-radius: 0 60px 60px 0;
     color: gray;
     outline: none;
     background-color: white;
-    border: 1px solid  lightgray;
+    border: 1px solid lightgray;
     cursor: pointer;
 }
 
