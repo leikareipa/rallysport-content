@@ -2,6 +2,7 @@
 {
     position: relative;
     width: 420px;
+    max-width: calc(65vw - 30px);
     height: auto;
     display: inline-block;
     margin: 20px;

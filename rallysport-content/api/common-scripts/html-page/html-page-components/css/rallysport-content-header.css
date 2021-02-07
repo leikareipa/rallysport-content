@@ -134,3 +134,33 @@ body
         display: none;
     }
 }
+
+@media only screen and (max-width: 600px)
+{
+    #rallysport-content-header .top-contents > .title
+    {
+        text-align: center;
+        width: 100%;
+    }
+
+    #rallysport-content-header .top-contents > .login-widget
+    {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px)
+{
+    #rallysport-content-header .top-contents > .title
+    {
+        font-size: 180%;
+    }
+}
+
+@media only screen and (max-width: 360px)
+{
+    #rallysport-content-header .top-contents > .title
+    {
+        font-size: 150%;
+    }
+}

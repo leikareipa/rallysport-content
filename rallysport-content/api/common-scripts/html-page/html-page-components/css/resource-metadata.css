@@ -62,6 +62,7 @@
 .resource-metadata > .card > .media
 {
     width: 358px;
+    max-width: 95vw;
     height: 230px;
     border-radius: 0;
 
