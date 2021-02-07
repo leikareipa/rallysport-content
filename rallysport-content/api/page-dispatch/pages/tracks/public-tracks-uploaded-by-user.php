@@ -16,7 +16,6 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/tr
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/resource-metadata-container.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/track-database.php";
 
 // Constructs a HTML page in memory and returns it as a HTMLPage object. On
@@ -61,7 +60,6 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
 
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
-        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\ResourcePageNumberSelector::class);
         $htmlPage->use_component(HTMLPage\Component\ResourceMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\TrackResourceMetadata::class);
@@ -77,7 +75,6 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         ";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
-        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         if (empty($tracks))
         {
             $htmlPage->body->add_element("<div>No such tracks found</div>");

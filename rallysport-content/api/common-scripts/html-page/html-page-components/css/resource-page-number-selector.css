@@ -47,7 +47,7 @@
 .page-number-selector span.current-page
 {
     font-weight: bold;
-    color: black;
+    color: #ff3690;
 }
 
 .page-number-selector span:not(.current-page):hover

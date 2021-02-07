@@ -41,7 +41,7 @@ switch ($_SERVER["REQUEST_METHOD"])
                     // force an informational error message to that effect. The
                     // CreateUserAccount form will pick up this message and display
                     // it to the user.
-                    $_GET["error"] = "Registration is temporarily unavailable";
+                    $_GET["error"] = "Registration is currently disabled";
 
                     // We don't allow logged-in users to register a new account,
                     // so let's not even show the form for doing so.
@@ -102,7 +102,7 @@ switch ($_SERVER["REQUEST_METHOD"])
     case "POST": // Create a new user account.
     {
         // We're not allowing new user registrations right now.
-        exit(API\Response::code(404)->error_message("Registration is temporarily unavailable."));
+        exit(API\Response::code(404)->error_message("Registration is currently disabled."));
 
         if (API\Session\is_client_logged_in())
         {

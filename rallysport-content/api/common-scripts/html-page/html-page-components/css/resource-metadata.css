@@ -8,6 +8,11 @@
     border: 1px solid lightgray;
 }
 
+.resource-metadata > .card a:hover
+{
+    text-decoration: none;
+}
+
 .resource-metadata > .card
 {
     display: flex;
@@ -45,7 +50,7 @@
 
 .resource-metadata > .card > .info-box > .icon-row > a + a
 {
-    margin-left: 3px;
+    margin-left: 4px;
 }
 
 .resource-metadata > .card > .info-box > .icon-row > a:hover

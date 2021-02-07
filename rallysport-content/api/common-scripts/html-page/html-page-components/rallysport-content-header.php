@@ -10,6 +10,7 @@
 
 require_once __DIR__."/login-widget.php";
 require_once __DIR__."/search-widget.php";
+require_once __DIR__."/navibar-widget.php";
 require_once __DIR__."/../html-page-component.php";
 require_once __DIR__."/../../resource/resource-visibility.php";
 require_once __DIR__."/../../resource/resource-id.php";
@@ -22,13 +23,16 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
     {
         return file_get_contents(__DIR__."/css/rallysport-content-header.css")
                                  .LoginWidget::css()
-                                 .SearchWidget::css();
+                                 .SearchWidget::css()
+                                 .NavibarWidget::css();
     }
 
     static public function scripts() : array
     {
         return array_merge([], // <- The scripts of this component (none right now, so an empty array).
-                           LoginWidget::scripts());
+                           LoginWidget::scripts(),
+                           SearchWidget::scripts(),
+                           NavibarWidget::scripts());
     }
 
     static public function html() : string
@@ -36,22 +40,34 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
         return "
         <header id='rallysport-content-header'>
 
-            <div class='title'>
-                <a href='/rallysport-content/'>
+            <div class='top-contents'>
 
-                    <i class='fas fa-air-freshener'
-                       style='color: #ff3690;
-                              transform: rotate(-24deg);
-                              margin-right: 8px;'></i>
+                <div class='title'>
+                
+                    <a href='/rallysport-content/'>
 
-                    Rally-Sport Content
+                        <i class='fas fa-air-freshener'
+                           style='color: #ff3690;
+                                  transform: rotate(-24deg);
+                                  margin-right: 8px;'></i>
 
-                </a>
+                        Rally-Sport Content
+
+                    </a>
+
+                </div>
+
+                ".SearchWidget::html()."
+
+                ".LoginWidget::html()."
+
             </div>
 
-            ".SearchWidget::html()."
+            <div class='bottom-contents'>
 
-            ".LoginWidget::html()."
+                ".NavibarWidget::html()."
+
+            </div>
 
         </header>
         ";

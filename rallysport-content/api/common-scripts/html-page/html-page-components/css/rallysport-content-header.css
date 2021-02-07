@@ -6,18 +6,30 @@ body
 #rallysport-content-header
 {
     display: flex;
-    padding: 14px 2% 14px 2%;
-    margin: 0 0 35px 0;
+    flex-direction: column;
     background-color: white;
     border-bottom: 1px solid lightgray;
+    margin: 0 0 30px 0;
 }
 
-#rallysport-content-header > div + div
+#rallysport-content-header .bottom-contents
+{
+    position: sticky;
+    top: 0;
+}
+
+#rallysport-content-header .top-contents
+{
+    display: flex;
+    padding: 14px 2% 14px 2%;
+}
+
+#rallysport-content-header .top-contents > div + div
 {
     margin-left: 40px;
 }
 
-#rallysport-content-header > .title
+#rallysport-content-header .top-contents > .title
 {
     font-size: 230%;
     font-family: "Fredoka One", sans-serif;
@@ -25,12 +37,12 @@ body
     color: black;
 }
 
-#rallysport-content-header > .title a
+#rallysport-content-header .top-contents > .title a
 {
     text-decoration: none;
 }
 
-#rallysport-content-header .login-widget
+#rallysport-content-header .top-contents > .login-widget
 {
     font-size: initial;
     margin-left: auto;
@@ -53,13 +65,13 @@ body
 
 #rallysport-content-header .search-widget 
 {
-    width: 350px;
+    width: 300px;
 }
 
 #rallysport-content-header .search-widget .input-field
 {
     padding: 6px 12px;
-    border-radius: 6px 0 0 6px;
+    border-radius: 10px 0 0 10px;
     border: 1px solid lightgray;
     border-right: none;
     outline: none;
@@ -68,7 +80,7 @@ body
 #rallysport-content-header .search-widget .submit-button
 {
     padding: 6px 16px;
-    border-radius: 0 60px 60px 0;
+    border-radius: 0 10px 10px 0;
     color: gray;
     outline: none;
     background-color: white;
@@ -78,12 +90,12 @@ body
 
 @media only screen and (max-width: 1100px)
 {
-    #rallysport-content-header .search-widget 
+    #rallysport-content-header .top-contents > .search-widget 
     {
         width: 300px;
     }
 
-    #rallysport-content-header > div + div
+    #rallysport-content-header .top-contents > div + div
     {
         margin-left: 25px;
     }
@@ -91,7 +103,7 @@ body
 
 @media only screen and (max-width: 1010px)
 {
-    #rallysport-content-header .search-widget 
+    #rallysport-content-header .top-contents > .search-widget 
     {
         width: 260px;
     }
@@ -99,17 +111,17 @@ body
 
 @media only screen and (max-width: 900px)
 {
-    #rallysport-content-header .search-widget .submit-button
+    #rallysport-content-header .top-contents > .search-widget .submit-button
     {
         border-radius: 6px;
     }
 
-    #rallysport-content-header .search-widget .input-field
+    #rallysport-content-header .top-contents > .search-widget .input-field
     {
         display: none;
     }
 
-    #rallysport-content-header .search-widget
+    #rallysport-content-header .top-contents > .search-widget
     {
         flex-basis: 10px;
     }
@@ -117,13 +129,7 @@ body
 
 @media only screen and (max-width: 700px)
 {
-    #rallysport-content-header
-    {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    #rallysport-content-header .search-widget
+    #rallysport-content-header .top-contents > .search-widget
     {
         display: none;
     }

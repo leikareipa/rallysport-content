@@ -41,23 +41,25 @@ abstract class UserResourceMetadata extends HTMLPage\HTMLPageComponent
                 </div>
 
                 <div class='info-box'>
-
+ 
                     <div class='title'
                          title='{$user->id()->string()}'>
-                        <i class='fas fa-fw fa-user'></i> {$user->id()->resource_key()}
+
+                        <a href='/rallysport-content/users/?id={$user->id()->string()}'>
+
+                            <i class='fas fa-fw fa-user'></i> {$user->id()->resource_key()}
+
+                        </a>
                     </div>
 
                     <div class='icon-row right'>
 
-                        <a href='/rallysport-content/users/?id={$user->id()->string()}'
-                           title='Permalink'>
-                            <i class='fas fa-fw fa-link'></i>
-                        </a>
-
                         <a href='/rallysport-content/tracks/?by={$user->id()->string()}'
-                           title='Tracks uploaded'>
+                           title='See tracks uploaded by this user'>
+
                             <i class='fas fa-fw fa-road'></i>
                             {$numTracksByUser}
+
                         </a>
 
                     </div>

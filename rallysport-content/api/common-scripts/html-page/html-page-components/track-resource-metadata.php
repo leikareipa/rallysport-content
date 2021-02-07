@@ -43,19 +43,25 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
         {
             $iconRow =
             "
-            <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
-               title='Permalink'>
-                <i class='fas fa-fw fa-link'></i>
+            <a href='/rallysported/?fromContent={$track->id()->string()}#play'
+               title='Play in your browser (keyboard required)'>
+
+                <i class='fas fa-fw fa-gamepad'></i>
+
             </a>
 
             <a href='/rallysported/?fromContent={$track->id()->string()}'
                title='Open a copy in RallySportED'>
-                <i class='fas fa-fw fa-box'></i>
+
+                <i class='fas fa-fw fa-wrench'></i>
+
             </a>
 
             <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                title='Download'>
+
                 <i class='fas fa-fw fa-download'></i>
+
             </a>
             ";
         }
@@ -80,8 +86,13 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                 <div class='info-box'>
 
                     <div class='title'
-                         title='".date("j M Y", $track->creation_timestamp())." &bull; {$track->creator_id()->string()}'>
-                        <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
+                         title='Uploaded by {$track->creator_id()->string()} &bull; ".date("j M Y", $track->creation_timestamp())."'>
+
+                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
+
+                            <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
+                        
+                        </a>
                     </div>
 
                     <div class='icon-row right'>

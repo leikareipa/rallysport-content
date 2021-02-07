@@ -14,11 +14,11 @@ require_once __DIR__."/../../resource/resource-visibility.php";
 // A navigation bar intended to be displayed on each Rally-Sport Content page.
 // It provides the user with clickable buttons to navigate to HTML views of the
 // various resources hosted on RSC, like tracks and users.
-abstract class RallySportContentNavibar extends HTMLPage\HTMLPageComponent
+abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/rallysport-content-navibar.css");
+        return file_get_contents(__DIR__."/css/navibar-widget.css");
     }
 
     static public function html() : string
@@ -43,28 +43,29 @@ abstract class RallySportContentNavibar extends HTMLPage\HTMLPageComponent
         }
 
         return "
-        <div id='rallysport-content-navibar'>
+        <div class='navibar-widget'>
+
             <a href='/rallysport-content/' title='Home'
                class='button ".(($currentPage == "home")? "current-page" : "")."'>
-                <i class='fas fa-fw fa-home'></i>
+
+                Home
+
             </a>
 
             <a href='/rallysport-content/tracks/'
                title='Tracks'
                class='button ".(($currentPage == "tracks")? "current-page" : "")."'>
-                <i class='fas fa-fw fa-road'></i>
+
+                Tracks
+
             </a>
 
             <a href='/rallysport-content/users/'
                title='Users'
                class='button ".(($currentPage == "users")? "current-page" : "")."'>
-                <i class='fas fa-fw fa-users'></i>
-            </a>
 
-            <a href='/rallysport-content/help/'
-               title='Help Central'
-               class='button ".(($currentPage == "help")? "current-page" : "")."'>
-                <i class='fas fa-fw fa-notes-medical'></i>
+                Users
+
             </a>
 
         </div>

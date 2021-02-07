@@ -16,7 +16,6 @@ require_once __DIR__."/../../../common-scripts/html-page/html-page-components/us
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/resource-metadata-container.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
-require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-navibar.php";
 require_once __DIR__."/../../../common-scripts/database-connection/user-database.php";
 
 // Constructs a HTML page in memory and returns it as a HTMLPage object. On
@@ -55,12 +54,10 @@ function specific_public_user(Resource\UserResourceID $userResourceID = NULL) : 
 
         $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
         $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
-        $htmlPage->use_component(HTMLPage\Component\RallySportContentNavibar::class);
         $htmlPage->use_component(HTMLPage\Component\ResourceMetadataContainer::class);
         $htmlPage->use_component(HTMLPage\Component\UserResourceMetadata::class);
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
-        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentNavibar::html());
         if (!$user)
         {
             $htmlPage->body->add_element("<div>No such user found</div>");
