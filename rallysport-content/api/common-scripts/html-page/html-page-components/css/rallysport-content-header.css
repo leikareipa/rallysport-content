@@ -35,6 +35,7 @@ body
     font-family: "Fredoka One", sans-serif;
     font-weight: normal;
     color: black;
+    white-space: nowrap;
 }
 
 #rallysport-content-header .top-contents > .title a
@@ -97,15 +98,20 @@ body
     }
 }
 
-@media only screen and (max-width: 1010px)
+@media only screen and (max-width: 900px)
 {
-    #rallysport-content-header .top-contents > .search-widget 
+    #rallysport-content-header .top-contents > .login-widget
     {
-        width: 260px;
+        display: none;
+    }
+
+    #rallysport-content-header .top-contents > .search-widget
+    {
+        flex-grow: 1;
     }
 }
 
-@media only screen and (max-width: 900px)
+@media only screen and (max-width: 680px)
 {
     #rallysport-content-header .top-contents > .search-widget .submit-button
     {
@@ -121,27 +127,35 @@ body
     {
         flex-basis: 10px;
     }
-}
 
-@media only screen and (max-width: 670px)
-{
     #rallysport-content-header .top-contents > .search-widget
     {
-        display: none;
+        flex-grow: 0;
+    }
+
+    #rallysport-content-header .top-contents > .title
+    {
+        text-align: center;
+        width: auto;
+    }
+
+    #rallysport-content-header .top-contents
+    {
+        justify-content: center;
     }
 }
 
 @media only screen and (max-width: 600px)
 {
+    #rallysport-content-header .top-contents > .search-widget
+    {
+        display: none;
+    }
+
     #rallysport-content-header .top-contents > .title
     {
         text-align: center;
         width: 100%;
-    }
-
-    #rallysport-content-header .top-contents > .login-widget
-    {
-        display: none;
     }
 }
 
