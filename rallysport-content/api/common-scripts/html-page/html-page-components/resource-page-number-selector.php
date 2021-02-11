@@ -138,8 +138,10 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
         else
         {
             return "
-            <a title='Go to page {$targetPageNumber}' href='?{$modifiedQueryString}'>
-                <span class='".(($targetPageNumber == $currentPageNumber)? "current-page" : "")."'>{$targetPageNumber}</span>
+            <a title='Go to page {$targetPageNumber}'
+               href='?{$modifiedQueryString}'
+               class='".(($targetPageNumber == $currentPageNumber)? "current-page" : "")."'>
+                {$targetPageNumber}
             </a>
             ";
         }

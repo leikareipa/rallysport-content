@@ -1,9 +1,11 @@
 .page-number-selector
 {
     margin: 20px;
+    margin-bottom: 30px;
     color: black;
     display: flex;
     justify-content: center;
+    align-items: baseline;
 }
 
 .page-number-selector.empty
@@ -26,42 +28,44 @@
     color: dimgray;
 }
 
-.page-number-selector span,
-.page-number-selector .fas,
-.page-number-selector .far
+.page-number-selector a
 {
-    padding: 4px 5px;
-    line-height: 10px;
-}
-
-.page-number-selector span
-{
-    color: black;
-}
-
-.page-number-selector span:hover
-{
-    font-weight: bold;
-}
-
-.page-number-selector span.current-page
-{
-    font-weight: bold;
-    color: #ff3690;
-}
-
-.page-number-selector span:not(.current-page):hover
-{
-    color: black;
-}
-
-.page-number-selector > a
-{
+    padding: 4px 10px;
     text-decoration: none;
-    padding: 0;
+    background-color: white;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
 }
 
-.page-number-selector a:hover
+.page-number-selector a+a
 {
-    color: black;
+    border-left: 1px dotted lightgray;
+}
+
+.page-number-selector a.current-page+a
+{
+    border-left: none;
+}
+.page-number-selector a:last-child
+{
+    border-radius: 0 3px 3px 0;
+    border-right: 1px solid lightgray;
+}
+
+.page-number-selector a:first-child
+{
+    border-radius: 3px 0 0 3px;
+    border-left: 1px solid lightgray;
+}
+
+.page-number-selector a:only-child
+{
+    border-radius: 3px;
+}
+
+.page-number-selector a.current-page
+{
+    border: 1px solid #ff3690;
+    background-color: #ff3690;
+    color: white;
 }
