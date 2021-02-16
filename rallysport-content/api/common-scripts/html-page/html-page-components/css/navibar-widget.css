@@ -1,13 +1,12 @@
 .navibar-widget
 {
-    width: 100vw;
+    width: 100%;
     background-color: white;
     color: black;
     font-weight: normal;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
 }
 
 .navibar-widget a:hover
