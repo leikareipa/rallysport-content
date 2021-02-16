@@ -1,16 +1,19 @@
+.page-number-selector-container
+{
+    margin: 30px;
+}
+
+.page-number-selector-container.empty
+{
+    display: none;
+}
+
 .page-number-selector
 {
-    margin: 20px;
-    margin-bottom: 30px;
     color: black;
     display: flex;
     justify-content: center;
     align-items: baseline;
-}
-
-.page-number-selector.empty
-{
-    /*display: none;*/
 }
 
 /* Assumes any Font Awesome icons represent the navigational arrows to the

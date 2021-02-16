@@ -31,11 +31,13 @@ abstract class ResourcePageNumberSelector extends HTMLPage\HTMLPageComponent
         $formattedSelectorRow = self::format_selector_row($selectorRow, $currentPage);
 
         return "
-        <div class='page-number-selector ".(($numPages <= 1)? "empty" : "")."'>
+        <div class='page-number-selector-container ".(($numPages <= 1)? "empty" : "")."'>
 
-            Page:&nbsp;
-            
-            ".implode("", $formattedSelectorRow)."
+            <div class='page-number-selector'>
+
+                ".implode("", $formattedSelectorRow)."
+
+            </div>
 
         </div>
         ";
