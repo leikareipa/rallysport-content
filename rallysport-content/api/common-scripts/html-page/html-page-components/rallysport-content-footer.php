@@ -24,10 +24,22 @@ abstract class RallySportContentFooter extends HTMLPage\HTMLPageComponent
     {
         return "
         <footer id='rallysport-content-footer'>
-            <a href='/rallysport-content/'>Rally-Sport Content</a>
-            &copy; 2020 <a href='https://www.tarpeeksihyvaesoft.com/'>Tarpeeksi Hyvae Soft</a>.
-            <a href='https://www.github.com/leikareipa/rallysport-content/'>Find this on GitHub.</a>
-            <br>Rally-Sport Content is an unassociated third-party service. No endorsements or warranties.
+
+            <span class='first'>
+
+                <a href='/rallysport-content/'>Rally-Sport Content</a>
+                &copy; 2020 <a href='https://www.tarpeeksihyvaesoft.com/'>Tarpeeksi Hyvae Soft</a>.
+
+                <a href='https://www.github.com/leikareipa/rallysport-content/'>Find this on GitHub.</a>
+
+            </span>
+
+            <span class='second'>
+            
+                Rally-Sport Content is an unassociated third-party service. No endorsements or warranties.
+
+            </span>
+
         </footer>
         ";
     }

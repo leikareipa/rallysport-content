@@ -68,7 +68,7 @@ function all_public_users() : HTMLPage\HTMLPage
         }
         else
         {
-            $htmlPage->body->add_element("<div style='margin: 30px;'>{$inPageTitle}</div>");
+            $htmlPage->body->add_element("<div style='margin: 30px 20px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
