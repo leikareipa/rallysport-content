@@ -30,12 +30,16 @@ abstract class SearchWidget extends HTMLPage\HTMLPageComponent
                   method='GET'
                   action='/rallysport-content/search/'>
 
-                <input type='text'
-                       class='input-field'
-                       name='q'
-                       value='".($_GET["q"] ?? "")."'
-                       placeholder='Find in resources...'
-                       spellcheck='false'>
+                <div class='input-field-container'>
+
+                    <input type='text'
+                           class='input-field'
+                           name='q'
+                           value='".($_GET["q"] ?? "")."'
+                           placeholder='Find in resources...'
+                           spellcheck='false'>
+
+                </div>
 
                 <button type='submit'
                         class='submit-button'>

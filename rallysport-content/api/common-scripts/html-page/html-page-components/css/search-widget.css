@@ -8,8 +8,11 @@
 .search-widget .search-form
 {
     display: flex;
-    flex-basis: 100%;
+    width: 100%;
     height: 93%;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .search-widget .search-form .input-field
