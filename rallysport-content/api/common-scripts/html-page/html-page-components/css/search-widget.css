@@ -13,6 +13,7 @@
     border: 1px solid lightgray;
     border-radius: 6px;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .search-widget .search-form .input-field

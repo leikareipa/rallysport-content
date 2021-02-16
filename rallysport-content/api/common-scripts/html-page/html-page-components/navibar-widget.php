@@ -37,6 +37,10 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
         {
             $currentPage = "help";
         }
+        else if (strpos($_SERVER["REQUEST_URI"], "/rallysport-content/search") !== FALSE)
+        {
+            $currentPage = "search";
+        }
         else
         {
             $currentPage = "home";
