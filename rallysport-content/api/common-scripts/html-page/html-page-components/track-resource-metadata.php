@@ -44,7 +44,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             $iconRow =
             "
             <a href='/rallysported/?fromContent={$track->id()->string()}#play'
-               title='Play in your browser (keyboard required)'>
+               title='Play in browser (keyboard required)'>
 
                 <i class='fas fa-fw fa-play'></i>
 
