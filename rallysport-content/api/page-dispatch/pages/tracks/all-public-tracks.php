@@ -86,6 +86,7 @@ function all_public_tracks() : HTMLPage\HTMLPage
             }
 
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }

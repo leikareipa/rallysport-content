@@ -85,6 +85,7 @@ function all_public_users() : HTMLPage\HTMLPage
             }
 
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::close());
+            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
         }
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
     }
