@@ -46,14 +46,14 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
             <a href='/rallysported/?fromContent={$track->id()->string()}#play'
                title='Play in your browser (keyboard required)'>
 
-                <i class='fas fa-fw fa-gamepad'></i>
+                <i class='fas fa-fw fa-play'></i>
 
             </a>
 
             <a href='/rallysported/?fromContent={$track->id()->string()}'
                title='Open a copy in RallySportED'>
 
-                <i class='fas fa-fw fa-wrench'></i>
+                <i class='fas fa-fw fa-cut'></i>
 
             </a>
 
