@@ -11,6 +11,7 @@
 
 require_once __DIR__."/../../../response.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page.php";
+require_once __DIR__."/../../../common-scripts/html-page/html-page-components/advanced-search.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-header.php";
 require_once __DIR__."/../../../common-scripts/html-page/html-page-components/rallysport-content-footer.php";
 
@@ -26,15 +27,11 @@ function advanced_search() : HTMLPage\HTMLPage
 
     $htmlPage->use_component(HTMLPage\Component\RallySportContentHeader::class);
     $htmlPage->use_component(HTMLPage\Component\RallySportContentFooter::class);
-    
-    // Build the page's body.
-    {
-        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+    $htmlPage->use_component(HTMLPage\Component\AdvancedSearch::class);
 
-        $htmlPage->body->add_element("<div>This page will provide advanced search functionality</div>");
-
-        $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
-    }
+    $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
+    $htmlPage->body->add_element(HTMLPage\Component\AdvancedSearch::html());
+    $htmlPage->body->add_element(HTMLPage\Component\RallySportContentFooter::html());
 
     return $htmlPage;
 }

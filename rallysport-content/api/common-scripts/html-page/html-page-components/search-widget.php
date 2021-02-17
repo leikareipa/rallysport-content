@@ -36,7 +36,7 @@ abstract class SearchWidget extends HTMLPage\HTMLPageComponent
                            class='input-field'
                            name='q'
                            value='".($_GET["q"] ?? "")."'
-                           placeholder='Find in resources...'
+                           placeholder='Find a track by name...'
                            spellcheck='false'>
 
                 </div>

@@ -20,3 +20,9 @@
 {
     width: 100%;
 }
+
+.search-widget .submit-button:active
+{
+    margin: 0;
+    padding: 0;
+}

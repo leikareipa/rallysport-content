@@ -1,0 +1,63 @@
+#rallysport-content-advanced-search
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#rallysport-content-advanced-search .search-widget 
+{
+    width: 50%;
+    height: 58px;
+}
+
+#rallysport-content-advanced-search .search-widget .input-field-container
+{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+#rallysport-content-advanced-search .search-widget .input-field
+{
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 12px;
+}
+
+#rallysport-content-advanced-search .search-widget .submit-button
+{
+    min-width: 50px;
+    max-width: 50px;
+    color: gray;
+    outline: none;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 1000px)
+{
+    #rallysport-content-advanced-search .search-widget 
+    {
+        width: 65%;
+    }
+}
+
+@media only screen and (max-width: 850px)
+{
+    #rallysport-content-advanced-search .search-widget 
+    {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 500px)
+{
+    #rallysport-content-advanced-search .search-widget 
+    {
+        width: 90%;
+    }
+}
