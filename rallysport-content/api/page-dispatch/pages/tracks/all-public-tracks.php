@@ -68,7 +68,6 @@ function all_public_tracks() : HTMLPage\HTMLPage
         }
         else
         {
-            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
             foreach ($tracks as $trackResource)

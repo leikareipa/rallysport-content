@@ -67,7 +67,6 @@ function all_public_users() : HTMLPage\HTMLPage
         }
         else
         {
-            $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 
             foreach ($users as $userResource)
