@@ -60,7 +60,6 @@ function all_public_tracks() : HTMLPage\HTMLPage
         $htmlPage->use_component(HTMLPage\Component\TrackResourceMetadata::class);
 
         $htmlPage->head->title = "Tracks";
-        $inPageTitle = "Tracks uploaded by users (sorted from newest to oldest)";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         if (empty($tracks))
@@ -69,7 +68,6 @@ function all_public_tracks() : HTMLPage\HTMLPage
         }
         else
         {
-            $htmlPage->body->add_element("<div style='margin: 30px 20px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalTrackCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 

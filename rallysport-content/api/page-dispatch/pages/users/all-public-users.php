@@ -59,7 +59,6 @@ function all_public_users() : HTMLPage\HTMLPage
         $htmlPage->use_component(HTMLPage\Component\UserResourceMetadata::class);
 
         $htmlPage->head->title = "Users";
-        $inPageTitle = "Registered users (sorted by date of registration)";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());
         if (empty($users))
@@ -68,7 +67,6 @@ function all_public_users() : HTMLPage\HTMLPage
         }
         else
         {
-            $htmlPage->body->add_element("<div style='margin: 30px 20px;'>{$inPageTitle}</div>");
             $htmlPage->body->add_element(HTMLPage\Component\ResourcePageNumberSelector::html($totalUserCount));
             $htmlPage->body->add_element(HTMLPage\Component\ResourceMetadataContainer::open());
 

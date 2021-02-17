@@ -68,10 +68,12 @@ function public_tracks_uploaded_by_user(Resource\UserResourceID $userResourceID)
         $inPageTitle =
         "
         Tracks uploaded by
-        <a href='/rallysport-content/users/?id={$userResourceID->string()}'>
-            {$userResourceID->string()}<!--
-        --></a>
-        (sorted from newest to oldest)
+
+        <span class='search-term'>
+
+            {$userResourceID->string()}
+
+        </span>
         ";
         
         $htmlPage->body->add_element(HTMLPage\Component\RallySportContentHeader::html());

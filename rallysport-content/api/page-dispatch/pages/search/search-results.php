@@ -48,8 +48,7 @@ function search_results(string $queryString) : HTMLPage\HTMLPage
         {
             $htmlPage->body->add_element("<div style='margin: 30px;'>
                                               No search results for
-                                              <span style='background-color: #ffffa9;
-                                                           padding: 3px;'>
+                                              <span class='search-term'>
                                                   {$queryString}
                                               </span>
                                           </div>");
@@ -58,8 +57,7 @@ function search_results(string $queryString) : HTMLPage\HTMLPage
         {
             $htmlPage->body->add_element("<div style='margin: 30px;'>
                                               Search results for
-                                              <span style='background-color: #ffffa9;
-                                                           padding: 3px;'>
+                                              <span class='search-term'>
                                                   {$queryString}
                                               </span>
                                           </div>");

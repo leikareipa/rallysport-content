@@ -72,4 +72,4 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
         </header>
         ";
     }
-}#ef3387
+}

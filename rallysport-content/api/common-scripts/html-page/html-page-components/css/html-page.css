@@ -35,3 +35,9 @@ a:hover
 {
     text-decoration: underline;
 }
+
+.search-term
+{
+    background-color: #ffffa9;
+    padding: 3px;
+}
