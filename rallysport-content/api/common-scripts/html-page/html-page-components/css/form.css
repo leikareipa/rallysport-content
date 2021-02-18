@@ -138,3 +138,12 @@
     font-weight: bold;
     content: "\f06a";
 }
+
+@media only screen and (max-width: 400px)
+{
+    .html-page-form-container
+    {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+}
