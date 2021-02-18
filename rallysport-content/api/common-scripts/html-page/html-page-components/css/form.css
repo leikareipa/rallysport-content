@@ -2,20 +2,19 @@
 {
     position: relative;
     width: 420px;
-    max-width: calc(65vw - 30px);
+    max-width: calc(100% - 16px); /* Replicate the minimum horizontal margin of resource metadata containers, so that this has the same margin on tiny screens.*/
     height: auto;
     display: inline-block;
-    margin: 20px;
-    margin-bottom: 0;
+    margin: 0;
     padding: 35px;
     padding-top: 0;
     margin-top: 0;
     background-color: white;
     border-bottom: none;
-    border-radius: 6px;
     padding-bottom: 65px;
     border-radius: 3px;
     border: 1px solid lightgray;
+    box-sizing: border-box;
 }
 
 .html-page-form-container > header
