@@ -1,7 +1,7 @@
 .html-page-form-container
 {
     position: relative;
-    width: 420px;
+    width: 500px;
     max-width: calc(100% - 16px); /* Replicate the minimum horizontal margin of resource metadata containers, so that this has the same margin on tiny screens.*/
     height: auto;
     display: inline-block;
@@ -70,6 +70,7 @@
     text-align: left;
     color: dimgray;
     padding: 5px;
+    padding-left: 0;
 }
 
 .html-page-form-container .track-metadata
