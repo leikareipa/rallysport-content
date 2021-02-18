@@ -142,3 +142,21 @@
         font-size: 150%;
     }
 }
+
+@media only screen and (max-width: 330px)
+{
+    #rallysport-content-header .top-contents
+    {
+        padding-bottom: 6px;
+    }
+
+    #rallysport-content-header .top-contents > .title .logo
+    {
+        display: none;
+    }
+
+    #rallysport-content-header .navibar-widget .button.users
+    {
+        display: none;
+    }
+}

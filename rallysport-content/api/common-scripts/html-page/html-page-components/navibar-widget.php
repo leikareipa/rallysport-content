@@ -50,7 +50,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
         <div class='navibar-widget'>
 
             <a href='/rallysport-content/' title='Home'
-               class='button ".(($currentPage == "home")? "current-page" : "")."'>
+               class='button home ".(($currentPage == "home")? "current-page" : "")."'>
 
                 Home
 
@@ -58,7 +58,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
 
             <a href='/rallysport-content/tracks/'
                title='Tracks'
-               class='button ".(($currentPage == "tracks")? "current-page" : "")."'>
+               class='button tracks ".(($currentPage == "tracks")? "current-page" : "")."'>
 
                 Tracks
 
@@ -66,7 +66,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
 
             <a href='/rallysport-content/users/'
                title='Users'
-               class='button ".(($currentPage == "users")? "current-page" : "")."'>
+               class='button users ".(($currentPage == "users")? "current-page" : "")."'>
 
                 Users
 
@@ -74,7 +74,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
 
             <a href='/rallysport-content/search/'
                title='Search'
-               class='button ".(($currentPage == "search")? "current-page" : "")."'>
+               class='button search ".(($currentPage == "search")? "current-page" : "")."'>
 
              Search
 

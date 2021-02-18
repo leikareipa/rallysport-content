@@ -46,7 +46,7 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
                 
                     <a href='/rallysport-content/'>
 
-                        <i class='fas fa-air-freshener'
+                        <i class='logo fas fa-air-freshener'
                            style='color: #ff3690;
                                   transform: rotate(-24deg);
                                   margin-right: 8px;'></i>
