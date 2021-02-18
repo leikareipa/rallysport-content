@@ -19,7 +19,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
 {
     static public function css() : string
     {
-        return file_get_contents(__DIR__."/css/round-button.css").
+        return file_get_contents(__DIR__."/css/form-button.css").
                file_get_contents(__DIR__."/css/rsc-table.css").
                file_get_contents(__DIR__."/css/own-uploaded-track-list.css");
     }
@@ -121,7 +121,7 @@ abstract class OwnUploadedTracksList extends HTMLPage\HTMLPageComponent
             <a href='/rallysport-content/tracks/?form=add'
                title='Upload a new track'>
 
-                <div class='round-button top-right'>
+                <div class='form-button top-right'>
                     <i class='fas fa-upload'></i>
                 </div>
 

@@ -49,7 +49,7 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
 
             <button name='submit_button'
                     type='submit'
-                    class='round-button bottom-right'
+                    class='form-button bottom-right'
                     title='Submit the form'>
             </button>
 

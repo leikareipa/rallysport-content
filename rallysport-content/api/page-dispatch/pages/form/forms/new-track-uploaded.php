@@ -49,7 +49,7 @@ abstract class NewTrackUploaded extends \RSC\HTMLPage\Component\Form
             </div>
 
             <a href='/rallysport-content/'
-               class='round-button bottom-right icon-right-arrow'
+               class='form-button bottom-right icon-right-arrow'
                title='Return home'>
             </a>
 

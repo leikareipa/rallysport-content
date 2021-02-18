@@ -18,7 +18,7 @@ abstract class Form extends HTMLPage\HTMLPageComponent
     static public function css() : string
     {
         return file_get_contents(__DIR__."/css/form.css").
-               file_get_contents(__DIR__."/../../../common-scripts/html-page/html-page-components/css/round-button.css").
+               file_get_contents(__DIR__."/../../../common-scripts/html-page/html-page-components/css/form-button.css").
                static::inner_css();
     }
 

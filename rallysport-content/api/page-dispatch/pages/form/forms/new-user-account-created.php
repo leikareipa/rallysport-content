@@ -33,7 +33,7 @@ abstract class NewUserAccountCreated extends \RSC\HTMLPage\Component\Form
             </div>
 
             <a href='/rallysport-content/?form=login'
-               class='round-button bottom-right icon-right-arrow'
+               class='form-button bottom-right icon-right-arrow'
                title='Proceed to log in'>
             </a>
 

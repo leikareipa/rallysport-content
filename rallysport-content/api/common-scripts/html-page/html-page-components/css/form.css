@@ -6,6 +6,7 @@
     height: auto;
     display: inline-block;
     margin: 20px;
+    margin-bottom: 0;
     padding: 35px;
     padding-top: 0;
     margin-top: 0;
@@ -77,7 +78,7 @@
     margin-bottom: 14px;
 }
 
-.html-page-form-container .round-button::after
+.html-page-form-container .form-button::after
 {
     font-family: "Font Awesome 5 Free";
     font-weight: bold;
@@ -90,19 +91,19 @@
     padding-bottom: 1px;
 }
 
-.html-page-form-container .round-button.icon-right-arrow::after
+.html-page-form-container .form-button.icon-right-arrow::after
 {
     content: "\f061";
 }
 
 /* We assume that the button is disabled due to being clicked - so we'll display
  * a loading animation while the button's action proceeds.*/
-.html-page-form-container .round-button:disabled::after
+.html-page-form-container .form-button:disabled::after
 {
     animation: fa-spin 1.5s infinite linear;
 }
 
-.html-page-form-container .round-button.blocked::after
+.html-page-form-container .form-button.blocked::after
 {
     font-family: "Font Awesome 5 Free";
     font-weight: bold;

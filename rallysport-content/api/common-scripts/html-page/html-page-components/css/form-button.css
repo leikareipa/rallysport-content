@@ -1,34 +1,30 @@
-.round-button
+.form-button
 {
-    width: 75px;
-    height: 75px;
-    line-height: 75px;
+    width: 80px;
+    height: 50px;
+    line-height: 50px;
     position: absolute;
     border: 1px solid lightgray;
-    border-radius: 50%;
+    border-radius: 3px;
     background-color: white;
     cursor: pointer;
     outline: none;
 }
 
-.round-button:hover
+.form-button:hover
 {
-    width: 75px;
-    height: 75px;
-    line-height: 75px;
-    position: absolute;
     border-color: gray;
     border-style: solid;
 }
 
-.round-button.warn
+.form-button.warn
 {
     color: rgb(255, 255, 255);
     border-color: transparent;
     background-color: rgb(255, 150, 150);
 }
 
-.round-button:disabled
+.form-button:disabled
 {
     color: lightgray;
     border: 1px solid lightgray;
@@ -36,13 +32,13 @@
     background-color: white;
 }
 
-.round-button.bottom-right
+.form-button.bottom-right
 {
-    right: -28px;
-    bottom: -20px;
+    right: -1px;
+    bottom: -1px;
 }
 
-.round-button.top-right
+.form-button.top-right
 {
     right: -28px;
     top: -20px;
