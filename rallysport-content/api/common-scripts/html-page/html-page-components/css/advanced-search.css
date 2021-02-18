@@ -9,6 +9,12 @@
 {
     width: 50%;
     height: 58px;
+    max-width: calc(100% - 16px); /* Replicate the minimum horizontal margin of resource metadata containers, so that this has the same margin on tiny screens.*/
+}
+
+#rallysport-content-advanced-search .search-form 
+{
+    height: 100%;
 }
 
 #rallysport-content-advanced-search .search-widget .input-field-container
@@ -24,7 +30,7 @@
     height: 100%;
     border: none;
     outline: none;
-    padding: 0 12px;
+    padding: 0 14px;
 }
 
 #rallysport-content-advanced-search .search-widget .submit-button
@@ -36,6 +42,11 @@
     background-color: white;
     border: none;
     cursor: pointer;
+}
+
+#rallysport-content-advanced-search .search-widget .submit-button:hover
+{
+    color: black;
 }
 
 @media only screen and (max-width: 1000px)
@@ -54,10 +65,10 @@
     }
 }
 
-@media only screen and (max-width: 500px)
+@media only screen and (max-width: 650px)
 {
     #rallysport-content-advanced-search .search-widget 
     {
-        width: 90%;
+        width: 100%;
     }
 }
