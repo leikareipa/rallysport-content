@@ -45,7 +45,7 @@ abstract class RequestPasswordReset extends \RSC\HTMLPage\Component\Form
                    required>
 
             <div class='footnote'>
-                * Please provide the email address and RallySportED-js track file you
+                Please provide the email address and RallySportED-js track file you
                 registered with, and you'll be emailed a code for resetting your password.
                 If you no longer have the track file you registered with, please
                 <a href='mailto:rsc@tarpeeksihyvaesoft.com'>contact us</a>

@@ -42,9 +42,9 @@ abstract class UserLogin extends \RSC\HTMLPage\Component\Form
                    required>
 
             <div class='footnote'>
-                * <a href='/rallysport-content/?form=request-password-reset'>
-                      Forgot your password?
-                  </a>
+                <a href='/rallysport-content/?form=request-password-reset'>
+                    Forgot your password?
+                </a>
             </div>
 
             <button name='submit_button'
