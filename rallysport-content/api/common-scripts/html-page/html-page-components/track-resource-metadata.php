@@ -10,6 +10,7 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
+require_once __DIR__."/resource-metadata-action-menu-widget.php";
 
 // Represents a HTML element in a HTMLPage object that provides metadata about
 // the tracks of Rally-Sport Content.
@@ -32,72 +33,64 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
     static public function css() : string
     {
         return file_get_contents(__DIR__."/css/resource-metadata.css").
-               file_get_contents(__DIR__."/css/track-resource-metadata.css");
+               file_get_contents(__DIR__."/css/track-resource-metadata.css").
+               ResourceMetadataActionMenuWidget::css();
     }
 
     static public function html(Resource\TrackResource $track) : string
     {
         $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
 
-        if ($track->visibility() === Resource\ResourceVisibility::PUBLIC)
-        {
-            $iconRow =
-            "
-            <a href='/rallysported/?fromContent={$track->id()->string()}#play'
-               title='Play in browser (keyboard required)'>
+        $trackCssClassName = str_replace(".", "-", $track->id()->string());
 
-                <i class='fas fa-fw fa-play'></i>
+        $optionsPopupMenu = ResourceMetadataActionMenuWidget::html($trackCssClassName, [
+            ["label"=>"Download for RallySportED",
+             "icon"=>"fas fa-download",
+             "href"=>"/rallysport-content/tracks/?zip=1&id={$track->id()->string()}"],
 
-            </a>
+            ["label"=>"Open in RallySportED",
+             "icon"=>"fas fa-hammer",
+             "href"=>"/rallysported/?fromContent={$track->id()->string()}"],
 
-            <a href='/rallysported/?fromContent={$track->id()->string()}'
-               title='Open a copy in RallySportED'>
-
-                <i class='fas fa-fw fa-cut'></i>
-
-            </a>
-
-            <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
-               title='Download'>
-
-                <i class='fas fa-fw fa-download'></i>
-
-            </a>
-            ";
-        }
-        else if ($track->visibility() === Resource\ResourceVisibility::PROCESSING)
-        {
-            $iconRow = "<span style='color: black;'>Processing...</span>";
-        }
-        else
-        {
-            $iconRow = "";
-        }
+            ["label"=>"Play in DOSBox",
+             "icon"=>"fas fa-play",
+             "href"=>"/rallysported/?fromContent={$track->id()->string()}#play"]
+        ]);
 
         return "
-        <div class='resource-metadata track'>
+        <div class='resource-metadata track {$trackCssClassName}'>
 
             <div class='card'>
 
                 <div class='media'>
+
                     {$kierrosSVG}
+
+                    {$optionsPopupMenu}
+
                 </div>
 
                 <div class='info-box'>
 
                     <div class='title'
-                         title='Uploaded by {$track->creator_id()->string()} &bull; ".date("j M Y", $track->creation_timestamp())."'>
+                         title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
 
                         <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
 
                             <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
                         
                         </a>
+
                     </div>
 
                     <div class='icon-row right'>
 
-                        {$iconRow}
+                        <div class='resource-metadata-action-menu-activator'
+                             title='Options'>
+            
+                            <i class='fas fa-fw fa-bars'></i>
+            
+                        </div>
 
                     </div>
 

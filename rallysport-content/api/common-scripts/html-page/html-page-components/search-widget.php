@@ -10,7 +10,6 @@
  */
 
 require_once __DIR__."/../html-page-component.php";
-require_once __DIR__."/../../../session.php";
 
 // Displays a widget with which the user can enter search queries (which are
 // directed to /search/q=xxxx).

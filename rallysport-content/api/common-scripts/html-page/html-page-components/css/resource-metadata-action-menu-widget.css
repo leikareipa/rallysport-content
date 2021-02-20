@@ -1,0 +1,71 @@
+.resource-metadata-action-menu-activator
+{
+    cursor: pointer;
+}
+
+.resource-metadata-action-menu-activator:hover
+{
+    color: #ff3690;
+}
+
+.resource-metadata-action-menu
+{
+    z-index: 100;
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    background-color: rgba(255, 255, 255, 1);
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid white;
+    border-radius: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    width: 200px;
+    text-align: right;
+    display: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.resource-metadata-action-menu.open
+{
+    display: block;
+}
+
+.resource-metadata-action-menu .menu-item .fas
+{
+    color: lightgray;
+    margin: 0 15px 0 6px;
+}
+
+.resource-metadata-action-menu .menu-item:not(.inactive):hover .fas,
+.resource-metadata-action-menu .menu-item:not(.inactive):hover
+{
+    color: #ff3690;
+}
+
+.resource-metadata-action-menu .menu-item
+{
+    display: block;
+    padding: 13px 0;
+    padding-right: 0;
+    color: gray;
+    cursor: pointer;
+    user-select: none;
+}
+
+.resource-metadata-action-menu .menu-item.inactive
+{
+    cursor: auto;
+    color: lightgray;
+}
+
+.resource-metadata-action-menu .menu-item+.menu-item
+{
+    padding-top: 0;
+}
+
+.resource-metadata-action-menu .menu-item:last-child
+{
+    padding-bottom: 0;
+}

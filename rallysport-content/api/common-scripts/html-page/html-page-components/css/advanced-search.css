@@ -15,6 +15,7 @@
 #rallysport-content-advanced-search .search-form 
 {
     height: 100%;
+    border-radius: 3px;
 }
 
 #rallysport-content-advanced-search .search-widget .input-field-container
