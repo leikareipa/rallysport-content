@@ -41,7 +41,7 @@ class HTMLPageHead
         <head>
             <meta name='viewport' content='width=device-width'>
             <meta http-equiv='content-type' content='text/html; charset=UTF-8'>
-            <link href='https://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet'>
+            <link href='https://fonts.googleapis.com/css?family=Fredoka+One|Bebas+Neue' rel='stylesheet'>
             <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.1/css/all.css' integrity='sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP' crossorigin='anonymous'>
             <title>{$this->title} - Rally-Sport Content</title>
             <style>

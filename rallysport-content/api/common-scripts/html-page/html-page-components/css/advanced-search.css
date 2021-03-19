@@ -8,7 +8,7 @@
 #rallysport-content-advanced-search .search-widget 
 {
     width: 50%;
-    height: 58px;
+    height: 50px;
     max-width: calc(100% - 16px); /* Replicate the minimum horizontal margin of resource metadata containers, so that this has the same margin on tiny screens.*/
 }
 
@@ -31,14 +31,14 @@
     height: 100%;
     border: none;
     outline: none;
-    padding: 0 14px;
+    padding: 0 16px;
 }
 
 #rallysport-content-advanced-search .search-widget .submit-button
 {
     min-width: 50px;
     max-width: 50px;
-    color: gray;
+    color: black;
     outline: none;
     background-color: white;
     border: none;

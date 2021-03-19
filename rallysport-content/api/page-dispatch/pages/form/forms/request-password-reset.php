@@ -15,7 +15,7 @@ abstract class RequestPasswordReset extends \RSC\HTMLPage\Component\Form
 {
     static public function title() : string
     {
-        return "Request a password reset";
+        return "Request password reset";
     }
 
     static public function inner_html() : string

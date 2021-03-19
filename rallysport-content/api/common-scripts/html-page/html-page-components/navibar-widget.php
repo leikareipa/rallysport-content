@@ -64,6 +64,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
 
             </a>
 
+            <!--
             <a href='/rallysport-content/users/'
                title='Users'
                class='button users ".(($currentPage == "users")? "current-page" : "")."'>
@@ -71,6 +72,7 @@ abstract class NavibarWidget extends HTMLPage\HTMLPageComponent
                 Users
 
             </a>
+            -->
 
             <a href='/rallysport-content/search/'
                title='Search'

@@ -44,26 +44,14 @@ abstract class RallySportContentHeader extends HTMLPage\HTMLPageComponent
 
                 <div class='title'>
                 
-                    <a href='/rallysport-content/'>
+                    <a href='/rallysport-content/'
+                       title='Rally-Sport Content'>
 
-                        <i class='logo fas fa-air-freshener'
-                           style='color: #ff3690;
-                                  transform: rotate(-24deg);
-                                  margin-right: 8px;'></i>
-
-                        Rally-Sport Content
+                        RSC
 
                     </a>
 
                 </div>
-
-                ".SearchWidget::html()."
-
-                ".LoginWidget::html()."
-
-            </div>
-
-            <div class='bottom-contents'>
 
                 ".NavibarWidget::html()."
 

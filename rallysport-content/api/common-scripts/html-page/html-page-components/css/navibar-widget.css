@@ -1,12 +1,13 @@
 .navibar-widget
 {
     width: 100%;
-    background-color: white;
+    background-color: transparent;
     color: black;
     font-weight: normal;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
+    align-items: center;
 }
 
 .navibar-widget a:hover
@@ -16,24 +17,16 @@
 
 .navibar-widget .button
 {
-    width: 80px;
-    border-bottom: 3px solid transparent;
-    padding-bottom: 13px;
-    margin-bottom: -1px;
+    margin-right: 4px;
+    width: 75px;
+    padding-top: 5px;
+    padding-bottom: 8px;
+    border-radius: 6px;
     -webkit-tap-highlight-color: transparent;
 }
 
 .navibar-widget .button.current-page
 {
-    font-weight: bold;
-    color: #ff3690;
-    border-color: #ff3690;
-}
-
-@media only screen and (max-width: 1700px)
-{
-    .navibar-widget
-    {
-        padding-top: 5px;
-    }
+    color: white;
+    background-color: black;
 }

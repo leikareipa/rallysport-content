@@ -36,13 +36,13 @@ class HTMLPage
         return;
     }
 
-    // Pass to this function the class name of a fragment you intent to use
-    // on the page - e.g. PageFooter::class, if PageFooter is the fragment's
+    // Pass to this function the class name of a component you intent to use
+    // on the page - e.g. PageFooter::class, if PageFooter is the component's
     // class name.
-    public function use_component(string $fragmentClass) : void
+    public function use_component(string $componentClass) : void
     {
-        $this->head->css .= $fragmentClass::css();
-        $this->body->add_script(...$fragmentClass::scripts());
+        $this->head->css .= $componentClass::css();
+        $this->body->add_script(...$componentClass::scripts());
 
         return;
     }

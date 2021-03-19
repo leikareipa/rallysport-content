@@ -66,8 +66,6 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 
                     {$kierrosSVG}
 
-                    {$optionsPopupMenu}
-
                 </div>
 
                 <div class='info-box'>
@@ -75,22 +73,43 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                     <div class='title'
                          title='Uploaded on ".date("j F Y", $track->creation_timestamp())."'>
 
-                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'>
+                        &ldquo;{$track->data()->name()}&rdquo;
 
-                            <i class='fas fa-fw fa-road'></i> &ldquo;{$track->data()->name()}&rdquo;
-                        
+                    </div>
+
+                    <div class='icon-row left'>
+
+                        <a href='/rallysport-content/tracks/?id={$track->id()->string()}'
+                           title='Permalink'>
+
+                            <i class='fas fa-fw fa-link'></i>
+                            
+                        </a>
+
+                        <a href='/rallysported/?fromContent={$track->id()->string()}'
+                           title='Open copy in RallySportED'>
+
+                            <i class='fas fa-fw fa-hammer'></i>
+                            
+                        </a>
+
+                        <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
+                           title='Download for RallySportED'>
+
+                            <i class='fas fa-fw fa-download'></i>
+                            
                         </a>
 
                     </div>
 
                     <div class='icon-row right'>
 
-                        <div class='resource-metadata-action-menu-activator'
-                             title='Options'>
-            
-                            <i class='fas fa-fw fa-bars'></i>
-            
-                        </div>
+                        <a href='/rallysported/?fromContent={$track->id()->string()}#play'
+                           title='Play in browser (keyboard required)'>
+
+                            <i class='fas fa-fw fa-play'></i>
+                            
+                        </a>
 
                     </div>
 

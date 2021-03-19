@@ -5,6 +5,8 @@
     margin: 30px 20px 30px 20px;
     display: flex;
     flex-direction: column;
+
+    display: none;
 }
 
 #rallysport-content-footer a:hover

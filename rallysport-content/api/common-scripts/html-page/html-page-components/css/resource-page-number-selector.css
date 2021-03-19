@@ -33,7 +33,7 @@
 
 .page-number-selector a
 {
-    padding: 4px 10px;
+    padding: 6px 12px;
     text-decoration: none;
     background-color: white;
     border-top: 1px solid lightgray;
@@ -51,24 +51,24 @@
 }
 .page-number-selector a:last-child
 {
-    border-radius: 0 3px 3px 0;
+    border-radius: 0 6px 6px 0;
     border-right: 1px solid lightgray;
 }
 
 .page-number-selector a:first-child
 {
-    border-radius: 3px 0 0 3px;
+    border-radius: 6px 0 0 6px;
     border-left: 1px solid lightgray;
 }
 
 .page-number-selector a:only-child
 {
-    border-radius: 3px;
+    border-radius: 6px;
 }
 
 .page-number-selector a.current-page
 {
-    border: 1px solid #ff3690;
-    background-color: #ff3690;
+    border: 1px solid black;
+    background-color: black;
     color: white;
 }

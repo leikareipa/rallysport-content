@@ -1,12 +1,13 @@
 .resource-metadata
 {
     position: relative;
-    margin: 7px;
+    margin: 8px;
     text-align: left;
     display: inline-block;
     background-color: white;
     border-radius: 3px;
     border: 1px solid lightgray;
+    box-shadow: 0 0 0 4px white;
 }
 
 .resource-metadata > .card a:hover
@@ -23,8 +24,7 @@
 .resource-metadata > .card > .info-box
 {
     padding: 13px 2px;
-    margin-left: 10px;
-    text-align: left;
+    text-align: center;
     position: relative;
 }
 
@@ -39,9 +39,23 @@
     position: absolute;
     display: inline-block;
     color: lightgray;
-    right: 0;
     text-align: right;
-    margin-right: 15px;
+    display: none;
+}
+
+.resource-metadata > .card > .info-box > .icon-row.right
+{
+    right: 18px;
+}
+
+.resource-metadata > .card > .info-box > .icon-row.left
+{
+    left: 18px;
+}
+
+.resource-metadata:hover > .card > .info-box > .icon-row
+{
+    display: inline-block;
 }
 
 .resource-metadata > .card > .info-box > .icon-row > a
@@ -51,13 +65,13 @@
 
 .resource-metadata > .card > .info-box > .icon-row > *+*
 {
-    margin-left: 8px;
+    margin-left: 6px;
 }
 
 .resource-metadata > .card > .info-box > .icon-row > a:hover
 {
     text-decoration: none;
-    color: #ff3690;
+    color: black;
 }
 
 .resource-metadata > .card > .media
@@ -66,15 +80,12 @@
     width: 358px;
     max-width: 95vw;
     height: 230px;
-    border-radius: 0;
-
-    /* Checker pattern.*/
-    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
-                      linear-gradient(-45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
-                      linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%),
-                      linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%);
-    background-size: 80px 80px;
-    background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
     border-bottom: 1px solid lightgray;
-    border-radius: 4px;
+    border-radius: 0;
+}
+
+.resource-metadata:only-child > .card > .media
+{
+    width: 537px;
+    height: 345px;
 }
