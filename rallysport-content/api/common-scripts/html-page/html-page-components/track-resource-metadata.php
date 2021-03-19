@@ -39,8 +39,6 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
 
     static public function html(Resource\TrackResource $track) : string
     {
-        $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($track->id());
-
         $trackCssClassName = str_replace(".", "-", $track->id()->string());
 
         $optionsPopupMenu = ResourceMetadataActionMenuWidget::html($trackCssClassName, [
@@ -58,13 +56,15 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
         ]);
 
         return "
-        <div class='resource-metadata track {$trackCssClassName}'>
+        <div class='resource-metadata track'
+             data-resource-id='{$track->id()->string()}'
+             data-resource-type='{$track->id()->resource_type()}'>
 
             <div class='card'>
 
                 <div class='media'>
 
-                    {$kierrosSVG}
+                    <!-- This will be populated via JavaScript -->
 
                 </div>
 

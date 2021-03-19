@@ -46,6 +46,39 @@ abstract class ResourceMetadataContainer extends HTMLPage\HTMLPageComponent
     {
         return "
         </div>
+
+        <script>
+            // For track resources. We populate the track SVG elements with a slight delay, so
+            // they don't slow the initial page load.
+            //
+            /// TODO: Proper error checking.
+            window.addEventListener('DOMContentLoaded', ()=>
+            {
+                const cards = Array.from(document.querySelectorAll('.resource-metadata'));
+
+                (function reveal_svg(card)
+                {
+                    if (card.dataset.resourceType == 'track')
+                    {
+                        fetch(`/rallysport-content/tracks/?id=\${card.dataset.resourceId}&svg=1`)
+                        .then(response=>response.text())
+                        .then(svgString=>
+                        {
+                            const mediaElement = card.querySelector('.media');
+                            const svgTemplate = document.createElement('template');
+    
+                            svgTemplate.innerHTML = svgString;
+                            mediaElement.appendChild(svgTemplate.content.firstChild);
+                        });
+                    }
+
+                    if (cards.length)
+                    {
+                        setTimeout(()=>reveal_svg(cards.shift()), 50);
+                    }
+                })(cards.shift());
+            });
+        </script>
         ";
     }
 }
