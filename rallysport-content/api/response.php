@@ -139,6 +139,18 @@ class Response
 
         return 1;
     }
+
+    // For responding with an SVG image. The return value is expected to be
+    // received by exit().
+    public function svg(string $svg, int $cacheForNumSeconds = 86400) : int
+    {
+        header("Content-Type: image/svg+xml; charset=UTF-8");
+        header("Content-Length: ".strlen($svg));
+
+        $this->send_response($svg, $cacheForNumSeconds);
+
+        return 1;
+    }
     
     // Initiates a client download of the given binary file data with the given
     // file name. The return value is expected to be received by exit().
