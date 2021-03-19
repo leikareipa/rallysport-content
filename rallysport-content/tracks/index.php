@@ -100,6 +100,10 @@ switch ($_SERVER["REQUEST_METHOD"])
         {
             API\Tracks\serve_track_data_as_json("data-array", $resourceID);
         }
+        else if ($_GET["svg"] ?? false)
+        {
+            API\Tracks\serve_track_svg_image($resourceID);
+        }
         else if ($_GET["metadata"] ?? false)
         {
             API\Tracks\serve_track_data_as_json("metadata-array", $resourceID);

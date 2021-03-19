@@ -90,6 +90,21 @@ function serve_track_data_as_zip_file(Resource\TrackResourceID $trackResourceID 
                                               ($trackResourceID? 2592000 : 0)));
 }
 
+// Prints into the PHP output stream the track's image as SVG.
+//
+// Note: The function should always return using exit() together with a
+// Response object, e.g. exit(API\Response::code(200)->json([...]).
+//
+function serve_track_svg_image(Resource\TrackResourceID $trackResourceID = NULL) : void
+{
+    $kierrosSVG = (new \RSC\DatabaseConnection\TrackDatabase())->get_track_svg($trackResourceID);
+
+    // We ask the client to cache the response data only if they are for a
+    // single track - otherwise, when new tracks are added, they would not
+    // show up in the cached response.
+    exit(API\Response::code(200)->svg($kierrosSVG, 2592000));
+}
+
 // Prints into the PHP output stream a stringified JSON object containing the
 // track's data.
 //
