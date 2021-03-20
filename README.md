@@ -4,7 +4,7 @@ A backend app with a frontend view to host and deliver user-made content for Ral
 
 The app can be found live on the web [here](https://www.tarpeeksihyvaesoft.com/rallysport-content/tracks/).
 
-![A screenshot of Rally-Sport content](screenshots/tracks-beta-5.png)
+![A screenshot of Rally-Sport content](screenshots/tracks-beta-6.png)
 
 # What's this about?
 
