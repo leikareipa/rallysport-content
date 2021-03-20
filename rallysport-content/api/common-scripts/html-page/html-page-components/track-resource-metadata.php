@@ -96,7 +96,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                         <a href='/rallysport-content/tracks/?zip=1&id={$track->id()->string()}'
                            title='Download for RallySportED'>
 
-                            <i class='fas fa-fw fa-download'></i>
+                            <i class='fas fa-fw fa-mitten'></i>
                             
                         </a>
 
@@ -105,7 +105,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                     <div class='icon-row right'>
 
                         <a href='/rallysported/?fromContent={$track->id()->string()}#play'
-                           title='Play in browser (keyboard required)'>
+                           title='Play in RallySportED (keyboard required)'>
 
                             <i class='fas fa-fw fa-play'></i>
                             

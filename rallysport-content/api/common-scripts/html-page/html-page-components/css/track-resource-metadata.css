@@ -9,3 +9,8 @@
     stroke-width: 1;
     fill: none;
 }
+
+.resource-metadata.track:hover > .card > .media svg > polygon
+{
+    stroke: #101010;
+}

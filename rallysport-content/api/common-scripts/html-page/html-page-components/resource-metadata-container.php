@@ -79,6 +79,29 @@ abstract class ResourceMetadataContainer extends HTMLPage\HTMLPageComponent
                 })(cards.shift());
             });
         </script>
+
+        <script>
+            // When mousing over a resource card, make its z-index higher than the
+            // rest of the cards', so that e.g. a drop shadow on the hovered card
+            // can cover the other cards.
+            window.addEventListener('DOMContentLoaded', ()=>
+            {
+                const cards = document.querySelectorAll('.resource-metadata');
+
+                for (let i = 0; i < cards.length; i++)
+                {
+                    cards[i].addEventListener('mouseenter', ()=>
+                    {
+                        for (let i = 0; i < cards.length; i++)
+                        {
+                            cards[i].style.zIndex = 0;
+                        }
+
+                        cards[i].style.zIndex = '1';
+                    });
+                }
+            });
+        </script>
         ";
     }
 }

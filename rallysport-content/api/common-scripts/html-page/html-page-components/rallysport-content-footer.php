@@ -25,7 +25,8 @@ abstract class RallySportContentFooter extends HTMLPage\HTMLPageComponent
         return "
         <footer id='rallysport-content-footer'>
 
-            <span class='first'>
+            <span class='first'
+                  style='display: none'> <!-- Disabled for now. -->
 
                 <a href='/rallysport-content/'>Rally-Sport Content</a>
                 by <a href='https://www.tarpeeksihyvaesoft.com/'>Tarpeeksi Hyvae Soft</a>.

@@ -2,11 +2,9 @@
 {
     font-size: 80%;
     color: rgb(167, 167, 167);
-    margin: 30px 20px 30px 20px;
+    margin: 60px 20px 60px 20px;
     display: flex;
     flex-direction: column;
-
-    display: none;
 }
 
 #rallysport-content-footer a:hover
