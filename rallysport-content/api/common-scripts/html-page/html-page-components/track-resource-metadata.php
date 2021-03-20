@@ -105,7 +105,7 @@ abstract class TrackResourceMetadata extends HTMLPage\HTMLPageComponent
                     <div class='icon-row right'>
 
                         <a href='/rallysported/?fromContent={$track->id()->string()}#play'
-                           title='Play in RallySportED (keyboard required)'>
+                           title='Play in RallySportED'>
 
                             <i class='fas fa-fw fa-play'></i>
                             

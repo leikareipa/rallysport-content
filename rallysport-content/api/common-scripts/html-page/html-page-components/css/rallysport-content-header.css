@@ -1,8 +1,6 @@
 #rallysport-content-header
 {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 20px 0;
+    margin: 0 0 25px 0;
     padding: 8px;
     background: transparent;
 }
